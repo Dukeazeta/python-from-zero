@@ -65,7 +65,7 @@ Already built in:
 - learner feedback, read at `/admin`
 
 Your steps:
-1. **Legal pages:** fill in every [bracketed] detail in `privacy.html` and `terms.html`, have them checked, then remove the draft notice.
+1. **Legal pages:** put your own name, contact and country in `privacy.html` and `terms.html` if you're running your own copy, and have them checked.
 2. **Gemini:** use a paid (billed) API key, and say in the privacy policy which tier you use.
 3. **Publish Google sign-in:** in Google Auth Platform, under **Branding**, add your home page, `/privacy` and `/terms` addresses. Add your domain under **Authorized domains** and prove you own it in Google Search Console, then press **Publish app** under **Audience**. A free sslip.io address can't be verified, so you'll need your own domain for this.
 4. **Soft launch** with 10 to 20 test users first, and read their feedback at `/admin`.

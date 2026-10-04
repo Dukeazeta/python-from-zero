@@ -52,7 +52,7 @@ The course opens at http://localhost:8765. On Windows you can also double-click 
 | `app/` | The course server: lessons, progress (`store.py`, SQLite), Google sign-in (`auth.py`), the tutor's prompts (`tutor.py`) and the Gemini client (`gemini.py`). |
 | `tools/` | `build.py` builds the pages, `verify.py` checks every exercise, and `test_app.py` tests the server end to end. |
 | `deploy/` | Packing and installing on a Linux server. |
-| `privacy.html`, `terms.html` | Drafts to fill in before running a public copy. |
+| `privacy.html`, `terms.html` | The privacy policy and terms of the main site. |
 
 ```bash
 python tools/build.py      # rebuild pages after editing lessons
@@ -62,7 +62,7 @@ python tools/test_app.py   # sign-in, accounts, limits and security, against a s
 
 ## Running your own copy
 
-The site's footer links to the author's X profile, and the preview card's details are at the top of `assets/profile-card.js`. Change them, along with the bracketed details in `privacy.html` and `terms.html`, if you host the course yourself.
+The site's footer links to the author's X profile, and the preview card's details are at the top of `assets/profile-card.js`. If you host the course yourself, change them, and replace the operator's name, contact and country in `privacy.html` and `terms.html` with your own.
 
 ## Credits
 
