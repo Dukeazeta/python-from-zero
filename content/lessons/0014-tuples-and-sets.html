@@ -1,0 +1,253 @@
+<!--meta
+{
+ "title": "Tuples and sets",
+ "nav_title": "Tuples and sets",
+ "track": "Python basics",
+ "intro": "Two more ways to group values. Tuples are fixed little bundles, handy for returning several answers at once. Sets are bags of unique items that answer \"have I seen this before?\" instantly, a check that many interview problems need.",
+ "minutes": 35,
+ "needs": "Just this page and an internet connection",
+ "summary": "Tuples as fixed, unchangeable sequences; tuple unpacking (multiple assignment) and swapping; returning several values from a function as a tuple; sets of unique items; add(), in, len(); removing duplicates with set(); set operations & | -; using a set to detect duplicates while looping.",
+ "concepts": ["tuple", "tuple unpacking", "swapping with a, b = b, a", "returning multiple values", "set", "unique items", "add()", "set() to remove duplicates", "intersection &", "union |", "difference -", "seen-set pattern"],
+ "sources": [
+  {"title": "The Python Tutorial, 5.3 Tuples and Sequences", "url": "https://docs.python.org/3/tutorial/datastructures.html#tuples-and-sequences", "note": "Tuples are immutable; tuple packing and sequence unpacking"},
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 6, \"The Multiple Assignment Trick\"", "url": "https://automatetheboringstuff.com/3e/chapter6.html#calibre_link-1540", "note": "Assigning several variables at once, and swapping"},
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 6, \"The Tuple Data Type\"", "url": "https://automatetheboringstuff.com/3e/chapter6.html#calibre_link-1555", "note": "Parentheses and immutability"},
+  {"title": "The Python Tutorial, 5.4 Sets", "url": "https://docs.python.org/3/tutorial/datastructures.html#sets", "note": "Unordered collections with no duplicates; fast membership tests; union, intersection, difference"}
+ ]
+}
+-->
+<section id="tuples" data-nav="Tuples">
+  <div class="col">
+    <h2>Tuples: a fixed bundle</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A map location is two numbers that belong together: latitude and longitude. You'd never change just one of them on its own; together they mean one place. A date of birth (day, month, year) is the same.</p>
+    </div>
+
+    <p>A <strong>tuple</strong> is like a list written with round brackets instead of square ones, with one big difference: it can't be changed after it's made. It's immutable, like a string.{{cite:1}}{{cite:3}}</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">place.py</span></div>
+        <pre class="code">lagos = (6.52, 3.38)
+print(lagos[0])
+lat, lon = lagos          # unpack into two variables
+print(f"Latitude {lat}, longitude {lon}")</pre>
+        <div class="shows"><span class="label">Shows</span>6.52
+Latitude 6.52, longitude 3.38</div>
+      </div>
+    </div>
+    <p>The line <code>lat, lon = lagos</code> is <strong>unpacking</strong>: one name per item, filled in order.{{cite:1}} You already did this with <code>for item, price in prices.items()</code> in Lesson 13.</p>
+
+    <h3>Two tuple tricks you'll use constantly</h3>
+    <p><strong>Swapping.</strong> <code>a, b = b, a</code> swaps two variables in one line, no temporary variable needed.{{cite:2}}</p>
+    <p><strong>Returning several values.</strong> A function can <code>return smallest, largest</code>. That returns one tuple, which the caller can unpack: <code>low, high = min_max(numbers)</code>.</p>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Tuple</dt><dd>A fixed, unchangeable sequence: <code>(6.52, 3.38)</code>.</dd>
+        <dt>Unpacking</dt><dd>Giving each item of a sequence its own name: <code>lat, lon = lagos</code>.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="canvas exercise" id="min-max" data-file="min_max.py">
+    <div class="task">
+      <h3>Try it: smallest and largest at once</h3>
+      <p>Write <code>min_max(numbers)</code> that returns a tuple of the smallest and largest numbers, in that order. You may use <code>min()</code> and <code>max()</code>.</p>
+    </div>
+    <textarea class="code">def min_max(numbers):
+    pass
+</textarea>
+    <script type="text/python" class="tests">
+check("min_max([4, 1, 9, 3])", min_max([4, 1, 9, 3]), (1, 9))
+check("One number", min_max([7]), (7, 7))
+check("Negative numbers", min_max([-2, -8, 5]), (-8, 5))
+    </script>
+    <script type="text/python" class="solution">
+def min_max(numbers):
+    return min(numbers), max(numbers)
+    </script>
+  </div>
+</section>
+
+<section id="sets" data-nav="Sets">
+  <div class="col">
+    <h2>Sets: each thing once</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A sticker album: you either have a sticker or you don't. Getting the same sticker twice doesn't give you two places in the album. And checking whether you have one is instant: you go straight to its spot.</p>
+    </div>
+
+    <p>A <strong>set</strong> holds unique items with no duplicates and no particular order. It's written with curly braces, but without the colons a dictionary has. It answers "is this in here?" very fast, even for huge sets.{{cite:4}}</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">stickers.py</span></div>
+        <pre class="code">album = {"lion", "eagle"}
+album.add("shark")
+album.add("lion")           # already there: no change
+print(len(album))
+print("eagle" in album)
+print(set([3, 1, 3, 2, 1]))  # duplicates disappear</pre>
+        <div class="shows"><span class="label">Shows</span>3
+True
+{1, 2, 3}</div>
+      </div>
+    </div>
+    <p>Careful: <code>{}</code> on its own makes an empty <em>dictionary</em>. An empty set is written <code>set()</code>.{{cite:4}}</p>
+
+    <h3>Comparing two sets</h3>
+    <p>Sets can be combined like circles in a diagram:{{cite:4}}</p>
+    <ul>
+      <li><code>a &amp; b</code> (intersection): items in both.</li>
+      <li><code>a | b</code> (union): items in either.</li>
+      <li><code>a - b</code> (difference): items in <code>a</code> but not in <code>b</code>.</li>
+    </ul>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Set</dt><dd>An unordered collection of unique items: <code>{"lion", "eagle"}</code>.</dd>
+        <dt>Intersection, union, difference</dt><dd>In both, in either, in the first but not the second.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="canvas exercise" id="common-friends" data-file="friends.py">
+    <div class="task">
+      <h3>Try it: friends in common</h3>
+      <p>Write <code>in_common(friends_a, friends_b)</code> that takes two lists of names and returns a sorted list of the names that appear in both. Use sets, then <code>sorted()</code> to turn the result into an ordered list.</p>
+    </div>
+    <textarea class="code">def in_common(friends_a, friends_b):
+    pass
+</textarea>
+    <script type="text/python" class="tests">
+check("Two in common", in_common(["Ada", "Bo", "Chi"], ["Chi", "Dayo", "Ada"]), ["Ada", "Chi"])
+check("None in common", in_common(["Ada"], ["Bo"]), [])
+check("Duplicates only counted once", in_common(["Bo", "Bo"], ["Bo"]), ["Bo"])
+    </script>
+    <script type="text/python" class="solution">
+def in_common(friends_a, friends_b):
+    return sorted(set(friends_a) & set(friends_b))
+    </script>
+  </div>
+</section>
+
+<section id="seen" data-nav="Seen before?">
+  <div class="col">
+    <h2>The "seen before?" pattern</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A doorman with a guest list who ticks off names as people arrive. If someone gives a name that's already ticked, he knows straight away that name was used twice, without re-reading the whole list.</p>
+    </div>
+
+    <p>To find a repeat while going through a list, keep a set of everything you've seen so far. For each new item, check the set first, then add it. Because checking a set is fast, this is much quicker on big lists than comparing every item with every other item. That speed difference is exactly what Lesson 19 (Big O) is about, and this pattern solves LeetCode 217 in Lesson 20.</p>
+  </div>
+
+  <div class="canvas exercise" id="first-repeat" data-file="first_repeat.py">
+    <div class="task">
+      <h3>Try it: first repeated item</h3>
+      <p>Write <code>first_repeat(items)</code> that returns the first item that appears for a second time while reading left to right, or <code>None</code> if nothing repeats. In <code>["a", "b", "c", "b", "a"]</code>, it's <code>"b"</code>: the second <code>b</code> comes before the second <code>a</code>.</p>
+    </div>
+    <textarea class="code">def first_repeat(items):
+    seen = set()
+    # your code here
+    return None
+</textarea>
+    <script type="text/python" class="tests">
+check("b repeats first", first_repeat(["a", "b", "c", "b", "a"]), "b")
+check("Numbers", first_repeat([3, 1, 4, 1, 5, 9, 3]), 1)
+check("No repeats", first_repeat([1, 2, 3]), None)
+check("Empty list", first_repeat([]), None)
+    </script>
+    <script type="text/python" class="solution">
+def first_repeat(items):
+    seen = set()
+    for item in items:
+        if item in seen:
+            return item
+        seen.add(item)
+    return None
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>For each item: if it's already <code>in seen</code>, return it straight away. Otherwise <code>seen.add(item)</code> and keep going.</p></div>
+  </details>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. After <code>a, b = 1, 2</code> and <code>a, b = b, a</code>, what is <code>a</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>2</code></button>
+        <button class="opt"><code>1</code></button>
+        <button class="opt"><code>(1, 2)</code></button>
+        <button class="opt"><code>(2, 1)</code></button>
+      </div>
+      <p class="why">The right side is worked out first as (2, 1), then unpacked into a and b, swapping them.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. What is <code>len(set("banana"))</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>3</code></button>
+        <button class="opt"><code>6</code></button>
+        <button class="opt"><code>1</code></button>
+        <button class="opt"><code>2</code></button>
+      </div>
+      <p class="why">The unique letters are b, a and n.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. What does <code>{}</code> create?</p>
+      <div class="options">
+        <button class="opt" data-correct>An empty dictionary</button>
+        <button class="opt">An empty set</button>
+        <button class="opt">An empty tuple</button>
+        <button class="opt">An empty list</button>
+      </div>
+      <p class="why">Empty curly braces are a dictionary. An empty set is set().</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. What is <code>{1, 2, 3} - {2, 3, 4}</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>{1}</code></button>
+        <button class="opt"><code>{4}</code></button>
+        <button class="opt"><code>{1, 4}</code></button>
+        <button class="opt"><code>{2, 3}</code></button>
+      </div>
+      <p class="why">Difference keeps what's in the first set but not in the second.</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Read, then practise from memory</h2>
+
+    <div class="card">
+      <h3>Read next</h3>
+      <p><a class="source-link" href="https://docs.python.org/3/tutorial/datastructures.html#tuples-and-sequences">The Python Tutorial, 5.3 Tuples and Sequences and 5.4 Sets</a></p>
+      <p>About 10 minutes. The official tutorial is written for people who already code, so skim anything that mentions ideas we haven't covered.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Tomorrow, before Lesson 15</h3>
+      <p>In <code>practice/unique.py</code>, from memory: write <code>unique_in_order(items)</code> that returns a list with duplicates removed but the original order kept. (A set alone loses the order; combine a set with a list.)</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong>. A good question for today: "list, tuple, set or dictionary: how do I choose?"</p>
+    </div>
+  </div>
+</section>

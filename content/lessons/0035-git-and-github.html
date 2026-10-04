@@ -1,0 +1,236 @@
+<!--meta
+{
+ "title": "Git and GitHub: save points and a portfolio",
+ "nav_title": "Git and GitHub",
+ "track": "Projects",
+ "intro": "Before you build portfolio projects, you need somewhere to keep them where employers can see them, and a safety net so a bad change never costs you your work. Git gives you save points; GitHub puts them online.",
+ "minutes": 45,
+ "needs": "Your terminal, plus a free GitHub account",
+ "summary": "Version control with Git: repositories, the working folder, staging with git add, commits as save points with messages, git status and git log; .gitignore for .venv and __pycache__; GitHub as an online home for repositories; creating a repository on GitHub and pushing with git remote add origin and git push -u origin main; the edit, add, commit, push loop.",
+ "concepts": ["version control", "Git", "repository", "commit", "staging area", "git init / status / add / commit / log", ".gitignore", "GitHub", "remote", "git push", "README"],
+ "sources": [
+  {"title": "Pro Git book: What is Git?", "url": "https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F", "note": "Snapshots, and the modified, staged and committed states"},
+  {"title": "Pro Git book: Getting a Git Repository", "url": "https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository", "note": "git init"},
+  {"title": "Pro Git book: Recording Changes to the Repository", "url": "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository", "note": "status, add, commit, and ignoring files with .gitignore"},
+  {"title": "GitHub Docs: Hello World", "url": "https://docs.github.com/en/get-started/start-your-journey/hello-world", "note": "Repositories and README files on GitHub"},
+  {"title": "GitHub Docs: Adding locally hosted code to GitHub", "url": "https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github", "note": "git remote add origin and git push"}
+ ]
+}
+-->
+<section id="git" data-nav="Git">
+  <div class="col">
+    <h2>Save points for your code</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A video game with save points. Before the boss fight, you save. If it goes badly, you load the save instead of starting the whole game again. And you can look back at a list of every save, each with a note like "before the boss".</p>
+    </div>
+
+    <p><strong>Version control</strong> keeps a history of your project, so you can see what changed, when, and go back. <strong>Git</strong> is the version control tool almost every software team uses.{{cite:1}} A folder whose history Git tracks is a <strong>repository</strong> (or "repo"). Each save point is a <strong>commit</strong>: a snapshot of your files plus a short message saying what changed.</p>
+    <p>Saving happens in two steps.{{cite:1}} First you choose which changes go in the next snapshot, called <strong>staging</strong> (<code>git add</code>). Then you take the snapshot (<code>git commit</code>). Like packing a box before sealing it: you decide what goes in, then tape it shut with a label.</p>
+
+    {{os-switch}}
+
+    <ol class="steps">
+      <li>
+        <p><strong>Check Git is installed.</strong></p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">&gt;</span> git --version</pre>
+          <div class="shows"><span class="label">Shows something like</span>git version 2.55.0<span data-os="windows">.windows.2</span></div>
+        </div>
+        <div class="pastecheck" id="git-version" data-regex="^git version \d+\.\d+">
+          <p class="ask">Paste what your terminal showed:</p>
+          <p class="ok">Git is installed.</p>
+          <p class="hint"><span data-os="windows">If Windows doesn't recognise git, install it from git-scm.com (the default options are fine), then open a new terminal window.</span><span data-os="mac">If a box offers to install the command line developer tools, accept it: that installs Git. Then open a new terminal window.</span><span data-os="linux">If it says <code>command not found</code>, install Git with your package manager (on Ubuntu: <code>sudo apt install git</code>).</span></p>
+        </div>
+      </li>
+      <li>
+        <p><strong>Tell Git who you are</strong> (once per computer; it labels your commits). Use the email you'll use for GitHub:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">&gt;</span> git config --global user.name "Your Name"
+<span class="prompt">&gt;</span> git config --global user.email "you@example.com"</pre>
+        </div>
+      </li>
+      <li>
+        <p><strong>Make a project and turn it into a repository.</strong> Each portfolio project gets its own folder and its own repo. From your course folder:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">...python-course&gt;</span> mkdir projects\hello-git
+<span class="prompt">...python-course&gt;</span> cd projects\hello-git
+<span class="prompt">...hello-git&gt;</span> git init -b main</pre>
+          <div class="shows"><span class="label">Shows</span>Initialized empty Git repository in .../hello-git/.git/</div>
+        </div>
+        <p style="margin-top: 12px">Git keeps the whole history in a hidden <code>.git</code> folder inside the project.{{cite:2}} <code>-b main</code> names the main line of history "main", which is what GitHub expects.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="commits" data-nav="Commits">
+  <div class="col">
+    <h2>Your first commit</h2>
+    <ol class="steps">
+      <li>
+        <p><strong>Make a file</strong> in the project, <code>hello.py</code>, containing <code>print("hi")</code>. Then ask Git what it sees:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">...hello-git&gt;</span> git status</pre>
+          <div class="shows"><span class="label">Shows</span>On branch main
+
+No commits yet
+
+Untracked files:
+  (use "git add &lt;file&gt;..." to include in what will be committed)
+	hello.py</div>
+        </div>
+        <p style="margin-top: 12px">"Untracked" means Git sees the file but isn't keeping its history yet. <code>git status</code> is the command you'll run most; it always tells you where you are and often suggests what to do next.{{cite:3}}</p>
+      </li>
+      <li>
+        <p><strong>Ignore what shouldn't be saved.</strong> Virtual environments (Lesson 18) and Python's cache folders don't belong in a repo; anyone can recreate them. Make a file called <code>.gitignore</code> containing:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">.gitignore</span></div>
+          <pre class="code">.venv/
+__pycache__/</pre>
+        </div>
+        <p style="margin-top: 12px">Git skips anything matching a line in <code>.gitignore</code>.{{cite:3}}</p>
+      </li>
+      <li>
+        <p><strong>Stage and commit.</strong> <code>git add .</code> stages everything in the folder (the dot means "here"). <code>-m</code> gives the commit message:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">...hello-git&gt;</span> git add .
+<span class="prompt">...hello-git&gt;</span> git commit -m "First commit"
+<span class="prompt">...hello-git&gt;</span> git log --oneline</pre>
+          <div class="shows"><span class="label">Shows something like</span>[main (root-commit) a60018f] First commit
+ 2 files changed, 3 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 hello.py
+a60018f First commit</div>
+        </div>
+        <p style="margin-top: 12px">You may also see warnings about "LF will be replaced by CRLF". That's Git noting the different ways Windows and other systems end lines; it's harmless. The 7 characters like <code>a60018f</code> are the start of the commit's unique ID.</p>
+        <div class="pastecheck" id="git-log" data-regex="^[0-9a-f]{7,} First commit$">
+          <p class="ask">Paste what <code>git log --oneline</code> showed:</p>
+          <p class="ok">Your first save point exists. From now on, commit whenever something works.</p>
+          <p class="hint">Run <code>git status</code>: if files are listed under "Changes to be committed", the commit didn't happen; if under "Untracked", run <code>git add .</code> first.</p>
+        </div>
+      </li>
+    </ol>
+    <p>A good commit message says what the change does, in a few words: "Add neighbour counting", "Fix crash on empty board". Commit small and often: each commit is a save point you can return to.</p>
+  </div>
+</section>
+
+<section id="github" data-nav="GitHub">
+  <div class="col">
+    <h2>GitHub: your code, online</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Git is your notebook of save points, kept at home. GitHub is a public library shelf where you can put a copy. Employers can browse it, and if your laptop dies, your work is still there.</p>
+    </div>
+
+    <p><strong>GitHub</strong> is a website that hosts Git repositories. Your GitHub profile becomes a portfolio: recruiters often look at it.{{cite:4}} A copy of your repo somewhere else is called a <strong>remote</strong>; sending your commits to it is a <strong>push</strong>.</p>
+    <ol class="steps">
+      <li><p><strong>Make a GitHub account</strong> at github.com if you don't have one. Choose a professional username; it will appear in your portfolio links.</p></li>
+      <li><p><strong>Create an empty repository</strong> on GitHub: the <strong>+</strong> menu, then <strong>New repository</strong>. Name it <code>hello-git</code>, make it Public, and <em>don't</em> tick the options to add a README or .gitignore (your local repo already has files, and those options would create a conflicting first commit).{{cite:5}}</p></li>
+      <li>
+        <p><strong>Connect and push.</strong> GitHub shows the commands on the new repo's page; they look like this, with your username:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">...hello-git&gt;</span> git remote add origin https://github.com/YOUR-USERNAME/hello-git.git
+<span class="prompt">...hello-git&gt;</span> git push -u origin main</pre>
+        </div>
+        <p style="margin-top: 12px"><code>origin</code> is the usual nickname for your GitHub copy.{{cite:5}} The first push may open a browser window asking you to sign in to GitHub; that's Git's credential helper, and you only do it once. Refresh the GitHub page: your files are there.</p>
+      </li>
+    </ol>
+
+    <h3>The loop from now on</h3>
+    <p>Edit, then <code>git add .</code>, then <code>git commit -m "..."</code>, then <code>git push</code>. After the first push, plain <code>git push</code> is enough.</p>
+    <p>Every project in the next five lessons gets its own repo, pushed to GitHub, with a <strong>README.md</strong> file: a short description that GitHub shows on the repo's front page.{{cite:4}} Write what the project does, how to run it, and what you learned. That page is what an employer reads first.</p>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Repository (repo)</dt><dd>A project folder whose history Git tracks.</dd>
+        <dt>Commit</dt><dd>A saved snapshot of the project, with a message.</dd>
+        <dt>Staging</dt><dd>Choosing which changes go into the next commit (<code>git add</code>).</dd>
+        <dt><code>.gitignore</code></dt><dd>A file listing things Git should not track.</dd>
+        <dt>Remote / push</dt><dd>A copy of the repo elsewhere / sending your commits to it.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. What's the right order to save your work?</p>
+      <div class="options">
+        <button class="opt" data-correct>add, then commit, then push</button>
+        <button class="opt">commit, then add, then push</button>
+        <button class="opt">push, then add, then commit</button>
+        <button class="opt">add, then push, then commit</button>
+      </div>
+      <p class="why">Stage the changes, take the snapshot, then send it to GitHub.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. Why put <code>.venv/</code> in <code>.gitignore</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct>Anyone can recreate it; it's big and personal</button>
+        <button class="opt">Git can't read files in .venv</button>
+        <button class="opt">It contains your GitHub password</button>
+        <button class="opt">It makes your code run faster</button>
+      </div>
+      <p class="why">Environments are rebuilt from a list of packages; committing them bloats the repo.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. Which command tells you what Git currently sees?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>git status</code></button>
+        <button class="opt"><code>git push</code></button>
+        <button class="opt"><code>git init</code></button>
+        <button class="opt"><code>git remote</code></button>
+      </div>
+      <p class="why">status shows the branch, staged changes, unstaged changes and untracked files.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. What does <code>origin</code> usually mean?</p>
+      <div class="options">
+        <button class="opt" data-correct>Your repository's copy on GitHub</button>
+        <button class="opt">The very first commit</button>
+        <button class="opt">The folder you started Git in</button>
+        <button class="opt">The main branch of history</button>
+      </div>
+      <p class="why">It's the conventional nickname for the remote you push to.</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Read, then practise</h2>
+
+    <div class="card">
+      <h3>Read next</h3>
+      <p><a class="source-link" href="https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F">Pro Git: What is Git?</a></p>
+      <p>About 15 minutes, free from Git's official site. Then <a href="https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository">Recording Changes to the Repository</a>, which covers everything in this lesson in more depth.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Before Lesson 36</h3>
+      <p>Put your <code>practice</code> folder under Git: <code>git init -b main</code> inside it, a <code>.gitignore</code>, and a first commit. Push it to a new GitHub repo called <code>python-practice</code>. Every exercise you've written since Lesson 2 is now saved.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong> and paste any Git message you don't understand.</p>
+    </div>
+  </div>
+</section>

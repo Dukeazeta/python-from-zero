@@ -1,0 +1,337 @@
+<!--meta
+{
+ "title": "Project: Conway's Game of Life",
+ "nav_title": "Game of Life",
+ "track": "Projects",
+ "intro": "Your first portfolio project: a grid of cells that live, die and multiply by four simple rules, animated in your terminal. You'll build and test each piece here, then put it together on your computer and publish it to GitHub.",
+ "minutes": 90,
+ "needs": "This page, your terminal, and your GitHub account",
+ "summary": "Robert Heaton's Game of Life project: board as a grid of 0s and 1s; dead_state(width, height); the rules (underpopulation, survival, overpopulation, reproduction) in next_cell_value; next_board_state built into a new board so updates don't interfere; render to text; random_state; an animation loop with time.sleep and ANSI clear-screen codes; still lifes and oscillators (block, blinker) as test cases; packaging the project in its own repo with a README.",
+ "concepts": ["Game of Life rules", "cellular automaton", "board state", "new board vs updating in place", "rendering to text", "random initial state", "animation loop", "time.sleep", "still life and oscillator", "project structure", "README"],
+ "sources": [
+  {"title": "Robert Heaton, Programming Projects for Advanced Beginners #2: Game of Life", "url": "https://robertheaton.com/2018/07/20/project-2-game-of-life/", "note": "The project brief this lesson follows, with its milestones and extensions"},
+  {"title": "Project Based Learning list (practical-tutorials), Python section", "url": "https://github.com/practical-tutorials/project-based-learning#python", "note": "Where the project comes from: \"Build the Game of Life\""},
+  {"title": "Python documentation: time.sleep", "url": "https://docs.python.org/3/library/time.html#time.sleep", "note": "Pausing between animation frames"},
+  {"title": "Python documentation: random.random", "url": "https://docs.python.org/3/library/random.html#random.random", "note": "A random float between 0 and 1, for the random starting board"}
+ ]
+}
+-->
+<section id="brief" data-nav="The brief">
+  <div class="col">
+    <h2>Life, by four rules</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Imagine a town where every house is either lived in or empty, and each night the same rules decide what happens: a lonely household moves out, an overcrowded one moves out, a comfortable one stays, and an empty house with exactly three neighbouring families attracts a new one. Run it night after night and surprisingly lifelike patterns appear.</p>
+    </div>
+
+    <p>Conway's Game of Life is a grid of <strong>cells</strong>, each alive (1) or dead (0). Every step, all cells update at once, based on how many of their 8 neighbours are alive:{{cite:1}}</p>
+    <ul>
+      <li>A live cell with 0 or 1 live neighbours dies (underpopulation).</li>
+      <li>A live cell with 2 or 3 live neighbours stays alive.</li>
+      <li>A live cell with more than 3 live neighbours dies (overpopulation).</li>
+      <li>A dead cell with exactly 3 live neighbours becomes alive (reproduction).</li>
+    </ul>
+    <p>This project comes from the Project Based Learning list, Robert Heaton's "Programming Projects for Advanced Beginners".{{cite:1}}{{cite:2}} His page breaks it into milestones; this lesson follows them, with tests for each piece. You already wrote the hardest part, <code>live_neighbours</code>, in Lesson 16; it's provided below so every exercise can use it.</p>
+  </div>
+</section>
+
+<section id="pieces" data-nav="Build the pieces">
+  <div class="canvas exercise" id="gol-dead-state" data-file="life.py">
+    <div class="task">
+      <h3>Milestone 1: an empty board</h3>
+      <p>Write <code>dead_state(width, height)</code> returning a board of <code>height</code> rows, each with <code>width</code> zeros. Each row must be its own list (remember the shared-row trap from Lesson 16).</p>
+    </div>
+    <textarea class="code">def dead_state(width, height):
+    pass
+</textarea>
+    <script type="text/python" class="tests">
+check("3 wide, 2 tall", dead_state(3, 2), [[0, 0, 0], [0, 0, 0]])
+check("1 by 1", dead_state(1, 1), [[0]])
+check("Rows are separate lists", (b := dead_state(2, 2), b[0].__setitem__(0, 1), b[1][0])[-1], 0)
+    </script>
+    <script type="text/python" class="solution">
+def dead_state(width, height):
+    return [[0] * width for _ in range(height)]
+    </script>
+  </div>
+
+  <div class="canvas exercise" id="gol-rules" data-file="life.py">
+    <div class="task">
+      <h3>Milestone 2: the rules for one cell</h3>
+      <p>Write <code>next_cell_value(cell, neighbours)</code>: given a cell's current value (0 or 1) and how many live neighbours it has, return its value in the next step, by the four rules above.</p>
+    </div>
+    <textarea class="code">def next_cell_value(cell, neighbours):
+    pass
+</textarea>
+    <script type="text/python" class="tests">
+check("Live, 1 neighbour: dies", next_cell_value(1, 1), 0)
+check("Live, 2 neighbours: lives", next_cell_value(1, 2), 1)
+check("Live, 3 neighbours: lives", next_cell_value(1, 3), 1)
+check("Live, 4 neighbours: dies", next_cell_value(1, 4), 0)
+check("Dead, 3 neighbours: born", next_cell_value(0, 3), 1)
+check("Dead, 2 neighbours: stays dead", next_cell_value(0, 2), 0)
+    </script>
+    <script type="text/python" class="solution">
+def next_cell_value(cell, neighbours):
+    if cell == 1:
+        if neighbours == 2 or neighbours == 3:
+            return 1
+        return 0
+    if neighbours == 3:
+        return 1
+    return 0
+    </script>
+  </div>
+
+  <div class="col">
+    <h3>Milestone 3: the next board</h3>
+    <p>All cells must update <em>at the same time</em>. If you change cells in the board while you're still counting neighbours on it, later cells see a half-updated board and get the wrong count. So build a brand-new board for the next step, reading only from the old one.</p>
+    <p>Two famous patterns make perfect tests. A 2 by 2 <strong>block</strong> never changes (a still life). A line of three, a <strong>blinker</strong>, flips between horizontal and vertical every step (an oscillator).{{cite:1}}</p>
+  </div>
+
+  <div class="canvas exercise" id="gol-next-board" data-file="life.py">
+    <div class="task">
+      <h3>Milestone 3: next_board_state</h3>
+      <p>Write <code>next_board_state(board)</code> returning a <em>new</em> board one step later. Use <code>live_neighbours</code> and <code>next_cell_value</code> (both already written for you above your code).</p>
+    </div>
+    <script type="text/python" class="setup">
+def live_neighbours(grid, r, c):
+    count = 0
+    for dr in [-1, 0, 1]:
+        for dc in [-1, 0, 1]:
+            if dr == 0 and dc == 0:
+                continue
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < len(grid) and 0 <= nc < len(grid[0]):
+                count += grid[nr][nc]
+    return count
+
+def next_cell_value(cell, neighbours):
+    if cell == 1:
+        return 1 if neighbours in (2, 3) else 0
+    return 1 if neighbours == 3 else 0
+    </script>
+    <textarea class="code">def next_board_state(board):
+    height = len(board)
+    width = len(board[0])
+    new_board = [[0] * width for _ in range(height)]
+    # your code here
+    return new_board
+</textarea>
+    <script type="text/python" class="tests">
+check("Block stays the same", next_board_state([[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]]), [[0, 0, 0, 0], [0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0]])
+check("Blinker turns vertical", next_board_state([[0, 0, 0], [1, 1, 1], [0, 0, 0]]), [[0, 1, 0], [0, 1, 0], [0, 1, 0]])
+check("And back again", next_board_state([[0, 1, 0], [0, 1, 0], [0, 1, 0]]), [[0, 0, 0], [1, 1, 1], [0, 0, 0]])
+check("A lone cell dies", next_board_state([[0, 0, 0], [0, 1, 0], [0, 0, 0]]), [[0, 0, 0], [0, 0, 0], [0, 0, 0]])
+check("The old board isn't changed", (b := [[0, 0, 0], [1, 1, 1], [0, 0, 0]], next_board_state(b), b)[-1], [[0, 0, 0], [1, 1, 1], [0, 0, 0]])
+    </script>
+    <script type="text/python" class="solution">
+def next_board_state(board):
+    height = len(board)
+    width = len(board[0])
+    new_board = [[0] * width for _ in range(height)]
+    for r in range(height):
+        for c in range(width):
+            n = live_neighbours(board, r, c)
+            new_board[r][c] = next_cell_value(board[r][c], n)
+    return new_board
+    </script>
+  </div>
+
+  <div class="canvas exercise" id="gol-render" data-file="life.py">
+    <div class="task">
+      <h3>Milestone 4: render it as text</h3>
+      <p>Write <code>render(board)</code> returning one string: each row on its own line, <code>#</code> for alive and <code>.</code> for dead. Rows are joined with <code>"\n"</code> (a new-line character) and there's no new line at the very end.</p>
+    </div>
+    <textarea class="code">def render(board):
+    pass
+</textarea>
+    <script type="text/python" class="tests">
+check("Blinker", render([[0, 0, 0], [1, 1, 1], [0, 0, 0]]), "...\n###\n...")
+check("One cell", render([[1]]), "#")
+check("Printed, it looks like a picture", (print(render([[1, 0], [0, 1]])), render([[1, 0], [0, 1]]).split("\n"))[-1], ["#.", ".#"])
+    </script>
+    <script type="text/python" class="solution">
+def render(board):
+    lines = []
+    for row in board:
+        line = ""
+        for cell in row:
+            line += "#" if cell == 1 else "."
+        lines.append(line)
+    return "\n".join(lines)
+    </script>
+  </div>
+</section>
+
+<section id="assemble" data-nav="Put it together">
+  <div class="col">
+    <h2>Put it together on your computer</h2>
+    <p>Now the real program, with an animation in your terminal. Each piece goes in one file, with the functions you just wrote.</p>
+    <ol class="steps">
+      <li>
+        <p><strong>Make the project and its repo</strong> (Lesson 35):</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">...python-course&gt;</span> mkdir projects\game-of-life
+<span class="prompt">...python-course&gt;</span> cd projects\game-of-life
+<span class="prompt">...game-of-life&gt;</span> git init -b main
+<span class="prompt">...game-of-life&gt;</span> code life.py</pre>
+        </div>
+      </li>
+      <li>
+        <p><strong>Write <code>life.py</code></strong>: paste in your <code>dead_state</code>, <code>live_neighbours</code>, <code>next_cell_value</code>, <code>next_board_state</code> and <code>render</code>, then add these at the bottom:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">life.py (the end)</span></div>
+          <pre class="code">import random
+import time
+
+
+def random_state(width, height):
+    board = dead_state(width, height)
+    for r in range(height):
+        for c in range(width):
+            if random.random() &lt; 0.3:     # about 30% of cells start alive
+                board[r][c] = 1
+    return board
+
+
+def run(width=60, height=20, generations=200):
+    board = random_state(width, height)
+    for step in range(generations):
+        print("\033[H\033[J", end="")    # clear the terminal screen
+        print(render(board))
+        print(f"Generation {step}")
+        board = next_board_state(board)
+        time.sleep(0.1)
+
+
+if __name__ == "__main__":
+    run()</pre>
+        </div>
+        <p style="margin-top: 12px"><code>random.random()</code> gives a decimal between 0 and 1, so it's below 0.3 about 30% of the time.{{cite:4}} <code>time.sleep(0.1)</code> pauses a tenth of a second between frames.{{cite:3}} The odd string <code>"\033[H\033[J"</code> is a special code that tells the terminal to clear the screen, so each frame replaces the last.</p>
+      </li>
+      <li>
+        <p><strong>Run it</strong>: <code>{{py}} life.py</code>. Patterns grow, collide and settle into blocks and blinkers. Press <kbd>Ctrl</kbd> + <kbd>C</kbd> to stop early.</p>
+        <div class="pastecheck" id="gol-run" data-regex="^Generation \d+$">
+          <p class="ask">Paste the last line your program printed:</p>
+          <p class="ok">It's alive. Now make it yours with the extensions below, then publish it.</p>
+          <p class="hint">If you see a NameError, one of the functions wasn't pasted into life.py, or is below the code that uses it.</p>
+        </div>
+      </li>
+    </ol>
+
+    <h3>Make it yours (pick at least one)</h3>
+    <p>Heaton's page suggests extensions; they're what turns a tutorial into a portfolio piece.{{cite:1}}</p>
+    <ul>
+      <li><strong>Load a pattern from a file</strong>: read a text file of <code>.</code> and <code>#</code> into a board, so you can start from a glider or a "Gosper glider gun".</li>
+      <li><strong>Wrap around the edges</strong>: make cells on the right edge neighbours of cells on the left, using <code>%</code> (Lesson 6) on the row and column.</li>
+      <li><strong>Stop when stable</strong>: end the loop when the next board equals the current one, and print how many generations it took.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="publish" data-nav="Publish">
+  <div class="col">
+    <h2>Publish it</h2>
+    <ol class="steps">
+      <li>
+        <p><strong>Write <code>README.md</code></strong> in the project folder, in plain text:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">README.md</span></div>
+          <pre class="code"># Game of Life
+
+Conway's Game of Life in the terminal, written in Python with no libraries.
+
+## Run it
+
+    python life.py
+
+## How it works
+
+The board is a list of lists of 0s and 1s. Each step builds a new board,
+counting each cell's 8 neighbours and applying the four rules.
+
+## What I learned
+
+(Write two or three sentences in your own words.)</pre>
+        </div>
+      </li>
+      <li><p><strong>Commit and push</strong>: <code>git add .</code>, <code>git commit -m "Game of Life"</code>, create an empty <code>game-of-life</code> repo on GitHub, then <code>git remote add origin ...</code> and <code>git push -u origin main</code> as in Lesson 35.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. A dead cell with 3 live neighbours. Next step?</p>
+      <div class="options">
+        <button class="opt" data-correct>It becomes alive</button>
+        <button class="opt">It stays dead</button>
+        <button class="opt">It dies twice</button>
+        <button class="opt">Its neighbours die</button>
+      </div>
+      <p class="why">Exactly three live neighbours is the reproduction rule.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. Why build a new board instead of updating the old one cell by cell?</p>
+      <div class="options">
+        <button class="opt" data-correct>Later cells would count already-updated neighbours</button>
+        <button class="opt">Python lists can't be changed after creation</button>
+        <button class="opt">A new board makes the program run faster</button>
+        <button class="opt">The render function needs two boards</button>
+      </div>
+      <p class="why">All cells must update together, based only on the previous step.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. What is a blinker?</p>
+      <div class="options">
+        <button class="opt" data-correct>A line of three that flips each step</button>
+        <button class="opt">A square of four that never changes</button>
+        <button class="opt">A cell that is born and dies at once</button>
+        <button class="opt">A pattern that moves across the board</button>
+      </div>
+      <p class="why">It's the simplest oscillator: horizontal, vertical, horizontal...</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. What's the Big O of one step on a w by h board?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>O(w × h)</code></button>
+        <button class="opt"><code>O(w + h)</code></button>
+        <button class="opt"><code>O((w × h)²)</code></button>
+        <button class="opt"><code>O(1)</code></button>
+      </div>
+      <p class="why">Each of the w × h cells checks a fixed 8 neighbours.</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Read, then reflect</h2>
+
+    <div class="card">
+      <h3>Read</h3>
+      <p><a class="source-link" href="https://robertheaton.com/2018/07/20/project-2-game-of-life/">Robert Heaton: Game of Life</a></p>
+      <p>Read the whole project page now, including his suggested extensions and how he tests each milestone.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Before Lesson 37</h3>
+      <p>Send your GitHub link to someone you know (or post it in the Python Discord's show-and-tell channel) and ask them to run it. Fix anything in the README that confused them.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong> and paste the function that's misbehaving with the board you tested it on.</p>
+    </div>
+  </div>
+</section>

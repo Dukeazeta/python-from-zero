@@ -1,0 +1,309 @@
+<!--meta
+{
+ "title": "Stacks: last in, first out",
+ "nav_title": "Stacks",
+ "track": "Algorithms",
+ "intro": "A stack only lets you touch the item on top. That's all you need for matching brackets, undo buttons and evaluating maths. Every function call your programs make uses one too.",
+ "minutes": 50,
+ "needs": "This page, plus your LeetCode account to submit",
+ "summary": "The stack: push and pop at one end only, last in first out (LIFO); a Python list as a stack with append() and pop() and peeking with [-1]; checking an empty stack; LeetCode 20 Valid Parentheses with a dictionary of closing-to-opening brackets; 155 Min Stack keeping a second stack of minimums; 150 Evaluate Reverse Polish Notation, including division that truncates towards zero with int(a / b).",
+ "concepts": ["stack", "push", "pop", "peek / top", "LIFO", "empty-stack check", "matching brackets", "auxiliary stack", "Reverse Polish Notation", "LeetCode 20", "LeetCode 155", "LeetCode 150"],
+ "sources": [
+  {"title": "Miller and Ranum, <em>Problem Solving with Algorithms and Data Structures using Python</em>, 3rd ed., 3.3 Stacks", "url": "https://runestone.academy/ns/books/published/pythonds3/BasicDS/WhatisaStack.html", "note": "LIFO, and why stacks reverse order"},
+  {"title": "Miller and Ranum, 3.6 Simple Balanced Parentheses and 3.7 Balanced Symbols", "url": "https://runestone.academy/ns/books/published/pythonds3/BasicDS/BalancedSymbolsAGeneralCase.html", "note": "Matching (), [] and {} with a stack"},
+  {"title": "Miller and Ranum, 3.9 Infix, Prefix, and Postfix Expressions", "url": "https://runestone.academy/ns/books/published/pythonds3/BasicDS/InfixPrefixandPostfixExpressions.html", "note": "Postfix (Reverse Polish) notation and evaluating it with a stack"},
+  {"title": "The Python Tutorial, 5.1.1 Using Lists as Stacks", "url": "https://docs.python.org/3/tutorial/datastructures.html#using-lists-as-stacks", "note": "append() to push, pop() to remove from the top"},
+  {"title": "LeetCode 20: Valid Parentheses", "url": "https://leetcode.com/problems/valid-parentheses/", "note": ""},
+  {"title": "LeetCode 155: Min Stack", "url": "https://leetcode.com/problems/min-stack/", "note": ""},
+  {"title": "LeetCode 150: Evaluate Reverse Polish Notation", "url": "https://leetcode.com/problems/evaluate-reverse-polish-notation/", "note": ""}
+ ]
+}
+-->
+<section id="stack" data-nav="Stacks">
+  <div class="col">
+    <h2>Only the top plate</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A stack of plates in a canteen. You put clean plates on top, and you take plates from the top. The plate washed last is the first one used. Getting the bottom plate means lifting off every plate above it.</p>
+    </div>
+
+    <p>A <strong>stack</strong> is a collection where you only add and remove at one end, the top. Adding is called <strong>push</strong>, removing is <strong>pop</strong>, and looking at the top without removing it is <strong>peek</strong>. The last item pushed is the first popped: <strong>LIFO</strong>, last in, first out.{{cite:1}}</p>
+    <p>A Python list is already a good stack: <code>append()</code> pushes onto the end, <code>pop()</code> removes and returns the last item, and <code>stack[-1]</code> peeks.{{cite:4}} All three are O(1). Popping an empty list raises <code>IndexError: pop from empty list</code>, so check first: an empty list counts as false, so <code>if stack:</code> means "if there's anything on it".</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">undo.py</span></div>
+        <pre class="code">history = []
+history.append("type hello")
+history.append("make bold")
+history.append("delete line")
+print(history.pop())      # undo the last action
+print(history[-1])        # what would be undone next</pre>
+        <div class="shows"><span class="label">Shows</span>delete line
+make bold</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="brackets" data-nav="Brackets">
+  <div class="col">
+    <h2>Matching brackets</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Russian dolls: each doll you open must be closed before the doll around it. You can't close the big doll while a small one inside is still open. The most recently opened doll is always the next one to close: a stack.</p>
+    </div>
+
+    <p>In <code>"([{}])"</code>, every closing bracket must match the most recent unmatched opening one. Push each opening bracket. When a closing bracket arrives, the top of the stack must be its partner: pop it. If the stack is empty or the top doesn't match, the string is invalid. At the end, the stack must be empty: any leftovers were never closed.{{cite:2}}</p>
+    <p>A dictionary from each closing bracket to its opener keeps the code short: <code>pairs = {")": "(", "]": "[", "}": "{"}</code>.</p>
+  </div>
+
+  <div class="canvas exercise" id="lc20" data-file="valid_parentheses.py">
+    <div class="task">
+      <h3>LeetCode 20: Valid Parentheses</h3>
+      <p>Return <code>True</code> if every bracket in <code>s</code> is closed by the right kind, in the right order.{{cite:5}}</p>
+    </div>
+    <textarea class="code">class Solution:
+    def isValid(self, s):
+        pairs = {")": "(", "]": "[", "}": "{"}
+        stack = []
+        # your code here
+</textarea>
+    <script type="text/python" class="tests">
+check("()", Solution().isValid("()"), True)
+check("()[]{}", Solution().isValid("()[]{}"), True)
+check("(]", Solution().isValid("(]"), False)
+check("([{}])", Solution().isValid("([{}])"), True)
+check("([)]", Solution().isValid("([)]"), False)
+check("Left open: ((", Solution().isValid("(("), False)
+check("Close with nothing open: )", Solution().isValid(")"), False)
+    </script>
+    <script type="text/python" class="solution">
+class Solution:
+    def isValid(self, s):
+        pairs = {")": "(", "]": "[", "}": "{"}
+        stack = []
+        for ch in s:
+            if ch in pairs:
+                if not stack or stack[-1] != pairs[ch]:
+                    return False
+                stack.pop()
+            else:
+                stack.append(ch)
+        return not stack
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>For each character: if it's a closing bracket (<code>ch in pairs</code>), the stack must be non-empty and its top must equal <code>pairs[ch]</code>; then pop. Otherwise push it. At the end, return <code>len(stack) == 0</code>.</p></div>
+  </details>
+</section>
+
+<section id="min-stack" data-nav="Min Stack">
+  <div class="col">
+    <h2>A stack that knows its minimum</h2>
+    <p>LeetCode 155 wants a stack class whose <code>getMin()</code> is O(1), with no searching.{{cite:6}} The trick: keep a second stack alongside. Every time you push a value, also push "the smallest value so far" onto the second stack. Pop both together. The second stack's top is always the current minimum.</p>
+    <p>A second structure that exists only to help the main one is often called an <strong>auxiliary</strong> stack.</p>
+  </div>
+
+  <div class="canvas exercise" id="lc155" data-file="min_stack.py">
+    <div class="task">
+      <h3>LeetCode 155: Min Stack</h3>
+      <p>Write the class <code>MinStack</code> with <code>push(val)</code>, <code>pop()</code>, <code>top()</code> (returns the top value) and <code>getMin()</code>. Every method must be O(1).</p>
+    </div>
+    <textarea class="code">class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.mins = []
+
+    def push(self, val):
+        pass
+
+    def pop(self):
+        pass
+
+    def top(self):
+        pass
+
+    def getMin(self):
+        pass
+</textarea>
+    <script type="text/python" class="tests">
+check("LeetCode's example", (m := MinStack(), m.push(-2), m.push(0), m.push(-3), m.getMin(), m.pop(), m.top(), m.getMin())[4::3], (-3, -2))
+check("top after pushes", (m := MinStack(), m.push(5), m.push(7), m.top())[-1], 7)
+check("Min returns after popping the smallest", (m := MinStack(), m.push(3), m.push(1), m.pop(), m.getMin())[-1], 3)
+check("Duplicate minimums", (m := MinStack(), m.push(2), m.push(2), m.pop(), m.getMin())[-1], 2)
+    </script>
+    <script type="text/python" class="solution">
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.mins = []
+
+    def push(self, val):
+        self.stack.append(val)
+        if self.mins:
+            self.mins.append(min(val, self.mins[-1]))
+        else:
+            self.mins.append(val)
+
+    def pop(self):
+        self.stack.pop()
+        self.mins.pop()
+
+    def top(self):
+        return self.stack[-1]
+
+    def getMin(self):
+        return self.mins[-1]
+    </script>
+  </div>
+</section>
+
+<section id="rpn" data-nav="Reverse Polish">
+  <div class="col">
+    <h2>Challenge: maths without brackets</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Old pocket calculators worked like this: type the two numbers first, then the operation. "3, 4, plus" gives 7. Numbers wait on a pile until an operation comes along and combines the top two.</p>
+    </div>
+
+    <p>In <strong>Reverse Polish Notation</strong> (postfix), the operator comes after its two numbers: <code>["2", "1", "+", "3", "*"]</code> means (2 + 1) × 3 = 9. No brackets are ever needed. Evaluate it with a stack: push numbers; on an operator, pop two, combine, push the result.{{cite:3}}</p>
+    <p>Watch the order: the first number popped is the <em>right</em>-hand one. For <code>"10", "2", "-"</code> you pop 2, then 10, and compute 10 - 2. LeetCode also wants division that cuts off the decimal towards zero: <code>int(a / b)</code> does that (6 / -4 gives -1, not -2).{{cite:7}}</p>
+  </div>
+
+  <div class="canvas exercise" id="lc150" data-file="rpn.py">
+    <div class="task">
+      <h3>LeetCode 150: Evaluate Reverse Polish Notation</h3>
+      <p><code>tokens</code> is a list of strings: numbers and the operators <code>+ - * /</code>. Return the result as an int.</p>
+    </div>
+    <textarea class="code">class Solution:
+    def evalRPN(self, tokens):
+        stack = []
+        # your code here
+</textarea>
+    <script type="text/python" class="tests">
+check("2 1 + 3 *", Solution().evalRPN(["2", "1", "+", "3", "*"]), 9)
+check("4 13 5 / +", Solution().evalRPN(["4", "13", "5", "/", "+"]), 6)
+check("Subtraction order: 10 2 -", Solution().evalRPN(["10", "2", "-"]), 8)
+check("Division towards zero: 6 -4 /", Solution().evalRPN(["6", "-4", "/"]), -1)
+check("LeetCode's long example", Solution().evalRPN(["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"]), 22)
+    </script>
+    <script type="text/python" class="solution">
+class Solution:
+    def evalRPN(self, tokens):
+        stack = []
+        for t in tokens:
+            if t in "+-*/":
+                right = stack.pop()
+                left = stack.pop()
+                if t == "+":
+                    stack.append(left + right)
+                elif t == "-":
+                    stack.append(left - right)
+                elif t == "*":
+                    stack.append(left * right)
+                else:
+                    stack.append(int(left / right))
+            else:
+                stack.append(int(t))
+        return stack[-1]
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Careful with negative numbers</summary>
+    <div><p><code>"-11"</code> is a number, not an operator. Checking <code>t in "+-*/"</code> is safe because <code>"-11" in "+-*/"</code> is <code>False</code>: the whole string has to appear inside.</p></div>
+  </details>
+
+  <div class="col">
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Stack</dt><dd>A collection you add to and remove from at the top only.</dd>
+        <dt>Push / pop / peek</dt><dd>Add to the top / remove from the top / look at the top.</dd>
+        <dt>LIFO</dt><dd>Last in, first out.</dd>
+        <dt>Reverse Polish Notation</dt><dd>Maths with each operator after its two numbers.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. Push 1, push 2, push 3, then pop. What comes off?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>3</code></button>
+        <button class="opt"><code>1</code></button>
+        <button class="opt"><code>2</code></button>
+        <button class="opt"><code>[1, 2]</code></button>
+      </div>
+      <p class="why">Last in, first out: the most recent push is on top.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. Checking brackets, you reach <code>)</code> and the top of the stack is <code>[</code>. Then?</p>
+      <div class="options">
+        <button class="opt" data-correct>Return False: wrong partner</button>
+        <button class="opt">Pop it and keep going</button>
+        <button class="opt">Push the closing bracket</button>
+        <button class="opt">Skip it and check later</button>
+      </div>
+      <p class="why">The most recent opener must match. A [ closed by ) is invalid.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. What does <code>["3", "4", "+", "2", "*"]</code> evaluate to?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>14</code></button>
+        <button class="opt"><code>11</code></button>
+        <button class="opt"><code>24</code></button>
+        <button class="opt"><code>10</code></button>
+      </div>
+      <p class="why">3 + 4 = 7, then 7 × 2 = 14.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. Why does Min Stack keep a second stack?</p>
+      <div class="options">
+        <button class="opt" data-correct>So getMin is O(1) after any pop</button>
+        <button class="opt">To store the items twice for safety</button>
+        <button class="opt">So pop can remove two at once</button>
+        <button class="opt">Because one list can't hold numbers</button>
+      </div>
+      <p class="why">The second stack remembers the minimum at every height, so it's still right after the smallest is popped.</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Submit, read, then practise from memory</h2>
+
+    <div class="card">
+      <h3>Submit on LeetCode</h3>
+      <p>Submit all three (links in Sources). For Min Stack, LeetCode tests the whole class: paste everything from <code>class MinStack:</code> down.</p>
+    </div>
+
+    <div class="card">
+      <h3>Read next</h3>
+      <p><a class="source-link" href="https://runestone.academy/ns/books/published/pythonds3/BasicDS/WhatisaStack.html">Problem Solving with Algorithms and Data Structures, 3.3 to 3.7: Stacks and Balanced Symbols</a></p>
+      <p>About 25 minutes, with runnable examples.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Tomorrow, before Lesson 24</h3>
+      <p>On LeetCode, from a blank editor: Valid Parentheses. Then try LeetCode 682, Baseball Game: another stack of numbers with a few rules.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong>: "why do function calls use a stack?"</p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,380 @@
+<!--meta
+{
+ "title": "Queues and breadth-first search",
+ "nav_title": "BFS and queues",
+ "track": "Algorithms",
+ "intro": "Depth-first search dives down one branch at a time. Breadth-first search spreads out level by level, like ripples in a pond. It's how you find the shortest route, and it runs on a queue: first come, first served.",
+ "minutes": 50,
+ "needs": "This page, plus your LeetCode account to submit",
+ "summary": "Queues as first in, first out (FIFO); why list.pop(0) is O(n) and collections.deque with append() and popleft() is O(1); breadth-first search on a tree level by level, processing len(queue) nodes per level; LeetCode 102 Binary Tree Level Order Traversal, 199 Binary Tree Right Side View, 111 Minimum Depth (BFS stops at the first leaf).",
+ "concepts": ["queue", "FIFO", "enqueue / dequeue", "collections.deque", "append() and popleft()", "breadth-first search (BFS)", "level by level", "shortest path in steps", "LeetCode 102", "LeetCode 199", "LeetCode 111"],
+ "sources": [
+  {"title": "Miller and Ranum, <em>Problem Solving with Algorithms and Data Structures using Python</em>, 3rd ed., 3.10 Queues", "url": "https://runestone.academy/ns/books/published/pythonds3/BasicDS/WhatIsaQueue.html", "note": "FIFO and real-world queues"},
+  {"title": "The Python Tutorial, 5.1.2 Using Lists as Queues", "url": "https://docs.python.org/3/tutorial/datastructures.html#using-lists-as-queues", "note": "Lists are slow for removing from the front; use collections.deque"},
+  {"title": "Python documentation: collections.deque", "url": "https://docs.python.org/3/library/collections.html#collections.deque", "note": "Fast appends and pops from both ends"},
+  {"title": "Miller and Ranum, 7.9 Implementing Breadth-First Search", "url": "https://runestone.academy/ns/books/published/pythonds3/Graphs/ImplementingBreadthFirstSearch.html", "note": "BFS explores in layers, using a queue"},
+  {"title": "LeetCode 102: Binary Tree Level Order Traversal", "url": "https://leetcode.com/problems/binary-tree-level-order-traversal/", "note": ""},
+  {"title": "LeetCode 199: Binary Tree Right Side View", "url": "https://leetcode.com/problems/binary-tree-right-side-view/", "note": ""},
+  {"title": "LeetCode 111: Minimum Depth of Binary Tree", "url": "https://leetcode.com/problems/minimum-depth-of-binary-tree/", "note": ""}
+ ]
+}
+-->
+<section id="queues" data-nav="Queues">
+  <div class="col">
+    <h2>First come, first served</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A queue at the bank: new people join at the back, and the person at the front is served next. Unlike a stack of plates, whoever has waited longest goes first.</p>
+    </div>
+
+    <p>A <strong>queue</strong> adds at the back and removes from the front: <strong>FIFO</strong>, first in, first out.{{cite:1}} You could use a list, but <code>list.pop(0)</code> shifts every remaining item along one place, so it's O(n).{{cite:2}} Python's <code>collections.deque</code> (say "deck") is built for this: <code>append()</code> adds at the back and <code>popleft()</code> removes from the front, both O(1).{{cite:3}}</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">bank.py</span></div>
+        <pre class="code">from collections import deque
+
+queue = deque(["Ada", "Bo"])
+queue.append("Chi")          # Chi joins the back
+print(queue.popleft())       # Ada is served first
+print(list(queue))          # list() copies the queue into a plain list for printing</pre>
+        <div class="shows"><span class="label">Shows</span>Ada
+['Bo', 'Chi']</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="bfs" data-nav="BFS">
+  <div class="col">
+    <h2>Breadth-first search: level by level</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Drop a stone in a pond: the ripple reaches everything one step away, then everything two steps away, then three. Or spreading news: you tell your friends, they tell their friends, and so on. Everyone at distance 1 hears before anyone at distance 2.</p>
+    </div>
+
+    <p><strong>Breadth-first search</strong> (BFS) visits nodes in order of how far they are from the start.{{cite:4}} On a tree that means level by level: the root, then its children, then grandchildren. The queue makes it work: take a node from the front, then add its children to the back. Children always wait behind everyone already queued at the level above.</p>
+    <p>To know where one level ends, look at the queue's length at the start of each level: that many nodes belong to this level. Process exactly that many, and anything added meanwhile is the next level.</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">levels.py</span></div>
+        <pre class="code">queue = deque([root])
+while queue:
+    level_size = len(queue)
+    for _ in range(level_size):
+        node = queue.popleft()
+        # ...use node...
+        if node.left:
+            queue.append(node.left)
+        if node.right:
+            queue.append(node.right)
+    # one whole level is done here</pre>
+      </div>
+    </div>
+    <p>DFS (Lesson 28) is natural with recursion; BFS is natural with a queue. Both visit each node once: O(n). Choose BFS when "nearest first" matters.</p>
+  </div>
+
+  <div class="canvas exercise" id="lc102" data-file="level_order.py">
+    <div class="task">
+      <h3>LeetCode 102: Binary Tree Level Order Traversal</h3>
+      <p>Return the values level by level, as a list of lists: for <code>[3, 9, 20, None, None, 15, 7]</code>, that's <code>[[3], [9, 20], [15, 7]]</code>.{{cite:5}}</p>
+    </div>
+    <script type="text/python" class="setup">
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def build_tree(values):
+    if not values or values[0] is None:
+        return None
+    root = TreeNode(values[0])
+    queue = [root]
+    i = 1
+    while queue and i < len(values):
+        node = queue.pop(0)
+        if i < len(values) and values[i] is not None:
+            node.left = TreeNode(values[i])
+            queue.append(node.left)
+        i += 1
+        if i < len(values) and values[i] is not None:
+            node.right = TreeNode(values[i])
+            queue.append(node.right)
+        i += 1
+    return root
+    </script>
+    <textarea class="code">from collections import deque
+
+class Solution:
+    def levelOrder(self, root):
+        if root is None:
+            return []
+        result = []
+        queue = deque([root])
+        # your code here
+        return result
+</textarea>
+    <script type="text/python" class="tests">
+check("[3, 9, 20, None, None, 15, 7]", Solution().levelOrder(build_tree([3, 9, 20, None, None, 15, 7])), [[3], [9, 20], [15, 7]])
+check("One node", Solution().levelOrder(build_tree([1])), [[1]])
+check("Empty", Solution().levelOrder(None), [])
+check("Lopsided", Solution().levelOrder(build_tree([1, 2, None, 3, None, 4])), [[1], [2], [3], [4]])
+    </script>
+    <script type="text/python" class="solution">
+from collections import deque
+
+class Solution:
+    def levelOrder(self, root):
+        if root is None:
+            return []
+        result = []
+        queue = deque([root])
+        while queue:
+            level = []
+            for _ in range(len(queue)):
+                node = queue.popleft()
+                level.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            result.append(level)
+        return result
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>Use the shape above. At the start of each level make an empty <code>level</code> list, append each node's value to it inside the <code>for</code>, and after the <code>for</code> append <code>level</code> to <code>result</code>.</p></div>
+  </details>
+
+  <div class="canvas exercise" id="lc199" data-file="right_side.py">
+    <div class="task">
+      <h3>LeetCode 199: Binary Tree Right Side View</h3>
+      <p>Standing to the right of the tree, which values can you see, top to bottom? That's the last node of each level.{{cite:6}}</p>
+    </div>
+    <script type="text/python" class="setup">
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def build_tree(values):
+    if not values or values[0] is None:
+        return None
+    root = TreeNode(values[0])
+    queue = [root]
+    i = 1
+    while queue and i < len(values):
+        node = queue.pop(0)
+        if i < len(values) and values[i] is not None:
+            node.left = TreeNode(values[i])
+            queue.append(node.left)
+        i += 1
+        if i < len(values) and values[i] is not None:
+            node.right = TreeNode(values[i])
+            queue.append(node.right)
+        i += 1
+    return root
+    </script>
+    <textarea class="code">from collections import deque
+
+class Solution:
+    def rightSideView(self, root):
+        pass
+</textarea>
+    <script type="text/python" class="tests">
+check("[1, 2, 3, None, 5, None, 4]", Solution().rightSideView(build_tree([1, 2, 3, None, 5, None, 4])), [1, 3, 4])
+check("Left branch is longer: [1, 2, 3, 4]", Solution().rightSideView(build_tree([1, 2, 3, 4])), [1, 3, 4])
+check("Empty", Solution().rightSideView(None), [])
+    </script>
+    <script type="text/python" class="solution">
+from collections import deque
+
+class Solution:
+    def rightSideView(self, root):
+        if root is None:
+            return []
+        view = []
+        queue = deque([root])
+        while queue:
+            size = len(queue)
+            for i in range(size):
+                node = queue.popleft()
+                if i == size - 1:
+                    view.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+        return view
+    </script>
+  </div>
+</section>
+
+<section id="nearest" data-nav="Nearest first">
+  <div class="col">
+    <h2>Why BFS finds the shortest</h2>
+    <p>Because BFS reaches everything at distance 1 before anything at distance 2, the first time it finds what it's looking for, it has found the <em>closest</em> one. LeetCode 111 asks for the minimum depth: the number of nodes from the root down to the <em>nearest</em> leaf.{{cite:7}} DFS would have to explore every branch to be sure. BFS can stop at the very first leaf it meets.</p>
+  </div>
+
+  <div class="canvas exercise" id="lc111" data-file="min_depth.py">
+    <div class="task">
+      <h3>LeetCode 111: Minimum Depth of Binary Tree</h3>
+      <p>Return the number of nodes on the shortest path from the root to a leaf. Use BFS and return as soon as you take a leaf off the queue. A node with only one child is not a leaf.</p>
+    </div>
+    <script type="text/python" class="setup">
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def build_tree(values):
+    if not values or values[0] is None:
+        return None
+    root = TreeNode(values[0])
+    queue = [root]
+    i = 1
+    while queue and i < len(values):
+        node = queue.pop(0)
+        if i < len(values) and values[i] is not None:
+            node.left = TreeNode(values[i])
+            queue.append(node.left)
+        i += 1
+        if i < len(values) and values[i] is not None:
+            node.right = TreeNode(values[i])
+            queue.append(node.right)
+        i += 1
+    return root
+    </script>
+    <textarea class="code">from collections import deque
+
+class Solution:
+    def minDepth(self, root):
+        if root is None:
+            return 0
+        queue = deque([(root, 1)])   # each item: (node, its depth)
+        # your code here
+</textarea>
+    <script type="text/python" class="tests">
+check("[3, 9, 20, None, None, 15, 7]", Solution().minDepth(build_tree([3, 9, 20, None, None, 15, 7])), 2)
+check("A chain to the right", Solution().minDepth(build_tree([2, None, 3, None, 4, None, 5, None, 6])), 5)
+check("Empty", Solution().minDepth(None), 0)
+check("Root only", Solution().minDepth(build_tree([1])), 1)
+    </script>
+    <script type="text/python" class="solution">
+from collections import deque
+
+class Solution:
+    def minDepth(self, root):
+        if root is None:
+            return 0
+        queue = deque([(root, 1)])
+        while queue:
+            node, depth = queue.popleft()
+            if node.left is None and node.right is None:
+                return depth
+            if node.left:
+                queue.append((node.left, depth + 1))
+            if node.right:
+                queue.append((node.right, depth + 1))
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>The queue holds <code>(node, depth)</code> tuples. Pop one and unpack it. If both children are <code>None</code>, it's a leaf: return <code>depth</code>. Otherwise queue each existing child with <code>depth + 1</code>.</p></div>
+  </details>
+
+  <div class="col">
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Queue</dt><dd>A collection where items join at the back and leave from the front.</dd>
+        <dt>FIFO</dt><dd>First in, first out.</dd>
+        <dt><code>deque</code></dt><dd>Python's double-ended queue: O(1) <code>append</code> and <code>popleft</code>.</dd>
+        <dt>Breadth-first search (BFS)</dt><dd>Visiting nodes in order of distance from the start, using a queue.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. Why use <code>deque.popleft()</code> instead of <code>list.pop(0)</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct>popleft is O(1); pop(0) is O(n)</button>
+        <button class="opt">pop(0) removes the wrong item</button>
+        <button class="opt">Lists can't hold tree nodes</button>
+        <button class="opt">popleft also sorts the queue</button>
+      </div>
+      <p class="why">Removing a list's first item shifts all the others along.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. A stack is LIFO. What is a queue?</p>
+      <div class="options">
+        <button class="opt" data-correct>FIFO: first in, first out</button>
+        <button class="opt">LIFO: last in, first out</button>
+        <button class="opt">Sorted: smallest out first</button>
+        <button class="opt">Random: any item out</button>
+      </div>
+      <p class="why">Like a queue at the bank, whoever arrived first leaves first.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. In level-order BFS, what tells you how many nodes are on the current level?</p>
+      <div class="options">
+        <button class="opt" data-correct>The queue's length when the level starts</button>
+        <button class="opt">The depth of the tree</button>
+        <button class="opt">The number of leaves</button>
+        <button class="opt">Double the previous level's size</button>
+      </div>
+      <p class="why">At that moment the queue holds exactly one level; children added during it belong to the next.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. Why can BFS stop at the first leaf in Minimum Depth?</p>
+      <div class="options">
+        <button class="opt" data-correct>It meets nearer nodes before farther ones</button>
+        <button class="opt">Leaves are always on the left</button>
+        <button class="opt">The first leaf is the deepest</button>
+        <button class="opt">It visits nodes in sorted order</button>
+      </div>
+      <p class="why">BFS goes level by level, so the first leaf found is on the shallowest level with a leaf.</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Submit, read, then practise from memory</h2>
+
+    <div class="card">
+      <h3>Submit on LeetCode</h3>
+      <p>Submit all three (links in Sources). Keep the <code>from collections import deque</code> line at the top.</p>
+    </div>
+
+    <div class="card">
+      <h3>Read next</h3>
+      <p><a class="source-link" href="https://runestone.academy/ns/books/published/pythonds3/BasicDS/WhatIsaQueue.html">Problem Solving with Algorithms and Data Structures, 3.10 to 3.12: Queues</a></p>
+      <p>About 15 minutes. Then glance at <a href="https://runestone.academy/ns/books/published/pythonds3/Graphs/ImplementingBreadthFirstSearch.html">7.9 Implementing Breadth-First Search</a>; graphs are Lesson 31.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Tomorrow, before Lesson 30</h3>
+      <p>On LeetCode, from a blank editor: Level Order Traversal. Then try LeetCode 637, Average of Levels in Binary Tree: one small change.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong>: "when should I use BFS instead of DFS?"</p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python basics reference</title>
+<meta name="description" content="Python from zero: quick reference for the Python basics track, Lessons 1 to 18.">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<script src="../assets/os.js"></script>
+<script src="../assets/theme.js"></script>
+</head>
+<body class="ref">
+
+<header class="topbar">
+  <a class="wordmark" href="../">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#2e2e2e"/><path d="M7 8l4 4-4 4" fill="none" stroke="#fdfcfb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 16h4" stroke="#fdfcfb" stroke-width="2" stroke-linecap="round"/></svg>
+    Python from zero
+  </a>
+  <span class="where"><a href="./">Reference</a></span>
+</header>
+
+<main>
+  <div class="hero">
+    <h1>Python basics</h1>
+    <p class="intro">The Python basics track (Lessons 1 to 18) on one page. Sources: <a href="https://automatetheboringstuff.com/">Automate the Boring Stuff</a> and <a href="https://docs.python.org/3/tutorial/index.html">The Python Tutorial</a>.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Values and types · L1, L4</h2>
+<pre><code>7            <span class="c"># int</span>
+3.5          <span class="c"># float</span>
+"hi"         <span class="c"># str (text)</span>
+True False   <span class="c"># bool</span>
+None         <span class="c"># "nothing"</span>
+type(7)      <span class="c"># &lt;class 'int'&gt;</span>
+int("42")  float("2.5")  str(42)</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Maths · L1, L6, L24</h2>
+<pre><code>7 + 2   7 - 2   7 * 2
+10 / 2       <span class="c"># 5.0, always a float</span>
+17 // 5      <span class="c"># 3, floor division</span>
+17 % 5       <span class="c"># 2, remainder</span>
+(2 + 3) * 4  <span class="c"># brackets first</span>
+x += 1       <span class="c"># x = x + 1</span></code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Variables and text · L3, L4</h2>
+<pre><code>name = "Ada"             <span class="c"># assignment</span>
+greeting = "Hi " + name  <span class="c"># concatenation</span>
+f"{name} is {20 + 1}"    <span class="c"># f-string</span>
+answer = input("Age? ")  <span class="c"># always a str</span>
+age = int(input("Age? "))</code></pre>
+      <p>Names: letters, digits, underscores; no leading digit; <code>snake_case</code>.</p>
+    </div>
+
+    <div class="card">
+      <h2>Decisions · L5, L6</h2>
+<pre><code>if age &gt;= 18:
+    print("adult")
+elif age &gt;= 13:
+    print("teen")
+else:
+    print("child")
+== != &lt; &gt; &lt;= &gt;=      <span class="c"># compare</span>
+and  or  not
+13 &lt;= age &lt;= 19        <span class="c"># chained</span></code></pre>
+      <p>Only the first true branch runs. <code>=</code> stores; <code>==</code> compares.</p>
+    </div>
+
+    <div class="card">
+      <h2>Loops · L7, L8</h2>
+<pre><code>while count &lt; 3:
+    count += 1
+for i in range(5):       <span class="c"># 0..4</span>
+for i in range(1, 6):    <span class="c"># 1..5</span>
+for i in range(10, 0, -2):
+for letter in "abc":
+break                    <span class="c"># leave the loop</span>
+continue                 <span class="c"># next iteration</span></code></pre>
+      <p>Accumulator: start at 0 before the loop, add inside it.</p>
+    </div>
+
+    <div class="card">
+      <h2>Lists · L9, L16</h2>
+<pre><code>xs = [3, 1, 4]
+xs[0]   xs[-1]   len(xs)
+xs.append(5)   xs.pop()
+xs[1:3]   xs[:2]   xs[::-1]
+x in xs                  <span class="c"># O(n)</span>
+sum(xs)  min(xs)  max(xs)
+[n * 2 for n in xs]      <span class="c"># comprehension</span>
+grid = [[0] * 3 for _ in range(2)]
+grid[row][col]</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Strings · L10</h2>
+<pre><code>s = "  Hello World  "
+s.strip()  s.lower()  s.upper()
+s.replace("World", "Ada")
+s.split()            <span class="c"># ['Hello', 'World']</span>
+"-".join(["a", "b"])  <span class="c"># 'a-b'</span>
+s.count("l")  "2024".isdigit()
+"cat" in "concatenate"
+word[::-1]           <span class="c"># reversed</span></code></pre>
+      <p>Strings are immutable: methods return a new string.</p>
+    </div>
+
+    <div class="card">
+      <h2>Functions · L11, L12</h2>
+<pre><code>def area(w, h=1):
+    """Return the area."""
+    return w * h
+
+area(3, 4)       <span class="c"># 12</span>
+area(3)          <span class="c"># 3, h uses its default</span></code></pre>
+      <p>return hands a value back; print only shows it. No return gives <code>None</code>. Variables inside a function are local.</p>
+    </div>
+
+    <div class="card">
+      <h2>Dictionaries · L13</h2>
+<pre><code>ages = {"Ada": 21}
+ages["Bo"] = 30
+ages.get("Chi", 0)       <span class="c"># fallback</span>
+"Ada" in ages            <span class="c"># checks keys</span>
+for name, age in ages.items():
+counts[x] = counts.get(x, 0) + 1</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Tuples and sets · L14</h2>
+<pre><code>point = (6.5, 3.4)
+lat, lon = point          <span class="c"># unpacking</span>
+a, b = b, a               <span class="c"># swap</span>
+seen = set()   seen.add(x)
+x in seen                 <span class="c"># O(1)</span>
+a &amp; b   a | b   a - b
+set(xs)                   <span class="c"># drop duplicates</span></code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Errors and testing · L1, L15</h2>
+<pre><code>try:
+    n = int(text)
+except ValueError:
+    n = None
+raise ValueError("bad input")
+assert f([]) == 0</code></pre>
+      <p>Read tracebacks from the bottom. Test edge cases: empty, one item, zero, negative, boundaries.</p>
+    </div>
+
+    <div class="card">
+      <h2>Classes · L17</h2>
+<pre><code>class Counter:
+    def __init__(self):
+        self.count = 0
+    def click(self):
+        self.count += 1
+
+c = Counter()
+c.click()
+c.count                   <span class="c"># 1</span></code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Modules and packages · L18</h2>
+<pre><code>import math, random
+from math import sqrt
+random.randint(1, 6)      <span class="c"># both ends included</span>
+<span data-os="windows">python</span><span data-os="mac linux">python3</span> -m venv .venv
+<span data-os="windows">.venv\Scripts\python</span><span data-os="mac linux">.venv/bin/python</span> -m pip install NAME
+if __name__ == "__main__":</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Terminal · L2, L35</h2>
+<div class="os-switch"></div>
+<pre><code><span data-os="windows">cd Desktop\python-course</span><span data-os="mac linux">cd Desktop/python-course</span>
+mkdir practice
+<span data-os="windows">python practice\hello.py</span><span data-os="mac linux">python3 practice/hello.py</span>
+git status   git add .
+git commit -m "message"
+git push</code></pre>
+      <p>Up arrow repeats the last command. Ctrl + C stops a running program.</p>
+    </div>
+  </div>
+
+  <div class="col">
+    <nav class="pager" aria-label="Reference navigation">
+      <a href="./"><span class="quiet">Back to</span> Reference</a>
+      <a href="algorithms">Algorithms sheet</a>
+    </nav>
+  </div>
+</main>
+</body>
+</html>

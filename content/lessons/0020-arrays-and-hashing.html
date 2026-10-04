@@ -1,0 +1,308 @@
+<!--meta
+{
+ "title": "Arrays and hashing: remember what you've seen",
+ "nav_title": "Arrays and hashing",
+ "track": "Algorithms",
+ "intro": "Your first algorithm pattern. Many problems that look like they need a loop inside a loop can be solved in one pass if you keep a dictionary or set of what you've already seen. Today you'll solve four LeetCode problems with it, including Two Sum, LeetCode problem 1.",
+ "minutes": 55,
+ "needs": "This page, plus your LeetCode account to submit",
+ "summary": "Hash tables (Python's dict and set) give O(1) average lookups; the pattern of trading O(n) extra space for O(n) time; LeetCode 217 Contains Duplicate, 242 Valid Anagram (character counts), 1 Two Sum (store each number's index, look up the complement), 49 Group Anagrams (dictionary keyed by sorted letters).",
+ "concepts": ["array", "hash table", "hashing", "hash map pattern", "complement", "character count", "sorted string as a key", "time versus space trade-off", "LeetCode 217", "LeetCode 242", "LeetCode 1", "LeetCode 49"],
+ "sources": [
+  {"title": "Miller and Ranum, <em>Problem Solving with Algorithms and Data Structures using Python</em>, 3rd ed., 5.5 Hashing", "url": "https://runestone.academy/ns/books/published/pythonds3/SortSearch/Hashing.html", "note": "Hash functions and why lookups are O(1) on average"},
+  {"title": "Miller and Ranum, 2.4 An Anagram Detection Example", "url": "https://runestone.academy/ns/books/published/pythonds3/AlgorithmAnalysis/AnAnagramDetectionExample.html", "note": "Four anagram solutions with different Big O, including count and compare"},
+  {"title": "NeetCode roadmap: Arrays and Hashing", "url": "https://neetcode.io/roadmap", "note": "Where this pattern sits among the others, with video walkthroughs"},
+  {"title": "LeetCode 217: Contains Duplicate", "url": "https://leetcode.com/problems/contains-duplicate/", "note": ""},
+  {"title": "LeetCode 242: Valid Anagram", "url": "https://leetcode.com/problems/valid-anagram/", "note": ""},
+  {"title": "LeetCode 1: Two Sum", "url": "https://leetcode.com/problems/two-sum/", "note": ""},
+  {"title": "LeetCode 49: Group Anagrams", "url": "https://leetcode.com/problems/group-anagrams/", "note": ""}
+ ]
+}
+-->
+<section id="hashing" data-nav="Hashing">
+  <div class="col">
+    <h2>Why dictionaries are so fast</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A cloakroom: you hand over your coat and get ticket number 47. When you come back, the attendant doesn't search every hook; they walk straight to hook 47. The ticket number tells them exactly where to look.</p>
+    </div>
+
+    <p>Python's <code>dict</code> and <code>set</code> are built on a <strong>hash table</strong>. When you store a key, Python runs it through a <strong>hash function</strong> that turns it into a number, and that number says which slot to put it in. Looking it up later repeats the calculation and goes straight to the slot, instead of searching.{{cite:1}} That's why <code>key in my_dict</code> is O(1) on average (Lesson 19).</p>
+    <p>In LeetCode problems, a Python list is usually called an <strong>array</strong>. The pattern for this lesson:</p>
+    <div class="aside-steps card on-cloud">
+      <p><strong>The hash map pattern.</strong> If the slow answer is "for each item, search the rest of the list", walk the list once instead, and keep a set or dictionary of what you've seen so the search becomes an O(1) lookup. You spend O(n) memory to save a whole factor of n in time.</p>
+    </div>
+    <p>Each exercise uses LeetCode's exact <code>class Solution</code> format (Lesson 17), so once the tests pass you can paste it straight into LeetCode and submit.</p>
+  </div>
+
+  <div class="canvas exercise" id="lc217" data-file="contains_duplicate.py">
+    <div class="task">
+      <h3>LeetCode 217: Contains Duplicate</h3>
+      <p>Return <code>True</code> if any value appears at least twice in <code>nums</code>, and <code>False</code> if every value is different.{{cite:4}} You did this in Lesson 19; write it again from memory in LeetCode's format.</p>
+    </div>
+    <textarea class="code">class Solution:
+    def containsDuplicate(self, nums):
+        pass
+</textarea>
+    <script type="text/python" class="tests">
+check("[1, 2, 3, 1]", Solution().containsDuplicate([1, 2, 3, 1]), True)
+check("[1, 2, 3, 4]", Solution().containsDuplicate([1, 2, 3, 4]), False)
+check("[1, 1, 1, 3, 3, 4, 3, 2, 4, 2]", Solution().containsDuplicate([1, 1, 1, 3, 3, 4, 3, 2, 4, 2]), True)
+check("100,000 different numbers, fast", Solution().containsDuplicate(list(range(100000))), False)
+    </script>
+    <script type="text/python" class="solution">
+class Solution:
+    def containsDuplicate(self, nums):
+        seen = set()
+        for n in nums:
+            if n in seen:
+                return True
+            seen.add(n)
+        return False
+    </script>
+  </div>
+  <details class="hint">
+    <summary>A one-line version</summary>
+    <div><p>Once yours passes: <code>return len(set(nums)) != len(nums)</code> also works. A set drops duplicates, so if it's shorter than the list, something repeated. Same O(n), but it can't stop early.</p></div>
+  </details>
+</section>
+
+<section id="anagram" data-nav="Valid Anagram">
+  <div class="col">
+    <h2>Counting characters</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Two bags of Scrabble tiles spell different words, "listen" and "silent". Are they the same tiles? Tip each bag out and count: three E's? two N's? If every letter count matches, the bags are interchangeable.</p>
+    </div>
+
+    <p>An <strong>anagram</strong> uses exactly the same letters in a different order. Sorting both words and comparing works, but sorting is O(n log n). Counting each word's letters into a dictionary (Lesson 13) and comparing the dictionaries is O(n).{{cite:2}}</p>
+  </div>
+
+  <div class="canvas exercise" id="lc242" data-file="valid_anagram.py">
+    <div class="task">
+      <h3>LeetCode 242: Valid Anagram</h3>
+      <p>Return <code>True</code> if <code>t</code> is an anagram of <code>s</code>.{{cite:5}} The words contain lowercase letters only.</p>
+    </div>
+    <textarea class="code">class Solution:
+    def isAnagram(self, s, t):
+        pass
+</textarea>
+    <script type="text/python" class="tests">
+check("anagram / nagaram", Solution().isAnagram("anagram", "nagaram"), True)
+check("rat / car", Solution().isAnagram("rat", "car"), False)
+check("Different lengths", Solution().isAnagram("ab", "abb"), False)
+check("Same letters, different counts", Solution().isAnagram("aab", "abb"), False)
+check("Empty strings", Solution().isAnagram("", ""), True)
+    </script>
+    <script type="text/python" class="solution">
+class Solution:
+    def isAnagram(self, s, t):
+        if len(s) != len(t):
+            return False
+        counts = {}
+        for ch in s:
+            counts[ch] = counts.get(ch, 0) + 1
+        for ch in t:
+            counts[ch] = counts.get(ch, 0) - 1
+            if counts[ch] < 0:
+                return False
+        return True
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>Simplest O(n) version: build a letter-count dictionary for each word (the <code>get(ch, 0) + 1</code> trick from Lesson 13), then <code>return counts_s == counts_t</code>. Dictionaries compare equal when they have the same keys and values.</p></div>
+  </details>
+</section>
+
+<section id="two-sum" data-nav="Two Sum">
+  <div class="col">
+    <h2>Two Sum</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>You're at a party and need a partner whose age adds to yours to make exactly 50. You're 20, so you need someone who's 30. Instead of asking everyone their age again and again, there's a register at the door listing everyone who's arrived and their age. You just check: "is anyone 30 on the list?"</p>
+    </div>
+
+    <p>Given a list of numbers and a <code>target</code>, find the positions of the two numbers that add up to it. The slow way tries every pair: O(n²). The hash map way walks the list once. For each number, the partner you need is <code>target - number</code>, called the <strong>complement</strong>. Check whether the complement is already in a dictionary of numbers you've seen (mapping number to index). If it is, you're done. If not, add the current number and carry on.{{cite:6}}</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">trace.txt</span></div>
+        <pre class="code">nums = [2, 7, 11, 15], target = 9
+i=0  num=2   need 7   seen={}          not there, store 2 -&gt; 0
+i=1  num=7   need 2   seen={2: 0}      found at 0! answer [0, 1]</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="canvas exercise" id="lc1" data-file="two_sum.py">
+    <div class="task">
+      <h3>LeetCode 1: Two Sum</h3>
+      <p>Return a list of the two indexes, smaller first. Each input has exactly one answer, and you can't use the same item twice.</p>
+    </div>
+    <textarea class="code">class Solution:
+    def twoSum(self, nums, target):
+        seen = {}   # number -&gt; its index
+        # your code here
+</textarea>
+    <script type="text/python" class="tests">
+check("[2, 7, 11, 15], target 9", Solution().twoSum([2, 7, 11, 15], 9), [0, 1])
+check("[3, 2, 4], target 6", Solution().twoSum([3, 2, 4], 6), [1, 2])
+check("[3, 3], target 6 (same value twice)", Solution().twoSum([3, 3], 6), [0, 1])
+check("Negative numbers", Solution().twoSum([-1, -2, -3, -4, -5], -8), [2, 4])
+check("50,000 numbers, fast", Solution().twoSum(list(range(50000)), 99997), [49998, 49999])
+    </script>
+    <script type="text/python" class="solution">
+class Solution:
+    def twoSum(self, nums, target):
+        seen = {}
+        for i, num in enumerate(nums):
+            need = target - num
+            if need in seen:
+                return [seen[need], i]
+            seen[num] = i
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Hint 1: you need the index too</summary>
+    <div><p>Loop with <code>for i in range(len(nums)):</code> and <code>num = nums[i]</code>. Python also has <code>for i, num in enumerate(nums):</code>, which hands you both at once; that's the tidy way.</p></div>
+  </details>
+  <details class="hint">
+    <summary>Hint 2: order of the two steps</summary>
+    <div><p>Check for the complement <em>before</em> storing the current number. Otherwise [3, 3] with target 6 could match a number with itself.</p></div>
+  </details>
+</section>
+
+<section id="group" data-nav="Group Anagrams">
+  <div class="col">
+    <h2>Challenge: a clever key</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Sorting post into pigeonholes: each letter goes into the hole labelled with its postcode. Letters with the same postcode end up together without you ever comparing two letters directly.</p>
+    </div>
+
+    <p>To group anagrams, you need a label that's the same for every word in a group. Sorting a word's letters gives exactly that: "eat", "tea" and "ate" all become "aet". Use that as a dictionary key and put each word in the list for its key. <code>"".join(sorted(word))</code> turns the sorted letters back into a string.</p>
+  </div>
+
+  <div class="canvas exercise" id="lc49" data-file="group_anagrams.py">
+    <div class="task">
+      <h3>LeetCode 49: Group Anagrams</h3>
+      <p>Return a list of groups (lists of words) where each group is a set of anagrams. The groups and the words inside them can be in any order.{{cite:7}}</p>
+    </div>
+    <textarea class="code">class Solution:
+    def groupAnagrams(self, strs):
+        groups = {}
+        # your code here
+        return list(groups.values())   # list() turns the groups into a plain list
+</textarea>
+    <script type="text/python" class="tests">
+check("eat tea tan ate nat bat", sorted(sorted(g) for g in Solution().groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"])), [["ate", "eat", "tea"], ["bat"], ["nat", "tan"]])
+check("One empty string", Solution().groupAnagrams([""]), [[""]])
+check("One word", Solution().groupAnagrams(["a"]), [["a"]])
+    </script>
+    <script type="text/python" class="solution">
+class Solution:
+    def groupAnagrams(self, strs):
+        groups = {}
+        for word in strs:
+            key = "".join(sorted(word))
+            if key not in groups:
+                groups[key] = []
+            groups[key].append(word)
+        return list(groups.values())
+    </script>
+  </div>
+
+  <div class="col">
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Array</dt><dd>LeetCode's word for a list of values.</dd>
+        <dt>Hash table</dt><dd>The structure behind dict and set: a key's hash says which slot it lives in.</dd>
+        <dt>Complement</dt><dd>In Two Sum, the number you still need: <code>target - num</code>.</dd>
+        <dt><code>enumerate()</code></dt><dd>Gives each item together with its index: <code>for i, x in enumerate(items)</code>.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. What's the Big O of the hash map Two Sum?</p>
+      <div class="options">
+        <button class="opt" data-correct>O(n) time, O(n) space</button>
+        <button class="opt">O(n²) time, O(1) space</button>
+        <button class="opt">O(1) time, O(n) space</button>
+        <button class="opt">O(log n) time, O(1) space</button>
+      </div>
+      <p class="why">One pass with O(1) lookups is O(n) time; the dictionary can hold up to n numbers.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. In Two Sum with target 10, you're at the number 4. What do you look up?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>6</code></button>
+        <button class="opt"><code>4</code></button>
+        <button class="opt"><code>14</code></button>
+        <button class="opt"><code>10</code></button>
+      </div>
+      <p class="why">The complement is target minus the current number: 10 - 4.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. Why are "listen" and "silent" given the same key in Group Anagrams?</p>
+      <div class="options">
+        <button class="opt" data-correct>Sorted, both letters spell eilnst</button>
+        <button class="opt">They have the same first letter</button>
+        <button class="opt">They both have six characters</button>
+        <button class="opt">Python treats them as equal</button>
+      </div>
+      <p class="why">Sorting the letters gives the same string for every anagram.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. When is the hash map pattern a good idea?</p>
+      <div class="options">
+        <button class="opt" data-correct>When you'd otherwise search inside a loop</button>
+        <button class="opt">When the list is already sorted</button>
+        <button class="opt">When memory is extremely limited</button>
+        <button class="opt">When the list has one item</button>
+      </div>
+      <p class="why">A search inside a loop is O(n²); a set or dict lookup turns it into O(n), using extra memory.</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Submit, read, then practise from memory</h2>
+
+    <div class="card">
+      <h3>Submit on LeetCode</h3>
+      <p>Paste each solution into its LeetCode page (links in Sources below) and press Submit. LeetCode's own templates include type hints like <code>nums: List[int]</code>; keep them, they don't change anything (Lesson 12).</p>
+    </div>
+
+    <div class="card">
+      <h3>Read next</h3>
+      <p><a class="source-link" href="https://runestone.academy/ns/books/published/pythonds3/AlgorithmAnalysis/AnAnagramDetectionExample.html">Problem Solving with Algorithms and Data Structures, 2.4 An Anagram Detection Example</a></p>
+      <p>About 20 minutes. Four ways to solve Valid Anagram, each with a different Big O. It shows why the pattern matters.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Tomorrow, before Lesson 21</h3>
+      <p>Solve Two Sum again on LeetCode from a blank editor, without looking. Then explain out loud, in one sentence, why it's O(n). Interviewers ask for that kind of explanation.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong> and ask it to trace Two Sum on your own example.</p>
+    </div>
+  </div>
+</section>

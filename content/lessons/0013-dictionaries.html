@@ -1,0 +1,298 @@
+<!--meta
+{
+ "title": "Dictionaries: looking things up by name",
+ "nav_title": "Dictionaries",
+ "track": "Python basics",
+ "intro": "Lists find things by position. Dictionaries find things by name: a person's phone number, a word's meaning, how many times a letter appears. Many fast solutions to interview problems use them.",
+ "minutes": 40,
+ "needs": "Just this page and an internet connection",
+ "summary": "Dictionaries as key-value pairs; creating, reading d[key], KeyError, adding and changing entries; in checks keys; get() with a default; keys(), values(), items() and looping; the counting pattern with a dictionary (frequency counts); finding the most common item.",
+ "concepts": ["dictionary", "key", "value", "key-value pair", "KeyError", "get()", "keys() values() items()", "looping over a dictionary", "frequency count"],
+ "sources": [
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 7, \"The Dictionary Data Type\"", "url": "https://automatetheboringstuff.com/3e/chapter7.html#calibre_link-1567", "note": "Keys, values, KeyError, and comparing dictionaries with lists"},
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 7, \"Returning Keys and Values\" and \"Checking Whether a Key Exists\"", "url": "https://automatetheboringstuff.com/3e/chapter7.html#calibre_link-1569", "note": "keys(), values(), items() and in"},
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 7, \"Setting Default Values\"", "url": "https://automatetheboringstuff.com/3e/chapter7.html#calibre_link-1571", "note": "get() with a fallback value"},
+  {"title": "The Python Tutorial, 5.5 Dictionaries", "url": "https://docs.python.org/3/tutorial/datastructures.html#dictionaries", "note": "Official introduction to dictionaries"}
+ ]
+}
+-->
+<section id="dicts" data-nav="Dictionaries">
+  <div class="col">
+    <h2>Find it by name, not by position</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Your phone's contacts. You never think "Mum is contact number 37". You search for "Mum" and get her number. The name is how you look things up; the number is what you find.</p>
+    </div>
+
+    <p>A <strong>dictionary</strong> stores pairs: a <strong>key</strong> (the name you look up) and its <strong>value</strong> (what you find). It's written in curly braces, with a colon between each key and its value.{{cite:1}}{{cite:4}}</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">contacts.py</span></div>
+        <pre class="code">phone = {"Mum": "0803 111 2222", "Ada": "0812 333 4444"}
+print(phone["Ada"])
+phone["Bo"] = "0905 555 6666"     # add a new pair
+phone["Mum"] = "0803 999 0000"    # change an existing one
+print(len(phone))</pre>
+        <div class="shows"><span class="label">Shows</span>0812 333 4444
+3</div>
+      </div>
+    </div>
+
+    <p>Reading and writing use square brackets like lists, but with the key instead of a position. Writing to a key that doesn't exist yet adds it; writing to one that does replaces its value. Keys are unique: one value per key.</p>
+
+    <h3>Missing keys</h3>
+    <p>Look up a key that isn't there and you get a <strong>KeyError</strong>: <code>phone["Zara"]</code> gives <code>KeyError: 'Zara'</code>.{{cite:1}} Two safe ways to ask:</p>
+    <ul>
+      <li><code>"Zara" in phone</code> is <code>True</code> or <code>False</code> (it checks the keys).{{cite:2}}</li>
+      <li><code>phone.get("Zara", "unknown")</code> gives the value if the key exists, otherwise the fallback, <code>"unknown"</code>.{{cite:3}}</li>
+    </ul>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Dictionary</dt><dd>A collection of key-value pairs, written <code>{"key": value}</code>.</dd>
+        <dt>Key</dt><dd>What you look up. Each key appears once.</dd>
+        <dt>Value</dt><dd>Here: what a key leads to.</dd>
+        <dt>KeyError</dt><dd>The error when you look up a key that isn't in the dictionary.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="canvas exercise" id="lookup" data-file="lookup.py">
+    <div class="task">
+      <h3>Try it: safe lookup</h3>
+      <p>Write <code>capital_of(country)</code> that returns the capital from the <code>capitals</code> dictionary, or <code>"I don't know"</code> if the country isn't in it.</p>
+    </div>
+    <textarea class="code">capitals = {"Nigeria": "Abuja", "Ghana": "Accra", "Kenya": "Nairobi"}
+
+def capital_of(country):
+    return capitals[country]
+</textarea>
+    <script type="text/python" class="tests">
+check("Nigeria", capital_of("Nigeria"), "Abuja")
+check("Kenya", capital_of("Kenya"), "Nairobi")
+check("Unknown country", capital_of("Atlantis"), "I don't know")
+    </script>
+    <script type="text/python" class="solution">
+capitals = {"Nigeria": "Abuja", "Ghana": "Accra", "Kenya": "Nairobi"}
+
+def capital_of(country):
+    return capitals.get(country, "I don't know")
+    </script>
+  </div>
+</section>
+
+<section id="looping" data-nav="Looping">
+  <div class="col">
+    <h2>Going through a dictionary</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Reading down a price list in a shop window: item, price; item, price. You can read just the item names, just the prices, or both together, line by line.</p>
+    </div>
+
+    <p>Three methods give you the parts of a dictionary:{{cite:2}} <code>.keys()</code>, <code>.values()</code>, and <code>.items()</code>, which gives each key and value together. With <code>items()</code>, the <code>for</code> line can unpack both into two names:</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">prices.py</span></div>
+        <pre class="code">prices = {"bread": 1200, "milk": 900, "eggs": 2500}
+for item, price in prices.items():
+    print(f"{item}: {price}")
+print(sum(prices.values()))</pre>
+        <div class="shows"><span class="label">Shows</span>bread: 1200
+milk: 900
+eggs: 2500
+4600</div>
+      </div>
+    </div>
+    <p>A plain <code>for key in prices:</code> loops over the keys. Dictionaries keep the order you added things in.</p>
+  </div>
+
+  <div class="canvas exercise" id="restock" data-file="restock.py">
+    <div class="task">
+      <h3>Try it: what needs restocking?</h3>
+      <p>Write <code>low_stock(stock, limit)</code> that returns a list of the item names whose amount is below <code>limit</code>, in the dictionary's order.</p>
+    </div>
+    <textarea class="code">def low_stock(stock, limit):
+    result = []
+    # your code here
+    return result
+</textarea>
+    <script type="text/python" class="tests">
+check("Below 5", low_stock({"rice": 2, "beans": 10, "salt": 4}, 5), ["rice", "salt"])
+check("Nothing low", low_stock({"rice": 20}, 5), [])
+check("Empty shop", low_stock({}, 5), [])
+    </script>
+    <script type="text/python" class="solution">
+def low_stock(stock, limit):
+    result = []
+    for item, amount in stock.items():
+        if amount < limit:
+            result.append(item)
+    return result
+    </script>
+  </div>
+</section>
+
+<section id="counting" data-nav="Counting">
+  <div class="col">
+    <h2>Counting with a dictionary</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Counting votes on a whiteboard: each time a name is called out, you find it on the board and add a tally mark. If the name isn't on the board yet, you write it with one mark.</p>
+    </div>
+
+    <p>That's the <strong>frequency count</strong>. You'll use it in several LeetCode problems in Lesson 20:</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">votes.py</span></div>
+        <pre class="code">votes = ["Ada", "Bo", "Ada", "Chi", "Ada", "Bo"]
+tally = {}
+for name in votes:
+    if name in tally:
+        tally[name] += 1
+    else:
+        tally[name] = 1
+print(tally)</pre>
+        <div class="shows"><span class="label">Shows</span>{'Ada': 3, 'Bo': 2, 'Chi': 1}</div>
+      </div>
+    </div>
+    <p>The <code>if</code> / <code>else</code> can be shortened with <code>get</code>: <code>tally[name] = tally.get(name, 0) + 1</code> means "the current count, or 0 if there isn't one, plus 1".</p>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Frequency count</dt><dd>A dictionary from each item to how many times it appears.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="canvas exercise" id="letter-counts" data-file="letter_counts.py">
+    <div class="task">
+      <h3>Try it: letter counts</h3>
+      <p>Write <code>letter_counts(word)</code> that returns a dictionary of how many times each letter appears. <code>letter_counts("banana")</code> returns <code>{"b": 1, "a": 3, "n": 2}</code>.</p>
+    </div>
+    <textarea class="code">def letter_counts(word):
+    counts = {}
+    # your code here
+    return counts
+</textarea>
+    <script type="text/python" class="tests">
+check("banana", letter_counts("banana"), {"b": 1, "a": 3, "n": 2})
+check("one letter", letter_counts("z"), {"z": 1})
+check("empty word", letter_counts(""), {})
+    </script>
+    <script type="text/python" class="solution">
+def letter_counts(word):
+    counts = {}
+    for letter in word:
+        counts[letter] = counts.get(letter, 0) + 1
+    return counts
+    </script>
+  </div>
+
+  <div class="canvas exercise" id="winner" data-file="winner.py">
+    <div class="task">
+      <h3>Challenge: who won?</h3>
+      <p>Write <code>winner(votes)</code> that returns the name with the most votes. Build a tally first, then find the key with the biggest value (like finding the largest by hand in Lesson 9). There won't be ties in the tests.</p>
+    </div>
+    <textarea class="code">def winner(votes):
+    pass
+</textarea>
+    <script type="text/python" class="tests">
+check("Ada wins", winner(["Ada", "Bo", "Ada", "Chi", "Ada", "Bo"]), "Ada")
+check("Chi wins", winner(["Chi", "Bo", "Chi"]), "Chi")
+check("Single vote", winner(["Bo"]), "Bo")
+    </script>
+    <script type="text/python" class="solution">
+def winner(votes):
+    tally = {}
+    for name in votes:
+        tally[name] = tally.get(name, 0) + 1
+    best_name = votes[0]
+    for name, count in tally.items():
+        if count > tally[best_name]:
+            best_name = name
+    return best_name
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>Two loops. First loop: build <code>tally</code>. Second loop: <code>for name, count in tally.items():</code>, keeping track of the best name so far and replacing it when a count is bigger.</p></div>
+  </details>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. With <code>ages = {"Ada": 21, "Bo": 30}</code>, what is <code>ages["Bo"]</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>30</code></button>
+        <button class="opt"><code>21</code></button>
+        <button class="opt"><code>"Bo"</code></button>
+        <button class="opt">A KeyError</button>
+      </div>
+      <p class="why">Square brackets with a key give that key's value.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. What does <code>ages.get("Chi", 0)</code> give if "Chi" isn't a key?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>0</code></button>
+        <button class="opt"><code>None</code></button>
+        <button class="opt">A KeyError</button>
+        <button class="opt"><code>"Chi"</code></button>
+      </div>
+      <p class="why">get returns the fallback value when the key is missing, instead of raising an error.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. What does <code>"Ada" in ages</code> check?</p>
+      <div class="options">
+        <button class="opt" data-correct>Whether "Ada" is a key</button>
+        <button class="opt">Whether "Ada" is a value</button>
+        <button class="opt">Whether ages is a string</button>
+        <button class="opt">Whether ages is empty</button>
+      </div>
+      <p class="why">in on a dictionary checks its keys.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. After <code>d = {}</code>, <code>d["x"] = 1</code>, <code>d["x"] = 5</code>, what is <code>d</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>{'x': 5}</code></button>
+        <button class="opt"><code>{'x': 1, 'x': 5}</code></button>
+        <button class="opt"><code>{'x': 6}</code></button>
+        <button class="opt"><code>{'x': 1}</code></button>
+      </div>
+      <p class="why">Keys are unique. Writing to an existing key replaces its value.</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Read, then practise from memory</h2>
+
+    <div class="card">
+      <h3>Read next</h3>
+      <p><a class="source-link" href="https://automatetheboringstuff.com/3e/chapter7.html#calibre_link-1567">Automate the Boring Stuff with Python, chapter 7: "The Dictionary Data Type"</a></p>
+      <p>About 15 minutes. Then look at "Nested Dictionaries and Lists": values can themselves be lists or dictionaries.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Tomorrow, before Lesson 14</h3>
+      <p>In <code>practice/word_freq.py</code>, from memory: ask for a sentence, then print each word and how many times it appears, one per line, ignoring capitals. Use <code>split()</code>, <code>lower()</code> and a dictionary.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong>. A good question for today: "when should I use a dictionary instead of a list?"</p>
+    </div>
+  </div>
+</section>

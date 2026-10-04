@@ -1,0 +1,255 @@
+<!--meta
+{
+ "title": "Big O: how code slows down as data grows",
+ "nav_title": "Big O",
+ "track": "Algorithms",
+ "intro": "Two programs can give the same answer while one takes a second and the other takes all day. Big O is the language programmers use to describe that difference, and interviewers often ask about it.",
+ "minutes": 45,
+ "needs": "Just this page and an internet connection",
+ "summary": "Measuring an algorithm by how its number of steps grows with input size n; O(1), O(log n), O(n), O(n log n), O(n^2) with everyday examples; dropping constants and smaller terms; nested loops multiply, loops one after another add; worst case; space complexity; costs of common Python operations (in on a list is O(n), in on a set or dict is O(1) on average); replacing a nested-loop duplicate check with a set.",
+ "concepts": ["algorithm", "input size n", "Big O notation", "O(1) constant", "O(log n) logarithmic", "O(n) linear", "O(n log n)", "O(n^2) quadratic", "drop constants", "worst case", "space complexity", "cost of list in vs set in"],
+ "sources": [
+  {"title": "Miller and Ranum, <em>Problem Solving with Algorithms and Data Structures using Python</em>, 3rd ed., 2.3 Big O Notation", "url": "https://runestone.academy/ns/books/published/pythonds3/AlgorithmAnalysis/BigONotation.html", "note": "Order of magnitude and the common functions"},
+  {"title": "Miller and Ranum, 2.5 Performance of Python Data Structures", "url": "https://runestone.academy/ns/books/published/pythonds3/AlgorithmAnalysis/PerformanceofPythonDataStructures.html", "note": "Costs of list and dictionary operations"},
+  {"title": "Python Wiki: TimeComplexity", "url": "https://wiki.python.org/moin/TimeComplexity", "note": "Average and worst-case costs of list, set and dict operations in CPython"},
+  {"title": "Miller and Ranum, 5.4 The Binary Search (analysis)", "url": "https://runestone.academy/ns/books/published/pythonds3/SortSearch/TheBinarySearch.html", "note": "Why halving each step gives O(log n)"}
+ ]
+}
+-->
+<section id="why" data-nav="Why">
+  <div class="col">
+    <h2>Same answer, very different wait</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>You need the word "python" in a paper dictionary. Method one: read every page from the start until you find it. Method two: open it in the middle, see you're at "m", jump halfway into the second half, and keep halving. Both find the word. For a thin dictionary the difference doesn't matter. For a 2,000-page one, method one could take hours and method two about a dozen flips.</p>
+    </div>
+
+    <p>An <strong>algorithm</strong> is a step-by-step method for solving a problem. To compare algorithms, we don't time them with a stopwatch (that depends on the computer). We ask: <em>as the input gets bigger, how fast does the number of steps grow?</em>{{cite:1}} The size of the input is called <strong>n</strong>: the number of items in the list, the length of the string.</p>
+    <p><strong>Big O notation</strong> is the shorthand for that growth. "This is O(n)" (said "oh of n") means "the steps grow in step with n: double the data, double the work".{{cite:1}}</p>
+  </div>
+</section>
+
+<section id="shapes" data-nav="The shapes">
+  <div class="col">
+    <h2>The five shapes you'll meet most</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Big O</th><th>Name</th><th>In real life</th><th>Steps for n = 1,000,000</th></tr></thead>
+        <tbody>
+          <tr><td><code>O(1)</code></td><td>constant</td><td>Looking up a contact by name: same effort however many contacts you have</td><td>1</td></tr>
+          <tr><td><code>O(log n)</code></td><td>logarithmic</td><td>The dictionary halving trick, or guessing a number with "higher / lower" hints</td><td>about 20</td></tr>
+          <tr><td><code>O(n)</code></td><td>linear</td><td>Reading every page once</td><td>1,000,000</td></tr>
+          <tr><td><code>O(n log n)</code></td><td>"n log n"</td><td>A good sorting method (Lesson 26)</td><td>about 20,000,000</td></tr>
+          <tr><td><code>O(n²)</code></td><td>quadratic</td><td>Everyone at a party shaking hands with everyone else</td><td>1,000,000,000,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Look at the last column. At a million steps a second, O(n) finishes in one second. O(n²) would take about eleven days. That's why interviewers care: on big inputs, the shape matters far more than how fast the computer is.{{cite:1}}</p>
+    <p>Why is halving O(log n)? Each step throws away half of what's left. A million items halve to one item in about 20 steps, because 2 multiplied by itself 20 times is just over a million.{{cite:4}}</p>
+  </div>
+</section>
+
+<section id="reading" data-nav="Reading code">
+  <div class="col">
+    <h2>Working out the Big O of code</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Estimating a journey, you care whether it's a walk to the shop or a drive across the country. Whether you stop for one minute or two at the traffic lights doesn't change the answer.</p>
+    </div>
+
+    <p>Three rules cover most code:</p>
+    <ol>
+      <li><strong>A loop over n items is O(n).</strong> Each step inside the loop that takes a fixed amount of work counts as O(1).</li>
+      <li><strong>Nested loops multiply.</strong> A loop over n inside a loop over n is n times n: O(n²) (remember the nested loops in Lesson 16). <strong>Loops one after another add</strong>: O(n) + O(n) is still O(n).</li>
+      <li><strong>Drop constants and smaller parts.</strong> 3n + 10 steps is O(n). n² + n is O(n²). Big O only describes the shape of the growth when n is huge, where those details stop mattering.{{cite:1}}</li>
+    </ol>
+    <p>We also usually describe the <strong>worst case</strong>: searching a list for something that isn't there checks every item, so it's O(n), even though sometimes you get lucky on the first item.</p>
+    <p>The same idea applies to memory, called <strong>space complexity</strong>: a function that builds a set of all n items uses O(n) extra space; one that only keeps a running total uses O(1).</p>
+
+    <h3>Hidden loops</h3>
+    <p>Some single lines hide a loop. The big one for interviews:{{cite:2}}{{cite:3}}</p>
+    <ul>
+      <li><code>x in my_list</code> checks items one by one: <strong>O(n)</strong>.</li>
+      <li><code>x in my_set</code> and <code>key in my_dict</code> jump straight to the spot: <strong>O(1)</strong> on average.</li>
+      <li><code>my_list.append(x)</code> is O(1), but <code>my_list.insert(0, x)</code> (put <code>x</code> at the front) and <code>my_list.pop(0)</code> (take the first item out) shift every other item along: O(n).</li>
+      <li><code>sorted(my_list)</code> is O(n log n).</li>
+    </ul>
+    <p>So a loop containing <code>if x in some_list</code> is secretly a nested loop: O(n²). Swap the list for a set and it becomes O(n). You'll use that speed-up often in interview answers.</p>
+  </div>
+
+  <div class="canvas exercise" id="count-steps" data-file="steps.py">
+    <div class="task">
+      <h3>Try it: count the steps</h3>
+      <p>Make the growth visible. <code>linear_steps(n)</code> should loop over <code>range(n)</code> and return how many times its body ran. <code>pair_steps(n)</code> should loop over <code>range(n)</code> inside another loop over <code>range(n)</code> and return how many times the inner body ran. Then press <strong>Run</strong> to see the table the last lines print.</p>
+    </div>
+    <textarea class="code">def linear_steps(n):
+    steps = 0
+    # one loop here
+    return steps
+
+def pair_steps(n):
+    steps = 0
+    # a loop inside a loop here
+    return steps
+
+for n in [10, 100, 1000]:
+    print(n, linear_steps(n), pair_steps(n))
+</textarea>
+    <script type="text/python" class="tests">
+check("linear_steps(10) is 10", linear_steps(10), 10)
+check("linear_steps(1000) is 1000", linear_steps(1000), 1000)
+check("pair_steps(10) is 100", pair_steps(10), 100)
+check("pair_steps(1000) is 1,000,000", pair_steps(1000), 1000000)
+    </script>
+    <script type="text/python" class="solution">
+def linear_steps(n):
+    steps = 0
+    for i in range(n):
+        steps += 1
+    return steps
+
+def pair_steps(n):
+    steps = 0
+    for i in range(n):
+        for j in range(n):
+            steps += 1
+    return steps
+
+for n in [10, 100, 1000]:
+    print(n, linear_steps(n), pair_steps(n))
+    </script>
+  </div>
+</section>
+
+<section id="speedup" data-nav="Speed it up">
+  <div class="col">
+    <h2>Your first speed-up</h2>
+    <p>Here's a correct but slow way to check a list for duplicates: compare every item with every later item. Two nested loops over n: O(n²).</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">slow.py</span></div>
+        <pre class="code">def has_duplicate_slow(items):
+    for i in range(len(items)):
+        for j in range(i + 1, len(items)):
+            if items[i] == items[j]:
+                return True
+    return False</pre>
+      </div>
+    </div>
+    <p>On a list of 20,000 different numbers, that's about 200 million comparisons. The "seen before?" set from Lesson 14 does it in one pass: O(n) time, using O(n) extra space for the set.</p>
+  </div>
+
+  <div class="canvas exercise" id="fast-duplicates" data-file="fast.py">
+    <div class="task">
+      <h3>Try it: O(n) duplicate check</h3>
+      <p>Write <code>has_duplicate(items)</code> that returns <code>True</code> if any item appears more than once, in one pass using a set. The last test uses 20,000 items: the slow version would be stopped after 6 seconds; yours should finish instantly.</p>
+    </div>
+    <textarea class="code">def has_duplicate(items):
+    pass
+</textarea>
+    <script type="text/python" class="tests">
+check("Has a duplicate", has_duplicate([3, 1, 4, 1, 5]), True)
+check("All different", has_duplicate([1, 2, 3]), False)
+check("Empty list", has_duplicate([]), False)
+check("20,000 different items, fast", has_duplicate(list(range(20000))), False)
+check("20,000 items with a repeat at the end", has_duplicate(list(range(20000)) + [0]), True)
+    </script>
+    <script type="text/python" class="solution">
+def has_duplicate(items):
+    seen = set()
+    for item in items:
+        if item in seen:
+            return True
+        seen.add(item)
+    return False
+    </script>
+  </div>
+
+  <div class="col">
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Algorithm</dt><dd>A step-by-step method for solving a problem.</dd>
+        <dt>Big O</dt><dd>How an algorithm's steps grow as the input size n grows.</dd>
+        <dt>O(1), O(n), O(n²)</dt><dd>Constant, linear and quadratic growth.</dd>
+        <dt>O(log n)</dt><dd>Growth when each step halves the work left.</dd>
+        <dt>Space complexity</dt><dd>How the extra memory an algorithm uses grows with n.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. A function loops once over a list of n items, doing a fixed amount of work each time. Its Big O?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>O(n)</code></button>
+        <button class="opt"><code>O(1)</code></button>
+        <button class="opt"><code>O(n²)</code></button>
+        <button class="opt"><code>O(log n)</code></button>
+      </div>
+      <p class="why">One pass over n items is linear.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. Simplify 4n² + 3n + 7 in Big O.</p>
+      <div class="options">
+        <button class="opt" data-correct><code>O(n²)</code></button>
+        <button class="opt"><code>O(4n²)</code></button>
+        <button class="opt"><code>O(n)</code></button>
+        <button class="opt"><code>O(n² + n)</code></button>
+      </div>
+      <p class="why">Drop constants and smaller terms: only the fastest-growing part matters.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. Inside a loop over n items you check <code>if x in other_list</code> (also n items). The total?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>O(n²)</code></button>
+        <button class="opt"><code>O(n)</code></button>
+        <button class="opt"><code>O(1)</code></button>
+        <button class="opt"><code>O(log n)</code></button>
+      </div>
+      <p class="why">in on a list is a hidden loop, so this is a loop inside a loop. With a set it would be O(n).</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. Which grows slowest as n gets huge?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>O(log n)</code></button>
+        <button class="opt"><code>O(n)</code></button>
+        <button class="opt"><code>O(n log n)</code></button>
+        <button class="opt"><code>O(n²)</code></button>
+      </div>
+      <p class="why">Halving means a million items need only about 20 steps.</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Read, then practise from memory</h2>
+
+    <div class="card">
+      <h3>Read next</h3>
+      <p><a class="source-link" href="https://runestone.academy/ns/books/published/pythonds3/AlgorithmAnalysis/BigONotation.html">Problem Solving with Algorithms and Data Structures using Python, 2.3 Big O Notation</a></p>
+      <p>About 20 minutes, free and interactive. This textbook is your main reading for the whole algorithms track. Then skim <a href="https://wiki.python.org/moin/TimeComplexity">Python's TimeComplexity page</a> and find the rows for <code>x in s</code> for lists and sets.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Tomorrow, before Lesson 20</h3>
+      <p>Without notes, write down the Big O of: summing a list; finding the largest item; checking every pair of items; looking up a key in a dictionary; the binary-search guessing game. Then check them against this page.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong>, paste a function, and ask "what's the Big O of this, and why?"</p>
+    </div>
+  </div>
+</section>

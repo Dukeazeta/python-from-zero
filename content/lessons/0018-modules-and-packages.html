@@ -1,0 +1,271 @@
+<!--meta
+{
+ "title": "Modules, pip and virtual environments",
+ "nav_title": "Modules and pip",
+ "track": "Python basics",
+ "intro": "Python comes with a huge toolbox, and thousands more tools are a download away. Today you'll import ready-made modules, split your own code into files, and install outside packages safely, the setup every project from here on uses.",
+ "minutes": 40,
+ "needs": "This page, plus your terminal for the last part",
+ "summary": "import and modules; the standard library (math, random); from ... import; your own module files; if __name__ == \"__main__\"; packages from PyPI installed with pip; virtual environments with python -m venv .venv; running .venv\\Scripts\\python directly; ModuleNotFoundError when a package isn't installed in the environment you're using.",
+ "concepts": ["module", "import", "standard library", "math", "random", "from ... import", "your own module", "__name__ == \"__main__\"", "package", "pip", "PyPI", "virtual environment", "ModuleNotFoundError"],
+ "sources": [
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 3, \"Importing Modules\"", "url": "https://automatetheboringstuff.com/3e/chapter3.html#calibre_link-1470", "note": "import statements and the standard library"},
+  {"title": "The Python Tutorial, 6. Modules", "url": "https://docs.python.org/3/tutorial/modules.html", "note": "A module is a file of Python definitions; importing your own files"},
+  {"title": "The Python Tutorial, 6.1.1 Executing modules as scripts", "url": "https://docs.python.org/3/tutorial/modules.html#executing-modules-as-scripts", "note": "if __name__ == \"__main__\":"},
+  {"title": "Python documentation: random.randint", "url": "https://docs.python.org/3/library/random.html#random.randint", "note": "A random whole number between two limits, both included"},
+  {"title": "The Python Tutorial, 12. Virtual Environments and Packages", "url": "https://docs.python.org/3/tutorial/venv.html#creating-virtual-environments", "note": "python -m venv, activating, and installing with python -m pip"},
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., Appendix A, \"Installing Third-Party Packages\"", "url": "https://automatetheboringstuff.com/3e/appendixa.html#calibre_link-2139", "note": "pip and virtual environments"}
+ ]
+}
+-->
+<section id="import" data-nav="import">
+  <div class="col">
+    <h2>Borrowing tools with import</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>You don't forge your own hammer before hanging a picture; you take one from the toolbox. Python's toolbox is called the standard library, and <code>import</code> is how you take a tool out.</p>
+    </div>
+
+    <p>A <strong>module</strong> is a file of ready-made Python code. <code>import</code> loads one so you can use what's inside, written as <code>module_name.thing</code>.{{cite:1}}{{cite:2}} Modules that come with every Python installation are called the <strong>standard library</strong>.</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">tools.py</span></div>
+        <pre class="code">import math
+import random
+
+print(math.sqrt(81))          # square root
+print(math.pi)
+print(random.randint(1, 6))   # a dice roll: 1 to 6, both included
+print(random.choice(["rock", "paper", "scissors"]))</pre>
+        <div class="shows"><span class="label">Shows something like</span>9.0
+3.141592653589793
+4
+paper</div>
+      </div>
+    </div>
+    <p>Unlike <code>range</code>, <code>random.randint(1, 6)</code> includes both ends.{{cite:4}} The last two lines show different results each run; that's the point of <code>random</code>.</p>
+    <p>If you only need one thing, <code>from math import sqrt</code> lets you write <code>sqrt(81)</code> without the <code>math.</code> in front.</p>
+  </div>
+
+  <div class="canvas exercise" id="hypotenuse" data-file="triangle.py">
+    <div class="task">
+      <h3>Try it: the long side of a triangle</h3>
+      <p>Write <code>hypotenuse(a, b)</code> that returns the square root of <code>a * a + b * b</code>, using <code>math.sqrt</code>. For sides 3 and 4 it returns <code>5.0</code>.</p>
+    </div>
+    <textarea class="code">def hypotenuse(a, b):
+    pass
+</textarea>
+    <script type="text/python" class="tests">
+check("3 and 4 give 5.0", hypotenuse(3, 4), 5.0)
+check("5 and 12 give 13.0", hypotenuse(5, 12), 13.0)
+check("Uses math.sqrt", "sqrt" in source(), True)
+    </script>
+    <script type="text/python" class="solution">
+import math
+
+def hypotenuse(a, b):
+    return math.sqrt(a * a + b * b)
+    </script>
+  </div>
+
+  <div class="canvas exercise" id="dice" data-file="dice.py">
+    <div class="task">
+      <h3>Try it: roll the dice</h3>
+      <p>Write <code>roll(sides=6)</code> that returns a random whole number from 1 to <code>sides</code>. The tests roll it hundreds of times to check every result is in range and every face shows up.</p>
+    </div>
+    <textarea class="code">import random
+
+def roll(sides=6):
+    pass
+</textarea>
+    <script type="text/python" class="tests">
+check("Always between 1 and 6", all(1 <= roll() <= 6 for _ in range(300)), True)
+check("Every face of a 6-sided dice appears", sorted({roll() for _ in range(600)}), [1, 2, 3, 4, 5, 6])
+check("A 20-sided dice can roll 20", 20 in {roll(20) for _ in range(2000)}, True)
+    </script>
+    <script type="text/python" class="solution">
+import random
+
+def roll(sides=6):
+    return random.randint(1, sides)
+    </script>
+  </div>
+</section>
+
+<section id="your-modules" data-nav="Your modules">
+  <div class="col">
+    <h2>Your own modules</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A cook who keeps their best sauce recipes in a separate notebook can use them in any meal, instead of rewriting them inside every recipe.</p>
+    </div>
+
+    <p>Any <code>.py</code> file is a module. If <code>shapes.py</code> sits in the same folder as <code>main.py</code>, then <code>main.py</code> can say <code>import shapes</code> and use <code>shapes.area(3, 4)</code>.{{cite:2}} This is how real projects stay organised: one file per topic.</p>
+    <p>One line you'll see at the bottom of many Python files:</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">shapes.py</span></div>
+        <pre class="code">def area(width, height):
+    return width * height
+
+if __name__ == "__main__":
+    print(area(3, 4))      # runs only when you run shapes.py directly</pre>
+      </div>
+    </div>
+    <p>It means "only run this part if this file was run directly, not imported".{{cite:3}} It's the right place for quick tests of a module's functions.</p>
+  </div>
+</section>
+
+<section id="pip" data-nav="pip and venv">
+  <div class="col">
+    <h2>Installing packages, safely</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A carpenter takes a separate toolbox to each job, packed with exactly what that job needs. Tools for one client's kitchen never get mixed up with another client's garden shed.</p>
+    </div>
+
+    <p>Beyond the standard library, people share hundreds of thousands of <strong>packages</strong> on PyPI, the Python Package Index. <strong>pip</strong> is the tool that downloads and installs them.{{cite:6}}</p>
+    <p>A <strong>virtual environment</strong> is the separate toolbox: a folder holding its own copy of Python and its own installed packages, usually one per project, so projects don't interfere with each other.{{cite:5}} Next you'll make one and install a small, silly package called <code>cowsay</code>.</p>
+
+    {{os-switch}}
+
+    <ol class="steps">
+      <li>
+        <p><strong>Make a project folder and the environment.</strong> In the terminal, from your course folder:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">...python-course&gt;</span> mkdir practice\cow
+<span class="prompt">...python-course&gt;</span> cd practice\cow
+<span class="prompt">...cow&gt;</span> python -m venv .venv</pre>
+        </div>
+        <p style="margin-top: 12px">This creates a hidden-looking folder called <code>.venv</code> with its own Python inside. It takes a few seconds and prints nothing.<span data-os="linux"> On Ubuntu or Debian, if it says <code>ensurepip is not available</code>, run <code>sudo apt install python3-venv</code> and try again.</span></p>
+      </li>
+      <li>
+        <p><strong>Install a package into it.</strong> Use the environment's own Python to run pip:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">...cow&gt;</span> .venv\Scripts\python -m pip install cowsay</pre>
+        </div>
+        <p style="margin-top: 12px">The official tutorial also shows "activating" an environment so plain <code>{{py}}</code> uses it.{{cite:5}} <span data-os="windows">On Windows PowerShell that can be blocked by a security setting, so this</span><span data-os="mac linux">This</span> course uses <code>{{venv-py}}</code> directly instead. It always works and you can always see which Python you're using.</p>
+      </li>
+      <li>
+        <p><strong>Use it.</strong></p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">...cow&gt;</span> .venv\Scripts\python -c "import cowsay; cowsay.cow('Hello from my venv')"</pre>
+          <div class="shows"><span class="label">Shows</span>  __________________
+| Hello from my venv |
+  ==================
+                  \
+                   \
+                     ^__^
+                     (oo)\_______
+                     (__)\       )\/\
+                         ||----w |
+                         ||     ||</div>
+        </div>
+      </li>
+      <li>
+        <p><strong>See the toolbox wall.</strong> Now try the same with the ordinary <code>{{py}}</code>:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">...cow&gt;</span> python -c "import cowsay"</pre>
+          <div class="shows"><span class="label">Shows</span><span class="err">ModuleNotFoundError: No module named 'cowsay'</span></div>
+        </div>
+        <p style="margin-top: 12px">That's not a failure: it proves the package lives only in this project's environment. Whenever you see <code>ModuleNotFoundError</code> in a project, the first question is "am I using the right environment's Python?"</p>
+        <div class="pastecheck" id="cowsay-check" data-regex="^ModuleNotFoundError: No module named 'cowsay'$">
+          <p class="ask">Paste the last line the ordinary python showed:</p>
+          <p class="ok">Exactly right. The package is inside <code>.venv</code> only, which is what you want.</p>
+          <p class="hint">If it printed nothing, cowsay was installed globally by accident. If you got an error at step 2, paste it to your tutor.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Module</dt><dd>A file of Python code you can <code>import</code>.</dd>
+        <dt>Standard library</dt><dd>The modules that come with Python, like <code>math</code> and <code>random</code>.</dd>
+        <dt>Package</dt><dd>Shared code you install from PyPI with pip.</dd>
+        <dt>pip</dt><dd>The tool that installs packages: <code>{{py}} -m pip install name</code>.</dd>
+        <dt>Virtual environment</dt><dd>A project's own folder of Python and packages, usually <code>.venv</code>.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. Which numbers can <code>random.randint(1, 3)</code> return?</p>
+      <div class="options">
+        <button class="opt" data-correct>1, 2 or 3</button>
+        <button class="opt">1 or 2 only</button>
+        <button class="opt">0, 1 or 2</button>
+        <button class="opt">Any decimal number</button>
+      </div>
+      <p class="why">randint includes both ends, unlike range.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. After <code>from math import sqrt</code>, how do you call it?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>sqrt(16)</code></button>
+        <button class="opt"><code>math.sqrt(16)</code></button>
+        <button class="opt"><code>import sqrt(16)</code></button>
+        <button class="opt"><code>math(sqrt, 16)</code></button>
+      </div>
+      <p class="why">from ... import brings the name in directly, so you don't need the math. prefix.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. Your project shows <code>ModuleNotFoundError</code> for a package you installed. Most likely cause?</p>
+      <div class="options">
+        <button class="opt" data-correct>The wrong Python is running it</button>
+        <button class="opt">The package is broken forever</button>
+        <button class="opt">The file name is too long</button>
+        <button class="opt">Python needs reinstalling first</button>
+      </div>
+      <p class="why">Packages live in one environment. Run your code with that environment's Python, like {{venv-py}}.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. When does the code under <code>if __name__ == "__main__":</code> run?</p>
+      <div class="options">
+        <button class="opt" data-correct>When the file is run directly</button>
+        <button class="opt">When the file is imported</button>
+        <button class="opt">Every time, no matter what</button>
+        <button class="opt">Never, it's only a comment</button>
+      </div>
+      <p class="why">It's skipped when another file imports this one, so it's a safe spot for quick tests.</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Read, then practise from memory</h2>
+
+    <div class="card">
+      <h3>Read next</h3>
+      <p><a class="source-link" href="https://docs.python.org/3/tutorial/venv.html">The Python Tutorial, 12. Virtual Environments and Packages</a></p>
+      <p>About 10 minutes. Then read the "Guess the Number" program in <a href="https://automatetheboringstuff.com/3e/chapter3.html#calibre_link-1473">ATBS chapter 3</a>; you can now understand every line.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Tomorrow, before Lesson 19</h3>
+      <p>In <code>practice/guess_game.py</code>, from memory: a real guessing game. Pick <code>secret = random.randint(1, 100)</code>, then loop asking for guesses with "Too low" / "Too high" until they get it, and print how many guesses it took.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong> and paste any pip or terminal error message.</p>
+    </div>
+  </div>
+</section>

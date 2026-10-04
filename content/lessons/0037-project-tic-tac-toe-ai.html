@@ -1,0 +1,348 @@
+<!--meta
+{
+ "title": "Project: an unbeatable Tic-Tac-Toe AI",
+ "nav_title": "Tic-Tac-Toe AI",
+ "track": "Projects",
+ "intro": "A noughts-and-crosses game you can't beat, because the computer looks ahead at every possible future and picks the best move. The idea, called minimax, is backtracking from Lesson 32 with a scoreboard, and it's the basis of classic game-playing AI.",
+ "minutes": 90,
+ "needs": "This page, your terminal, and your GitHub account",
+ "summary": "Robert Heaton's Tic-Tac-Toe AI project: a 3x3 board as a list of lists with None, X and O; get_winner checking rows, columns and diagonals; legal_moves; the minimax algorithm scoring a position +10 / -10 / 0 by exploring every future move recursively, maximising on the AI's turn and minimising on the opponent's; place, recurse, undo (backtracking); best_move; a human-versus-AI game loop in the terminal; README and GitHub.",
+ "concepts": ["game board as a grid", "win detection", "legal moves", "game tree", "minimax", "maximising and minimising players", "scoring terminal positions", "place, recurse, undo", "best move", "game loop", "input validation"],
+ "sources": [
+  {"title": "Robert Heaton, Programming Projects for Advanced Beginners #3a: Tic-Tac-Toe AI", "url": "https://robertheaton.com/2018/10/09/programming-projects-for-advanced-beginners-3-a/", "note": "Board, rendering, moves and finding the winner"},
+  {"title": "Robert Heaton, Programming Projects for Advanced Beginners #3b: Tic-Tac-Toe AI", "url": "https://robertheaton.com/2018/10/09/programming-projects-for-advanced-beginners-3-b/", "note": "AIs of increasing strength, ending with minimax"},
+  {"title": "Project Based Learning list (practical-tutorials), Python section", "url": "https://github.com/practical-tutorials/project-based-learning#python", "note": "\"Write a Tic-Tac-Toe AI\""}
+ ]
+}
+-->
+<section id="board" data-nav="The board">
+  <div class="col">
+    <h2>A board and a referee</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Before any clever play, a game needs a board and a referee who can say "that square's taken" and "X wins".</p>
+    </div>
+
+    <p>This project follows Robert Heaton's two-part brief from the Project Based Learning list.{{cite:1}}{{cite:2}}{{cite:3}} The board is a 3 by 3 grid (Lesson 16) holding <code>"X"</code>, <code>"O"</code>, or <code>None</code> for an empty square.</p>
+  </div>
+
+  <div class="canvas exercise" id="ttt-winner" data-file="tictactoe.py">
+    <div class="task">
+      <h3>Milestone 1: who has won?</h3>
+      <p>Write <code>get_winner(board)</code> returning <code>"X"</code> or <code>"O"</code> if that player has three in a row (any row, column or diagonal), otherwise <code>None</code>.{{cite:1}}</p>
+    </div>
+    <textarea class="code">def get_winner(board):
+    lines = []
+    # add the 3 rows, the 3 columns and the 2 diagonals to lines,
+    # each as a list of 3 values, then check each line
+    return None
+</textarea>
+    <script type="text/python" class="tests">
+check("Row", get_winner([["X", "X", "X"], [None, "O", None], ["O", None, None]]), "X")
+check("Column", get_winner([["O", "X", None], ["O", "X", None], ["O", None, "X"]]), "O")
+check("Diagonal", get_winner([["X", "O", None], ["O", "X", None], [None, None, "X"]]), "X")
+check("Other diagonal", get_winner([[None, None, "O"], [None, "O", "X"], ["O", "X", "X"]]), "O")
+check("Nobody yet", get_winner([["X", "O", "X"], [None, None, None], [None, None, None]]), None)
+check("Empty board", get_winner([[None] * 3 for _ in range(3)]), None)
+    </script>
+    <script type="text/python" class="solution">
+def get_winner(board):
+    lines = []
+    for i in range(3):
+        lines.append(board[i])
+        lines.append([board[0][i], board[1][i], board[2][i]])
+    lines.append([board[0][0], board[1][1], board[2][2]])
+    lines.append([board[0][2], board[1][1], board[2][0]])
+    for line in lines:
+        if line[0] is not None and line[0] == line[1] == line[2]:
+            return line[0]
+    return None
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>A row is <code>board[i]</code>; a column is <code>[board[0][i], board[1][i], board[2][i]]</code>; the diagonals use positions (0,0),(1,1),(2,2) and (0,2),(1,1),(2,0). A line wins if its first value isn't <code>None</code> and all three are equal: <code>a == b == c</code> works in Python.</p></div>
+  </details>
+
+  <div class="canvas exercise" id="ttt-moves" data-file="tictactoe.py">
+    <div class="task">
+      <h3>Milestone 2: legal moves</h3>
+      <p>Write <code>legal_moves(board)</code> returning a list of <code>(row, col)</code> tuples for every empty square, in reading order (top row first, left to right).</p>
+    </div>
+    <textarea class="code">def legal_moves(board):
+    pass
+</textarea>
+    <script type="text/python" class="tests">
+check("Two empty squares", legal_moves([["X", "O", "X"], ["O", None, "X"], ["O", "X", None]]), [(1, 1), (2, 2)])
+check("Full board", legal_moves([["X", "O", "X"], ["X", "O", "O"], ["O", "X", "X"]]), [])
+check("Empty board has 9", len(legal_moves([[None] * 3 for _ in range(3)])), 9)
+    </script>
+    <script type="text/python" class="solution">
+def legal_moves(board):
+    moves = []
+    for r in range(3):
+        for c in range(3):
+            if board[r][c] is None:
+                moves.append((r, c))
+    return moves
+    </script>
+  </div>
+</section>
+
+<section id="minimax" data-nav="Minimax">
+  <div class="col">
+    <h2>Minimax: imagine every future</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A careful chess player thinks: "If I move here, what's my opponent's best reply? And then my best answer to that?" They assume the opponent always plays as well as possible, and choose the move whose worst outcome is the best. With noughts and crosses, the game is small enough to imagine <em>every</em> possible future.</p>
+    </div>
+
+    <p><strong>Minimax</strong> gives each position a score from the AI's point of view: +10 if the AI has won, -10 if it has lost, 0 for a draw.{{cite:2}} For a position that isn't finished, try every legal move, score the position each one leads to (recursively, Lesson 25), and then:</p>
+    <ul>
+      <li>on the <strong>AI's</strong> turn, take the <strong>highest</strong> score (it picks its best move);</li>
+      <li>on the <strong>opponent's</strong> turn, take the <strong>lowest</strong> (assume they play their best too).</li>
+    </ul>
+    <p>Trying a move means: place it, recurse, then remove it again. That's exactly the choose / explore / un-choose of backtracking (Lesson 32). The tree of all possible games is called the <strong>game tree</strong>.</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">shape.txt</span></div>
+        <pre class="code">minimax(board, player to move, ai):
+    if someone has won:      return +10 if it's ai, else -10
+    if no moves are left:    return 0
+    for each legal move:
+        place it
+        score = minimax(board, the other player, ai)
+        remove it
+    return the biggest score if player is ai, else the smallest</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="canvas exercise" id="ttt-minimax" data-file="tictactoe.py">
+    <div class="task">
+      <h3>Milestone 3: minimax and best_move</h3>
+      <p>Finish <code>minimax(board, player, ai)</code> and <code>best_move(board, ai)</code>. <code>best_move</code> tries each legal move for the AI, scores it with <code>minimax</code> (the opponent moves next), and returns the move with the highest score. <code>get_winner</code> and <code>legal_moves</code> are already written for you.</p>
+    </div>
+    <script type="text/python" class="setup">
+def get_winner(board):
+    lines = []
+    for i in range(3):
+        lines.append(board[i])
+        lines.append([board[0][i], board[1][i], board[2][i]])
+    lines.append([board[0][0], board[1][1], board[2][2]])
+    lines.append([board[0][2], board[1][1], board[2][0]])
+    for line in lines:
+        if line[0] is not None and line[0] == line[1] == line[2]:
+            return line[0]
+    return None
+
+def legal_moves(board):
+    return [(r, c) for r in range(3) for c in range(3) if board[r][c] is None]
+
+def other(player):
+    return "O" if player == "X" else "X"
+    </script>
+    <textarea class="code">def minimax(board, player, ai):
+    winner = get_winner(board)
+    if winner is not None:
+        return 10 if winner == ai else -10
+    moves = legal_moves(board)
+    if not moves:
+        return 0
+    scores = []
+    # for each move: place player's mark, score it, undo
+    return max(scores) if player == ai else min(scores)
+
+
+def best_move(board, ai):
+    best, best_score = None, -100
+    # try each legal move for ai, score it with minimax(board, other(ai), ai)
+    return best
+</textarea>
+    <script type="text/python" class="tests">
+check("Takes the winning move", best_move([["X", "X", None], ["O", "O", None], [None, None, None]], "X"), (0, 2))
+check("Blocks the opponent's win", best_move([["O", "O", None], ["X", None, None], ["X", None, None]], "X"), (0, 2))
+check("Board is unchanged afterwards", (b := [["X", "X", None], ["O", "O", None], [None, None, None]], best_move(b, "X"), b)[-1], [["X", "X", None], ["O", "O", None], [None, None, None]])
+check("A finished draw scores 0", minimax([["X", "O", "X"], ["X", "O", "O"], ["O", "X", "X"]], "X", "X"), 0)
+check("O to move can force a win here", minimax([["X", None, None], [None, "O", None], [None, "X", "O"]], "O", "O"), 10)
+    </script>
+    <script type="text/python" class="solution">
+def minimax(board, player, ai):
+    winner = get_winner(board)
+    if winner is not None:
+        return 10 if winner == ai else -10
+    moves = legal_moves(board)
+    if not moves:
+        return 0
+    scores = []
+    for r, c in moves:
+        board[r][c] = player
+        scores.append(minimax(board, other(player), ai))
+        board[r][c] = None
+    return max(scores) if player == ai else min(scores)
+
+
+def best_move(board, ai):
+    best, best_score = None, -100
+    for r, c in legal_moves(board):
+        board[r][c] = ai
+        score = minimax(board, other(ai), ai)
+        board[r][c] = None
+        if score > best_score:
+            best, best_score = (r, c), score
+    return best
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Hint 1: minimax's loop</summary>
+    <div><p><code>for r, c in moves:</code> then <code>board[r][c] = player</code>, <code>scores.append(minimax(board, other(player), ai))</code>, <code>board[r][c] = None</code>.</p></div>
+  </details>
+  <details class="hint">
+    <summary>Hint 2: "Board is unchanged" fails</summary>
+    <div><p>Every place you put a mark to try it, you must set it back to <code>None</code> straight after, in both functions.</p></div>
+  </details>
+</section>
+
+<section id="play" data-nav="Play it">
+  <div class="col">
+    <h2>Play against it</h2>
+    <ol class="steps">
+      <li><p><strong>Set up the project</strong>: <code>projects/tic-tac-toe</code>, <code>git init -b main</code>, and a file <code>tictactoe.py</code> containing <code>get_winner</code>, <code>legal_moves</code>, <code>other</code>, <code>minimax</code> and <code>best_move</code>.</p></li>
+      <li>
+        <p><strong>Add a board printer and a game loop</strong> at the bottom:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">tictactoe.py (the end)</span></div>
+          <pre class="code">def render(board):
+    print("  0 1 2")
+    for r in range(3):
+        cells = [board[r][c] or "." for c in range(3)]
+        print(r, " ".join(cells))
+
+
+def ask_move(board):
+    while True:
+        text = input("Your move as row col (like 1 2): ").split()
+        if len(text) == 2 and text[0].isdigit() and text[1].isdigit():
+            r, c = int(text[0]), int(text[1])
+            if 0 &lt;= r &lt; 3 and 0 &lt;= c &lt; 3 and board[r][c] is None:
+                return r, c
+        print("That's not a free square. Try again.")
+
+
+def play():
+    board = [[None] * 3 for _ in range(3)]
+    human, ai = "X", "O"
+    turn = "X"
+    while get_winner(board) is None and legal_moves(board):
+        render(board)
+        if turn == human:
+            r, c = ask_move(board)
+        else:
+            r, c = best_move(board, ai)
+            print(f"AI plays {r} {c}")
+        board[r][c] = turn
+        turn = other(turn)
+    render(board)
+    winner = get_winner(board)
+    print(f"{winner} wins!" if winner else "It's a draw.")
+
+
+if __name__ == "__main__":
+    play()</pre>
+        </div>
+        <p style="margin-top: 12px"><code>board[r][c] or "."</code> shows a dot for empty squares, because <code>None</code> counts as false. <code>ask_move</code> keeps asking until the input is a free square: the input validation loop from Lessons 7 and 15.</p>
+      </li>
+      <li>
+        <p><strong>Play</strong>: <code>{{py}} tictactoe.py</code>. Try to win. You can't: the best you can do is draw.</p>
+        <div class="pastecheck" id="ttt-result" data-regex="^(It's a draw\.|O wins!)$">
+          <p class="ask">Paste the last line of a finished game:</p>
+          <p class="ok">The AI held. Minimax with perfect play never loses at noughts and crosses.</p>
+          <p class="hint">If X won, there's a bug: check that minimax maximises on the AI's turn and minimises on yours, and that every trial move is undone.</p>
+        </div>
+      </li>
+    </ol>
+
+    <h3>Make it yours (pick at least one)</h3>
+    <ul>
+      <li><strong>Let the human choose X or O</strong>, and who goes first.</li>
+      <li><strong>Prefer faster wins</strong>: score a win as <code>10 - depth</code>, so the AI wins in as few moves as possible instead of playing with its food.</li>
+      <li><strong>Count positions</strong>: add a counter of how many times <code>minimax</code> is called for the first move. Then look up "alpha-beta pruning" and see how much it saves.</li>
+    </ul>
+    <p>Then write the README (what it is, how to run it, how minimax works in your own words), commit, and push it as <code>tic-tac-toe-ai</code>.</p>
+  </div>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. On the opponent's turn, which score does minimax pick?</p>
+      <div class="options">
+        <button class="opt" data-correct>The lowest</button>
+        <button class="opt">The highest</button>
+        <button class="opt">The average</button>
+        <button class="opt">The first one found</button>
+      </div>
+      <p class="why">It assumes the opponent plays their best, which is the worst for the AI.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. Why remove each trial mark after scoring it?</p>
+      <div class="options">
+        <button class="opt" data-correct>So the next trial starts from the same board</button>
+        <button class="opt">To make the board print correctly</button>
+        <button class="opt">Because Python lists can't hold None</button>
+        <button class="opt">So the AI forgets the opponent's moves</button>
+      </div>
+      <p class="why">Place, recurse, undo: the backtracking pattern from Lesson 32.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. What does minimax return for a finished game the AI lost?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>-10</code></button>
+        <button class="opt"><code>10</code></button>
+        <button class="opt"><code>0</code></button>
+        <button class="opt"><code>None</code></button>
+      </div>
+      <p class="why">Scores are from the AI's point of view: a loss is -10.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. What does <code>None or "."</code> evaluate to?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>"."</code></button>
+        <button class="opt"><code>None</code></button>
+        <button class="opt"><code>True</code></button>
+        <button class="opt"><code>False</code></button>
+      </div>
+      <p class="why">or gives the first value that counts as true; None counts as false, so it gives ".".</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Read, then reflect</h2>
+
+    <div class="card">
+      <h3>Read</h3>
+      <p><a class="source-link" href="https://robertheaton.com/2018/10/09/programming-projects-for-advanced-beginners-3-b/">Robert Heaton: Tic-Tac-Toe AI, part 3b</a></p>
+      <p>Heaton builds a series of AIs that get stronger one at a time (random, then "win if you can", then "block if you must", then minimax). Reading how each improves on the last is a good lesson in building in small steps.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Before Lesson 38</h3>
+      <p>Explain minimax out loud in under a minute, without notes, as if to an interviewer. Then check your explanation against this page.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong>: "why does minimax assume the opponent plays perfectly?"</p>
+    </div>
+  </div>
+</section>

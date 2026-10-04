@@ -1,0 +1,293 @@
+<!--meta
+{
+ "title": "Combining conditions: and, or, not",
+ "nav_title": "and, or, not",
+ "track": "Python basics",
+ "intro": "Real rules usually have more than one part: open on weekdays and before 6pm; free for children or students. Today you'll combine yes-or-no questions, and meet the remainder operator that answers \"is this even?\".",
+ "minutes": 35,
+ "needs": "Just this page and an internet connection",
+ "summary": "The Boolean operators and, or, not and their truth tables; combining comparisons; chained comparisons like 13 <= age <= 19; the remainder operator % and testing even/odd and divisibility; leap year rules as a combined condition.",
+ "concepts": ["and", "or", "not", "truth table", "chained comparison", "remainder operator %", "divisibility"],
+ "sources": [
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 2, \"Boolean Operators\"", "url": "https://automatetheboringstuff.com/3e/chapter2.html#calibre_link-1437", "note": "and, or, not and their truth tables"},
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 2, \"Mixing Boolean and Comparison Operators\"", "url": "https://automatetheboringstuff.com/3e/chapter2.html#calibre_link-1438", "note": "Comparisons are evaluated before and/or"},
+  {"title": "Python documentation: Boolean Operations, and, or, not", "url": "https://docs.python.org/3/library/stdtypes.html#boolean-operations-and-or-not", "note": "Official definitions"},
+  {"title": "Python documentation: Comparisons", "url": "https://docs.python.org/3/library/stdtypes.html#comparisons", "note": "Comparisons can be chained, e.g. x &lt; y &lt;= z"},
+  {"title": "The Python Tutorial, 3.1.1 Numbers", "url": "https://docs.python.org/3/tutorial/introduction.html#numbers", "note": "The % operator returns the remainder of a division"},
+  {"title": "Python documentation: Truth Value Testing", "url": "https://docs.python.org/3/library/stdtypes.html#truth-value-testing", "note": "Empty strings count as false; other strings count as true"}
+ ]
+}
+-->
+<section id="and-or" data-nav="and, or">
+  <div class="col">
+    <h2>Two questions at once</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A job advert says "You need a degree <em>and</em> two years' experience." Miss either one and you're out. A cinema says "Half price for children <em>or</em> students." Being either one is enough.</p>
+    </div>
+
+    <p>The <strong>Boolean operators</strong> <code>and</code> and <code>or</code> join two conditions into one:{{cite:1}}</p>
+    <ul>
+      <li><code>A and B</code> is <code>True</code> only when <strong>both</strong> are true.</li>
+      <li><code>A or B</code> is <code>True</code> when <strong>at least one</strong> is true.</li>
+    </ul>
+    <p>Every possible combination fits in a small table, called a <strong>truth table</strong>:{{cite:1}}</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>A</th><th>B</th><th>A and B</th><th>A or B</th></tr></thead>
+        <tbody>
+          <tr><td><code>True</code></td><td><code>True</code></td><td><code>True</code></td><td><code>True</code></td></tr>
+          <tr><td><code>True</code></td><td><code>False</code></td><td><code>False</code></td><td><code>True</code></td></tr>
+          <tr><td><code>False</code></td><td><code>True</code></td><td><code>False</code></td><td><code>True</code></td></tr>
+          <tr><td><code>False</code></td><td><code>False</code></td><td><code>False</code></td><td><code>False</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">cinema.py</span></div>
+        <pre class="code">age = int(input("Age? "))
+student = input("Student (yes/no)? ")
+if age &lt; 12 or student == "yes":
+    print("Half price")
+else:
+    print("Full price")</pre>
+        <div class="shows"><span class="label">Shows (typed 25, then yes)</span>Age? 25
+Student (yes/no)? yes
+Half price</div>
+      </div>
+    </div>
+    <p>Python works out the comparisons first (<code>age &lt; 12</code> is <code>False</code>, <code>student == "yes"</code> is <code>True</code>), then combines them: <code>False or True</code> is <code>True</code>.{{cite:2}}</p>
+
+    <h3>A common mistake</h3>
+    <p>In English we say "if the day is Saturday or Sunday". In Python you must repeat the comparison on both sides: <code>day == "Saturday" or day == "Sunday"</code>. Writing <code>day == "Saturday" or "Sunday"</code> doesn't do what you'd expect: it's always treated as true, because a non-empty string on its own counts as true.{{cite:6}}</p>
+  </div>
+
+  <div class="canvas exercise" id="weekend" data-file="weekend.py" data-inputs='["Sunday"]'>
+    <div class="task">
+      <h3>Try it: weekend or weekday?</h3>
+      <p>Ask <code>Day? </code>. If it's <code>Saturday</code> or <code>Sunday</code>, print <code>Weekend!</code>. Otherwise print <code>Weekday.</code> The starter has the common mistake from above. Fix it.</p>
+    </div>
+    <textarea class="code">day = input("Day? ")
+if day == "Saturday" or "Sunday":
+    print("Weekend!")
+else:
+    print("Weekday.")
+</textarea>
+    <script type="text/python" class="tests">
+check("Saturday is the weekend", run(["Saturday"]), ["Day? Saturday", "Weekend!"])
+check("Sunday is the weekend", run(["Sunday"]), ["Day? Sunday", "Weekend!"])
+check("Monday is a weekday", run(["Monday"]), ["Day? Monday", "Weekday."])
+check("Friday is a weekday", run(["Friday"]), ["Day? Friday", "Weekday."])
+    </script>
+    <script type="text/python" class="solution">
+day = input("Day? ")
+if day == "Saturday" or day == "Sunday":
+    print("Weekend!")
+else:
+    print("Weekday.")
+    </script>
+  </div>
+
+  <div class="canvas exercise" id="ride-height" data-file="ride.py" data-inputs='["140", "12"]'>
+    <div class="task">
+      <h3>Try it: allowed on the ride?</h3>
+      <p>A rollercoaster needs riders to be at least 120 cm tall <em>and</em> at least 10 years old. Ask <code>Height? </code> then <code>Age? </code> (both whole numbers). Print <code>Enjoy the ride!</code> if both rules are met, otherwise <code>Sorry, not this time.</code></p>
+    </div>
+    <textarea class="code"></textarea>
+    <script type="text/python" class="tests">
+check("Tall and old enough", run(["140", "12"]), ["Height? 140", "Age? 12", "Enjoy the ride!"])
+check("Exactly 120 and 10 counts", run(["120", "10"]), ["Height? 120", "Age? 10", "Enjoy the ride!"])
+check("Tall but too young", run(["150", "9"]), ["Height? 150", "Age? 9", "Sorry, not this time."])
+check("Old enough but too short", run(["110", "14"]), ["Height? 110", "Age? 14", "Sorry, not this time."])
+    </script>
+    <script type="text/python" class="solution">
+height = int(input("Height? "))
+age = int(input("Age? "))
+if height >= 120 and age >= 10:
+    print("Enjoy the ride!")
+else:
+    print("Sorry, not this time.")
+    </script>
+  </div>
+</section>
+
+<section id="not" data-nav="not">
+  <div class="col">
+    <h2>not, and checking a range</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>"Not" flips an answer: if "the shop is open" is false, then "the shop is not open" is true. And a sign saying "for ages 13 to 19" is really two checks at once: at least 13, and at most 19.</p>
+    </div>
+
+    <p><code>not</code> flips a Boolean: <code>not True</code> is <code>False</code> and <code>not False</code> is <code>True</code>.{{cite:1}} It reads naturally: <code>if not raining:</code>.</p>
+    <p>To check that a value sits between two limits, you can write it out in full with <code>and</code>, or use Python's shorter form, called a <strong>chained comparison</strong>:{{cite:4}}</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">teen.py</span></div>
+        <pre class="code">age = 15
+print(age &gt;= 13 and age &lt;= 19)   # the long way
+print(13 &lt;= age &lt;= 19)            # the same check, chained</pre>
+        <div class="shows"><span class="label">Shows</span>True
+True</div>
+      </div>
+    </div>
+    <p>Anything after <code>#</code> on a line is a comment, just like a full comment line. Python ignores it.</p>
+  </div>
+</section>
+
+<section id="remainder" data-nav="Remainder">
+  <div class="col">
+    <h2>The remainder operator: %</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Share 17 sweets equally between 5 friends: each gets 3, and 2 are left over. That leftover, 2, is the remainder. If nothing is left over, the sweets shared out perfectly.</p>
+    </div>
+
+    <p>The <code>%</code> operator (say "modulo" or just "remainder") gives what's left over after dividing: <code>17 % 5</code> is <code>2</code>.{{cite:5}} It's how programs answer questions about dividing evenly:</p>
+    <ul>
+      <li><code>n % 2 == 0</code> asks "is n even?" (nothing left over when split in two).</li>
+      <li><code>n % 3 == 0</code> asks "is n divisible by 3?"</li>
+      <li><code>n % 2 == 1</code> asks "is n odd?"</li>
+    </ul>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Boolean operator</dt><dd><code>and</code>, <code>or</code> or <code>not</code>: combines or flips <code>True</code>/<code>False</code> values.</dd>
+        <dt>Truth table</dt><dd>A table showing the result for every combination of <code>True</code> and <code>False</code>.</dd>
+        <dt>Remainder</dt><dd>What's left over after dividing. <code>%</code> gives it: <code>17 % 5</code> is 2.</dd>
+        <dt>Divisible</dt><dd>Divides with nothing left over: <code>n % d == 0</code>.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="canvas exercise" id="even-odd" data-file="even_odd.py" data-inputs='["7"]'>
+    <div class="task">
+      <h3>Try it: even or odd?</h3>
+      <p>Ask <code>Number? </code> and print <code>7 is odd</code> or <code>8 is even</code>, using the number they typed. Use <code>%</code> and an f-string.</p>
+    </div>
+    <textarea class="code">n = int(input("Number? "))
+</textarea>
+    <script type="text/python" class="tests">
+check("7 is odd", run(["7"]), ["Number? 7", "7 is odd"])
+check("8 is even", run(["8"]), ["Number? 8", "8 is even"])
+check("0 is even", run(["0"]), ["Number? 0", "0 is even"])
+check("Uses %", "%" in source(), True)
+    </script>
+    <script type="text/python" class="solution">
+n = int(input("Number? "))
+if n % 2 == 0:
+    print(f"{n} is even")
+else:
+    print(f"{n} is odd")
+    </script>
+  </div>
+
+  <div class="canvas exercise" id="leap-year" data-file="leap_year.py" data-inputs='["2024"]'>
+    <div class="task">
+      <h3>Challenge: leap years</h3>
+      <p>A year is a leap year if it's divisible by 4, <strong>except</strong> years divisible by 100 aren't, <strong>unless</strong> they're also divisible by 400. So 2024 is, 1900 isn't, and 2000 is. Ask <code>Year? </code> and print <code>Leap year</code> or <code>Not a leap year</code>.</p>
+    </div>
+    <textarea class="code">year = int(input("Year? "))
+</textarea>
+    <script type="text/python" class="tests">
+check("2024 is a leap year", run(["2024"]), ["Year? 2024", "Leap year"])
+check("2023 is not", run(["2023"]), ["Year? 2023", "Not a leap year"])
+check("1900 is not (divisible by 100)", run(["1900"]), ["Year? 1900", "Not a leap year"])
+check("2000 is (divisible by 400)", run(["2000"]), ["Year? 2000", "Leap year"])
+    </script>
+    <script type="text/python" class="solution">
+year = int(input("Year? "))
+if year % 400 == 0 or (year % 4 == 0 and year % 100 != 0):
+    print("Leap year")
+else:
+    print("Not a leap year")
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Hint 1: break it into pieces</summary>
+    <div><p>Write the three facts as conditions first: <code>year % 4 == 0</code>, <code>year % 100 != 0</code>, <code>year % 400 == 0</code>. A leap year is "divisible by 400" <em>or</em> "divisible by 4 <em>and</em> not by 100".</p></div>
+  </details>
+  <details class="hint">
+    <summary>Hint 2: parentheses</summary>
+    <div><p>Group the "and" part in parentheses, like in maths: <code>A or (B and C)</code>. It makes the meaning obvious to anyone reading.</p></div>
+  </details>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. What is <code>True and False</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>False</code></button>
+        <button class="opt"><code>True</code></button>
+        <button class="opt">An error</button>
+        <button class="opt"><code>None</code></button>
+      </div>
+      <p class="why">and needs both sides to be true.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. What is <code>17 % 5</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>2</code></button>
+        <button class="opt"><code>3</code></button>
+        <button class="opt"><code>3.4</code></button>
+        <button class="opt"><code>12</code></button>
+      </div>
+      <p class="why">5 goes into 17 three times (15), leaving 2 over.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. Which condition correctly checks for Saturday or Sunday?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>day == "Sat" or day == "Sun"</code></button>
+        <button class="opt"><code>day == "Sat" or "Sun"</code></button>
+        <button class="opt"><code>day == "Sat" and day == "Sun"</code></button>
+        <button class="opt"><code>day == ("Sat" or "Sun")</code></button>
+      </div>
+      <p class="why">Each side of or needs its own full comparison.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. With <code>n = 9</code>, what is <code>not (n % 2 == 0)</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>True</code></button>
+        <button class="opt"><code>False</code></button>
+        <button class="opt"><code>1</code></button>
+        <button class="opt"><code>0</code></button>
+      </div>
+      <p class="why">9 % 2 is 1, so n % 2 == 0 is False, and not flips it to True.</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Read, then practise from memory</h2>
+
+    <div class="card">
+      <h3>Read next</h3>
+      <p><a class="source-link" href="https://automatetheboringstuff.com/3e/chapter2.html#calibre_link-1437">Automate the Boring Stuff with Python, chapter 2: "Boolean Operators" and "Mixing Boolean and Comparison Operators"</a></p>
+      <p>About 10 minutes. Then read the two short programs at the end of the chapter, "Opposite Day" and "Dishonest Capacity Calculator". You can understand all of their code now.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Tomorrow, before Lesson 7</h3>
+      <p>In <code>practice/fizz.py</code>, from memory: ask for a number and print <code>Fizz</code> if it's divisible by 3, <code>Buzz</code> if divisible by 5, <code>FizzBuzz</code> if divisible by both, and the number itself otherwise. Test 3, 5, 15 and 7. Watch the order of your checks.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong> at the bottom right. A good question for today: "can you give me more examples like the leap year rule?"</p>
+    </div>
+  </div>
+</section>

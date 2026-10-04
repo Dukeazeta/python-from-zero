@@ -1,0 +1,365 @@
+<!--meta
+{
+ "title": "Variables: giving values a name",
+ "nav_title": "Variables",
+ "track": "Python basics",
+ "intro": "Programs need to remember things: a score, a name, a price. Today you'll store values under names you choose, change them, and use them to build bigger results.",
+ "minutes": 30,
+ "needs": "Just this page and an internet connection",
+ "summary": "Variables as named storage: assignment with =, using variables in expressions, reassigning (score = score + 10), naming rules and snake_case, joining strings with +, and the TypeError from mixing text and numbers.",
+ "concepts": ["variable", "assignment (=)", "reassignment", "variable naming rules", "snake_case", "string concatenation (+)", "str() to turn a number into text", "TypeError"],
+ "sources": [
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 1, \"Storing Values in Variables\"", "url": "https://automatetheboringstuff.com/3e/chapter1.html#calibre_link-1411", "note": "Assignment statements and variable names"},
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 1, \"String Concatenation and Replication\"", "url": "https://automatetheboringstuff.com/3e/chapter1.html#calibre_link-1410", "note": "Joining strings with +, and the error when you add a string to a number"},
+  {"title": "PEP 8, the Python style guide: Function and Variable Names", "url": "https://peps.python.org/pep-0008/#function-and-variable-names", "note": "Lowercase names with words separated by underscores"}
+ ]
+}
+-->
+<section id="variables" data-nav="Variables">
+  <div class="col">
+    <h2>A name for a value</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>In a kitchen you might keep sugar in a jar with a label that says "sugar". You don't have to remember which jar is which: you read the label. When the sugar runs out, you refill the same jar and the label still works.</p>
+    </div>
+
+    <p>A <strong>variable</strong> is a labelled jar for a value. You choose the label (the variable's name), put a value in, and later use the name to get the value back.{{cite:1}}</p>
+
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">jars.py</span></div>
+        <pre class="code">age = 21
+city = "Lagos"
+print(age)
+print(city)</pre>
+        <div class="shows"><span class="label">Shows</span>21
+Lagos</div>
+      </div>
+    </div>
+
+    <p>The line <code>age = 21</code> is called an <strong>assignment</strong>. Read it from right to left: "take the value 21 and store it under the name <code>age</code>". The <code>=</code> sign does not mean "is equal to" like in maths class. It means "store this".{{cite:1}}</p>
+    <p>Notice that <code>print(age)</code> has no quotes. Without quotes, Python looks up the name and uses the value inside. With quotes, <code>print("age")</code> would just show the word <code>age</code>.</p>
+
+    <h3>Variables inside expressions</h3>
+    <p>Anywhere you could write a value, you can write a variable's name instead. Python swaps in the value when it works out the expression.</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">week.py</span></div>
+        <pre class="code">days = 7
+hours_per_day = 24
+hours_per_week = days * hours_per_day
+print(hours_per_week)</pre>
+        <div class="shows"><span class="label">Shows</span>168</div>
+      </div>
+    </div>
+    <p>This is the same maths as Lesson 1, but now each number has a name that says what it means. Six months from now, <code>days * hours_per_day</code> is much easier to understand than <code>7 * 24</code>.</p>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Variable</dt><dd>A name that stores a value so you can use it later.</dd>
+        <dt>Assignment</dt><dd>A line like <code>age = 21</code> that stores a value in a variable.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="canvas exercise" id="ticket-total" data-file="tickets.py">
+    <div class="task">
+      <h3>Try it: total cost</h3>
+      <p>Cinema tickets cost 1500 each and you're buying 4. The prices are already stored in variables. Create a variable called <code>total</code> that holds the cost of all the tickets, using the two variables (not the numbers), then print it.</p>
+    </div>
+    <textarea class="code">ticket_price = 1500
+tickets = 4
+# Make a variable called total, then print it
+</textarea>
+    <script type="text/python" class="tests">
+check("Shows 6000", printed(), ["6000"])
+check("total holds 6000", total, 6000)
+check("Uses both variables", "ticket_price" in source().split("total", 1)[1] and "tickets" in source().split("total", 1)[1], True)
+    </script>
+    <script type="text/python" class="solution">
+ticket_price = 1500
+tickets = 4
+total = ticket_price * tickets
+print(total)
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>Start the line with <code>total =</code>, then multiply the two variable names together. On the next line, print <code>total</code> without quotes.</p></div>
+  </details>
+</section>
+
+<section id="changing" data-nav="Changing">
+  <div class="col">
+    <h2>Changing what's inside</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A scoreboard at a football match shows one number for each team. When a team scores, nobody builds a new scoreboard. They take the number that's there, add one, and put the new number up in the same place.</p>
+    </div>
+
+    <p>You can store a new value in a variable at any time. The old value is replaced. This is called <strong>reassigning</strong> the variable.{{cite:1}}</p>
+
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">score.py</span></div>
+        <pre class="code">score = 0
+score = score + 10
+score = score + 5
+print(score)</pre>
+        <div class="shows"><span class="label">Shows</span>15</div>
+      </div>
+    </div>
+
+    <p>The line <code>score = score + 10</code> looks strange if you read <code>=</code> as "equals". Read it right to left instead: work out <code>score + 10</code> using the value that's in <code>score</code> now (0), get 10, then store that 10 back in <code>score</code>. The scoreboard way: read the old number, add, put the new number up.</p>
+  </div>
+
+  <div class="canvas exercise" id="level-up" data-file="level_up.py">
+    <div class="task">
+      <h3>Try it: three bonuses</h3>
+      <p>A player starts with 0 points and earns a bonus of 10 points, three times. Using <code>score = score + 10</code> three times, make <code>score</code> end at 30, then print it.</p>
+    </div>
+    <textarea class="code">score = 0
+# Add three bonuses here
+
+print(score)
+</textarea>
+    <script type="text/python" class="tests">
+check("Shows 30", printed(), ["30"])
+check("score ends at 30", score, 30)
+check("Adds to score three times", source().replace(" ", "").count("score=score+10"), 3)
+    </script>
+    <script type="text/python" class="solution">
+score = 0
+score = score + 10
+score = score + 10
+score = score + 10
+print(score)
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Why not just write score = 30?</summary>
+    <div><p>That would work for this exact case, but real programs don't know the final number in advance: a game adds points whenever something happens. Practising <code>score = score + 10</code> now pays off when we get to loops in Lesson 7.</p></div>
+  </details>
+</section>
+
+<section id="names" data-nav="Names">
+  <div class="col">
+    <h2>Choosing good names</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A label that says "stuff" on a jar is technically a label, but it doesn't help anyone. "Brown sugar" does. Names in code work the same way: Python accepts many names, but good ones tell the next reader what's inside.</p>
+    </div>
+
+    <p>Python has a few firm rules for variable names:{{cite:1}}</p>
+    <ul>
+      <li>Only letters, numbers and the underscore <code>_</code>. No spaces and no dashes.</li>
+      <li>It can't start with a number. <code>player2</code> is fine; <code>2player</code> is not.</li>
+      <li>Capital letters matter. <code>score</code>, <code>Score</code> and <code>SCORE</code> are three different variables.</li>
+    </ul>
+    <p>And one habit that most Python programmers follow: names are lowercase, with underscores between words, like <code>hours_per_day</code>. This style is often called <strong>snake_case</strong>. Python's official style guide recommends it for variable names.{{cite:3}}</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Allowed?</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td><code>total_cost</code></td><td>Yes</td><td>Clear, and in snake_case</td></tr>
+          <tr><td><code>total cost</code></td><td>No</td><td>Has a space</td></tr>
+          <tr><td><code>total-cost</code></td><td>No</td><td>Python reads the dash as minus</td></tr>
+          <tr><td><code>2nd_place</code></td><td>No</td><td>Starts with a number</td></tr>
+          <tr><td><code>x</code></td><td>Yes</td><td>Allowed, but says nothing about what's inside</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Using a name before you've stored anything in it gives an error you already know from Lesson 1: <code class="wrap">NameError: name 'scroe' is not defined</code>. Python has no jar with that label. Most of the time, it's a typo.</p>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Reassign</dt><dd>Store a new value in a variable that already exists, replacing the old one.</dd>
+        <dt>snake_case</dt><dd>Writing names in lowercase with underscores between words.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="canvas exercise" id="fix-the-names" data-file="podium.py">
+    <div class="task">
+      <h3>Try it: fix the names</h3>
+      <p>This program should show the top three in a race: <code>Ada</code>, then <code>Bo</code>, then <code>Chi</code>. Each name breaks a rule. Rename the variables to <code>first_place</code>, <code>second_place</code> and <code>third_place</code> everywhere they appear.</p>
+    </div>
+    <textarea class="code">first place = "Ada"
+2nd_place = "Bo"
+third-place = "Chi"
+print(first place)
+print(2nd_place)
+print(third-place)
+</textarea>
+    <script type="text/python" class="tests">
+check("Shows the podium in order", printed(), ["Ada", "Bo", "Chi"])
+check("first_place holds Ada", first_place, "Ada")
+check("second_place holds Bo", second_place, "Bo")
+check("third_place holds Chi", third_place, "Chi")
+    </script>
+    <script type="text/python" class="solution">
+first_place = "Ada"
+second_place = "Bo"
+third_place = "Chi"
+print(first_place)
+print(second_place)
+print(third_place)
+    </script>
+  </div>
+</section>
+
+<section id="joining" data-nav="Joining">
+  <div class="col">
+    <h2>Joining text together</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Think of fridge magnet words. You can push "Good" and "morning" together to make a sentence. But you can't stick a magnet word onto an actual number written in pen; they're different kinds of thing.</p>
+    </div>
+
+    <p>When <code>+</code> sits between two strings, it doesn't add: it joins them end to end. This is called <strong>concatenation</strong>.{{cite:2}}</p>
+
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">greet.py</span></div>
+        <pre class="code">name = "Ada"
+greeting = "Good morning, " + name + "!"
+print(greeting)</pre>
+        <div class="shows"><span class="label">Shows</span>Good morning, Ada!</div>
+      </div>
+    </div>
+
+    <p>Notice the space inside <code>"Good morning, "</code>. Concatenation adds nothing extra, not even a space, so you include the spaces yourself.</p>
+
+    <p>Now the magnet problem. Mixing a string and a number with <code>+</code> gives an error:{{cite:2}}</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">oops.py</span></div>
+        <pre class="code">age = 21
+print("Age: " + age)</pre>
+        <div class="shows"><span class="label">Shows</span><span class="err">TypeError: can only concatenate str (not "int") to str</span></div>
+      </div>
+    </div>
+    <p>A <strong>TypeError</strong> means you used a value of the wrong kind. Python won't guess whether you wanted to add numbers or join text. The fix is a new function, <code>str()</code>. Think of a shop that writes a price on a sticky label: the price is a number, but the label is text you can stick next to other text. <code>str()</code> does the same, turning a number into text: <code>str(21)</code> gives <code>"21"</code>. So <code>"Age: " + str(age)</code> shows <code>Age: 21</code>. Lesson 4 looks at text and number types properly.</p>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Concatenation</dt><dd>Joining strings end to end with <code>+</code>.</dd>
+        <dt>TypeError</dt><dd>The error you get when a value is the wrong kind for what you're doing with it.</dd>
+        <dt><code>str()</code></dt><dd>Turns a value into text, so a number can be joined to a string: <code>str(21)</code> is <code>"21"</code>.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="canvas exercise" id="name-badge" data-file="badge.py">
+    <div class="task">
+      <h3>Try it: a name badge</h3>
+      <p>Using the two variables, print exactly <code>Ada is 21 years old.</code> Build the sentence with <code>+</code> and the variables; don't type <code>Ada</code> or <code>21</code> again in the print line.</p>
+    </div>
+    <textarea class="code">name = "Ada"
+age = 21
+# Print the sentence here
+</textarea>
+    <script type="text/python" class="tests">
+check("Shows the sentence", printed(), ["Ada is 21 years old."])
+check("Uses the variables, not typed values", "Ada" not in source().split("# Print the sentence here")[-1] and "21" not in source().split("age = 21", 1)[-1], True)
+    </script>
+    <script type="text/python" class="solution">
+name = "Ada"
+age = 21
+# Print the sentence here
+print(name + " is " + str(age) + " years old.")
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Getting a TypeError?</summary>
+    <div><p><code>age</code> holds a number. Wrap it in <code>str()</code> before joining it to the text. And check your spaces: <code>" is "</code> needs a space on each side.</p></div>
+  </details>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. After these lines run, what is in <code>x</code>? <code>x = 5</code> then <code>x = x + 2</code></p>
+      <div class="options">
+        <button class="opt" data-correct><code>7</code></button>
+        <button class="opt"><code>5</code></button>
+        <button class="opt"><code>2</code></button>
+        <button class="opt"><code>52</code></button>
+      </div>
+      <p class="why">Python works out x + 2 using the current value 5, gets 7, and stores 7 back in x.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. Which variable name is allowed in Python?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>total_cost</code></button>
+        <button class="opt"><code>total cost</code></button>
+        <button class="opt"><code>total-cost</code></button>
+        <button class="opt"><code>2total_cost</code></button>
+      </div>
+      <p class="why">Only letters, numbers and underscores, and it can't start with a number.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. In <code>age = 21</code>, what does <code>=</code> do?</p>
+      <div class="options">
+        <button class="opt" data-correct>Stores 21 under the name age</button>
+        <button class="opt">Checks whether age equals 21</button>
+        <button class="opt">Prints age and 21 together</button>
+        <button class="opt">Joins age and 21 into text</button>
+      </div>
+      <p class="why">In Python, a single = is assignment: it stores the value on the right in the name on the left.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. What happens when you run <code>print("Score: " + 10)</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct>A TypeError appears</button>
+        <button class="opt">It shows Score: 10</button>
+        <button class="opt">It shows Score: + 10</button>
+        <button class="opt">It shows the number 10</button>
+      </div>
+      <p class="why">You can't join a string and a number with +. Use str(10) to turn the number into text first.</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Read, then practise from memory</h2>
+
+    <div class="card">
+      <h3>Read next</h3>
+      <p><a class="source-link" href="https://automatetheboringstuff.com/3e/chapter1.html#calibre_link-1411">Automate the Boring Stuff with Python, chapter 1: "Storing Values in Variables"</a></p>
+      <p>About 10 minutes. Read "Storing Values in Variables", including "Assignment Statements" and "Variable Names". Then go back one section and read "String Concatenation and Replication": it shows a trick with <code>*</code> and strings that we didn't cover here.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Tomorrow, before Lesson 4</h3>
+      <p>In a new file, <code>practice/pocket_money.py</code>, without looking anything up:</p>
+      <ol>
+        <li>Store a weekly allowance in a variable called <code>weekly</code>.</li>
+        <li>Make a variable <code>yearly</code> from it (52 weeks in a year).</li>
+        <li>Print a sentence like <code>Yearly: 26000</code> using <code>+</code> and <code>str()</code>.</li>
+      </ol>
+      <p>Run it from the terminal, as in Lesson 2.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong> at the bottom right of any lesson. It knows what you've covered and which questions you found hard.</p>
+    </div>
+  </div>
+</section>

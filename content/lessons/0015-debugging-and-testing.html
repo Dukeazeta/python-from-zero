@@ -1,0 +1,314 @@
+<!--meta
+{
+ "title": "Debugging and testing your code",
+ "nav_title": "Debugging",
+ "track": "Python basics",
+ "intro": "Every programmer writes bugs. Today: reading longer error messages, a calm method for hunting bugs, handling errors you expect, and checking your own code with edge cases.",
+ "minutes": 40,
+ "needs": "Just this page and an internet connection",
+ "summary": "Reading tracebacks with several frames from the bottom up; a table of common exceptions; a debugging method (reproduce, read, guess, check with print, fix, re-test); try/except for expected errors such as ValueError; raising exceptions; assert; testing edge cases (empty, zero, negative, single item, boundaries).",
+ "concepts": ["traceback", "exception", "ZeroDivisionError", "KeyError / IndexError / TypeError / ValueError / AttributeError", "debugging method", "print debugging", "try / except", "raise", "assert", "edge case"],
+ "sources": [
+  {"title": "The Python Tutorial, 8. Errors and Exceptions", "url": "https://docs.python.org/3/tutorial/errors.html#exceptions", "note": "Syntax errors versus exceptions, and reading the traceback"},
+  {"title": "The Python Tutorial, 8.3 Handling Exceptions", "url": "https://docs.python.org/3/tutorial/errors.html#handling-exceptions", "note": "try and except"},
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 4, \"Exception Handling\"", "url": "https://automatetheboringstuff.com/3e/chapter4.html#calibre_link-1498", "note": "Catching errors so the program keeps going"},
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 5, \"Raising Exceptions\" and \"Assertions\"", "url": "https://automatetheboringstuff.com/3e/chapter5.html#calibre_link-1510", "note": "raise, and assert as a sanity check"},
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 5, \"A Poor Practice: Debugging with print()\"", "url": "https://automatetheboringstuff.com/3e/chapter5.html#calibre_link-1515", "note": "Why print debugging works but logging is tidier in bigger programs"}
+ ]
+}
+-->
+<section id="tracebacks" data-nav="Tracebacks">
+  <div class="col">
+    <h2>Reading a longer error</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A parcel's tracking history: "collected in Lagos, sorted in Ibadan, damaged in Ilorin". The last line is where things went wrong; the lines above show the route it took to get there.</p>
+    </div>
+
+    <p>When an error happens inside a function, Python's message, called a <strong>traceback</strong>, lists every function call on the way, oldest first ("most recent call last"). An error that happens while the program runs is called an <strong>exception</strong>.{{cite:1}}</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">report.py</span></div>
+        <pre class="code">def average(numbers):
+    return sum(numbers) / len(numbers)
+
+def report(scores):
+    print(f"Average: {average(scores)}")
+
+report([])</pre>
+        <div class="shows"><span class="label">Shows</span>Traceback (most recent call last):
+  File "report.py", line 7, in &lt;module&gt;
+    report([])
+  File "report.py", line 5, in report
+    print(f"Average: {average(scores)}")
+  File "report.py", line 2, in average
+    return sum(numbers) / len(numbers)
+<span class="err">ZeroDivisionError: division by zero</span></div>
+      </div>
+    </div>
+    <p>(Newer versions of Python also draw <code>^</code> and <code>~</code> marks under the exact part of each line; they're left out here to keep it short.)</p>
+    <p>Read from the bottom: <strong>what</strong> went wrong (division by zero), then <strong>where</strong> (line 2, in <code>average</code>), then the route that led there (<code>report</code> called <code>average</code>, the main program called <code>report</code> with an empty list). The real cause is often a few lines up the route: here, nobody expected an empty list.</p>
+
+    <h3>The usual suspects</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Error</th><th>Usually means</th></tr></thead>
+        <tbody>
+          <tr><td><code>SyntaxError</code></td><td>Code written wrongly: missing colon, bracket or quote</td></tr>
+          <tr><td><code>IndentationError</code></td><td>Block lines not indented as expected</td></tr>
+          <tr><td><code>NameError</code></td><td>A name used before it was given a value, often a typo</td></tr>
+          <tr><td><code>TypeError</code></td><td>Wrong kind of value, like adding text to a number</td></tr>
+          <tr><td><code>ValueError</code></td><td>Right kind of value, wrong content, like <code>int("ten")</code></td></tr>
+          <tr><td><code>IndexError</code></td><td>A list position past the end</td></tr>
+          <tr><td><code>KeyError</code></td><td>A dictionary key that isn't there</td></tr>
+          <tr><td><code>ZeroDivisionError</code></td><td>Dividing by zero, often <code>len()</code> of something empty</td></tr>
+          <tr><td><code>AttributeError</code></td><td>A method that doesn't exist for that type, like <code>[1, 2].upper()</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="method" data-nav="Bug hunting">
+  <div class="col">
+    <h2>A calm way to hunt bugs</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A mechanic doesn't replace random parts. They listen to the noise, make a guess ("probably the belt"), check that one thing, and only then fix it. Guessing and changing things at random makes it worse.</p>
+    </div>
+
+    <ol class="steps">
+      <li><p><strong>Reproduce it.</strong> Find an input that makes the bug happen every time.</p></li>
+      <li><p><strong>Read the message</strong>, bottom up. If there's no error but the answer is wrong, compare what you expected with what you got.</p></li>
+      <li><p><strong>Make one guess</strong> about the cause.</p></li>
+      <li><p><strong>Check the guess</strong> by looking inside: print the variables at the suspicious point, for example <code>print("DEBUG", i, total)</code> inside a loop. Python's <code>logging</code> module is a tidier tool for bigger programs, but a temporary <code>print</code> is the quickest start.{{cite:5}}</p></li>
+      <li><p><strong>Fix it</strong>, remove the debug prints, and <strong>re-test</strong> every case, not just the one that failed.</p></li>
+    </ol>
+  </div>
+
+  <div class="canvas exercise" id="count-above" data-file="count_above.py">
+    <div class="task">
+      <h3>Try it: find the bug</h3>
+      <p><code>count_above(numbers, limit)</code> should return how many numbers are greater than <code>limit</code>. It gives wrong answers. Press <strong>Check</strong>, compare expected and got, add a debug print if it helps, and fix it.</p>
+    </div>
+    <textarea class="code">def count_above(numbers, limit):
+    count = 0
+    for i in range(1, len(numbers)):
+        if numbers[i] &gt; limit:
+            count += 1
+    return count
+</textarea>
+    <script type="text/python" class="tests">
+check("Two above 5", count_above([1, 8, 3, 9], 5), 2)
+check("First item counts too", count_above([10, 1, 2], 5), 1)
+check("Equal isn't above", count_above([5, 5, 6], 5), 1)
+check("Empty list", count_above([], 5), 0)
+    </script>
+    <script type="text/python" class="solution">
+def count_above(numbers, limit):
+    count = 0
+    for i in range(len(numbers)):
+        if numbers[i] > limit:
+            count += 1
+    return count
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>Which test fails? It's the one where the big number is first. Print <code>i</code> inside the loop: which index never appears?</p></div>
+  </details>
+</section>
+
+<section id="try" data-nav="try / except">
+  <div class="col">
+    <h2>Handling the errors you expect</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A trapeze artist works with a safety net. They don't plan to fall, but if they do, the net catches them and the show goes on.</p>
+    </div>
+
+    <p>Some errors aren't bugs; they're things you know might happen, like a person typing "ten" when you asked for a number. <code>try</code> / <code>except</code> is the safety net: Python tries the risky code, and if that kind of error happens, it runs the <code>except</code> block instead of crashing.{{cite:2}}{{cite:3}}</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">ask_age.py</span></div>
+        <pre class="code">while True:
+    try:
+        age = int(input("Age? "))
+        break
+    except ValueError:
+        print("Please type a whole number.")
+print(f"Thanks, {age}.")</pre>
+        <div class="shows"><span class="label">Shows (typed ten, then 21)</span>Age? ten
+Please type a whole number.
+Age? 21
+Thanks, 21.</div>
+      </div>
+    </div>
+    <p>Name the specific error after <code>except</code>, as above. A bare <code>except:</code> catches everything, including your own typos, and hides real bugs.</p>
+    <p>You can also cause an exception on purpose with <code>raise</code>, when your function receives something it can't sensibly handle: <code>raise ValueError("age can't be negative")</code>.{{cite:4}}</p>
+  </div>
+
+  <div class="canvas exercise" id="safe-int" data-file="safe_int.py">
+    <div class="task">
+      <h3>Try it: safe_int</h3>
+      <p>Write <code>safe_int(text)</code> that returns the whole number in <code>text</code>, or <code>None</code> if it isn't one. Use <code>try</code> / <code>except ValueError</code>.</p>
+    </div>
+    <textarea class="code">def safe_int(text):
+    return int(text)
+</textarea>
+    <script type="text/python" class="tests">
+check("'42' becomes 42", safe_int("42"), 42)
+check("'-7' becomes -7", safe_int("-7"), -7)
+check("'ten' gives None", safe_int("ten"), None)
+check("'' gives None", safe_int(""), None)
+check("Uses try", "try" in source() and "except ValueError" in source(), True)
+    </script>
+    <script type="text/python" class="solution">
+def safe_int(text):
+    try:
+        return int(text)
+    except ValueError:
+        return None
+    </script>
+  </div>
+</section>
+
+<section id="testing" data-nav="Edge cases">
+  <div class="col">
+    <h2>Testing your own code: edge cases</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Testing a new bridge, engineers don't just drive one normal car over it. They try the heaviest lorry, an empty bridge in a storm, and traffic jammed bumper to bumper.</p>
+    </div>
+
+    <p>An <strong>edge case</strong> is an unusual but valid input at the extremes. Most bugs hide there. Before you call a function finished, try:</p>
+    <ul>
+      <li><strong>Empty</strong>: an empty list, an empty string.</li>
+      <li><strong>One item</strong>: a list with a single number.</li>
+      <li><strong>Zero and negatives</strong>.</li>
+      <li><strong>Boundaries</strong>: exactly 18 when the rule says "18 or over" (Lesson 5).</li>
+      <li><strong>Duplicates</strong> and <strong>ties</strong>.</li>
+    </ul>
+    <p>A quick way to write your own tests is <code>assert</code>: a line that does nothing when its condition is true, and stops the program with an <code>AssertionError</code> when it's false.{{cite:4}} Put a few under your function in a <code>.py</code> file:</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">test_average.py</span></div>
+        <pre class="code">assert average([2, 4]) == 3
+assert average([5]) == 5
+assert average([]) == 0
+print("All tests passed")</pre>
+      </div>
+    </div>
+    <p>LeetCode does the same thing on a bigger scale: it runs your function against hidden edge cases. Thinking of them yourself first is how you get "Accepted" on the first submit.</p>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Exception</dt><dd>An error that happens while the program is running.</dd>
+        <dt>Traceback</dt><dd>Python's report of an exception and the chain of calls that led to it.</dd>
+        <dt><code>try</code> / <code>except</code></dt><dd>Run risky code, and handle a named error instead of crashing.</dd>
+        <dt><code>assert</code></dt><dd>A check that stops the program if its condition is false.</dd>
+        <dt>Edge case</dt><dd>An extreme but valid input, like an empty list.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="canvas exercise" id="fix-average" data-file="average.py">
+    <div class="task">
+      <h3>Try it: survive the edge cases</h3>
+      <p>Fix <code>average(numbers)</code> so it returns <code>0</code> for an empty list instead of crashing, and still works for everything else.</p>
+    </div>
+    <textarea class="code">def average(numbers):
+    return sum(numbers) / len(numbers)
+</textarea>
+    <script type="text/python" class="tests">
+check("average([2, 4]) is 3", average([2, 4]), 3)
+check("One number", average([5]), 5)
+check("Negative numbers", average([-3, 3]), 0)
+check("Empty list gives 0", average([]), 0)
+    </script>
+    <script type="text/python" class="solution">
+def average(numbers):
+    if len(numbers) == 0:
+        return 0
+    return sum(numbers) / len(numbers)
+    </script>
+  </div>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. In a traceback, which line names the kind of error?</p>
+      <div class="options">
+        <button class="opt" data-correct>The very last line</button>
+        <button class="opt">The very first line</button>
+        <button class="opt">The longest line</button>
+        <button class="opt">The line with File</button>
+      </div>
+      <p class="why">The last line names the error. The lines above show the route of calls that led there.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. <code>[1, 2, 3][5]</code> raises which error?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>IndexError</code></button>
+        <button class="opt"><code>KeyError</code></button>
+        <button class="opt"><code>ValueError</code></button>
+        <button class="opt"><code>TypeError</code></button>
+      </div>
+      <p class="why">Index 5 is past the end of a 3-item list.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. Why name the error in <code>except ValueError:</code> instead of a bare <code>except:</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct>So unexpected bugs aren't hidden</button>
+        <button class="opt">Because bare except is a SyntaxError</button>
+        <button class="opt">So the program runs faster</button>
+        <button class="opt">Because ValueError is the only error</button>
+      </div>
+      <p class="why">A bare except also catches mistakes you didn't expect, like typos, and silently hides them.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. Which is the best edge case to test for a function that averages a list?</p>
+      <div class="options">
+        <button class="opt" data-correct>An empty list</button>
+        <button class="opt">A list of three numbers</button>
+        <button class="opt">A list of even numbers</button>
+        <button class="opt">A list of small numbers</button>
+      </div>
+      <p class="why">An empty list makes len() zero, which would divide by zero. That's an extreme the normal cases never touch.</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Read, then practise from memory</h2>
+
+    <div class="card">
+      <h3>Read next</h3>
+      <p><a class="source-link" href="https://automatetheboringstuff.com/3e/chapter5.html#calibre_link-1510">Automate the Boring Stuff with Python, chapter 5: "Raising Exceptions" and "Assertions"</a></p>
+      <p>About 15 minutes. Then read "Exception Handling" in <a href="https://automatetheboringstuff.com/3e/chapter4.html#calibre_link-1498">chapter 4</a>.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Tomorrow, before Lesson 16</h3>
+      <p>Take any function you wrote in an earlier lesson. In <code>practice/edge_tests.py</code>, copy it and write five <code>assert</code> lines that test edge cases. Run it. Did any fail?</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong> and paste a traceback you don't understand. It will walk you through it from the bottom up.</p>
+    </div>
+  </div>
+</section>

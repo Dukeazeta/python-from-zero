@@ -1,0 +1,260 @@
+<!--meta
+{
+ "title": "Recursion: functions that call themselves",
+ "nav_title": "Recursion",
+ "track": "Algorithms",
+ "intro": "Some problems are easiest to describe in terms of a smaller copy of themselves. A function that calls itself can solve them in a few lines. Trees, graphs, backtracking and dynamic programming all build on this, so it's worth getting comfortable now.",
+ "minutes": 50,
+ "needs": "This page, plus your LeetCode account to submit",
+ "summary": "Recursion as solving a problem using a smaller version of itself; the base case and the recursive case; the three laws of recursion; the call stack and stack frames; RecursionError and the recursion limit; factorial, sum of a list, reversing a string, power; LeetCode 509 Fibonacci and why plain recursive Fibonacci is exponentially slow.",
+ "concepts": ["recursion", "recursive call", "base case", "recursive case", "three laws of recursion", "call stack", "stack frame", "RecursionError", "recursion limit", "exponential time", "LeetCode 509"],
+ "sources": [
+  {"title": "Miller and Ranum, <em>Problem Solving with Algorithms and Data Structures using Python</em>, 3rd ed., 4.2 What Is Recursion?", "url": "https://runestone.academy/ns/books/published/pythonds3/Recursion/WhatIsRecursion.html", "note": "Breaking a problem into smaller copies of itself"},
+  {"title": "Miller and Ranum, 4.4 The Three Laws of Recursion", "url": "https://runestone.academy/ns/books/published/pythonds3/Recursion/TheThreeLawsofRecursion.html", "note": "Base case, change towards it, call itself"},
+  {"title": "Miller and Ranum, 4.6 Stack Frames: Implementing Recursion", "url": "https://runestone.academy/ns/books/published/pythonds3/Recursion/StackFramesImplementingRecursion.html", "note": "How each call gets its own frame on the call stack"},
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 4, \"The Call Stack\"", "url": "https://automatetheboringstuff.com/3e/chapter4.html#calibre_link-1486", "note": "How Python remembers where to return to"},
+  {"title": "Python documentation: sys.getrecursionlimit()", "url": "https://docs.python.org/3/library/sys.html#sys.getrecursionlimit", "note": "The maximum depth of the Python call stack"},
+  {"title": "LeetCode 509: Fibonacci Number", "url": "https://leetcode.com/problems/fibonacci-number/", "note": ""}
+ ]
+}
+-->
+<section id="idea" data-nav="The idea">
+  <div class="col">
+    <h2>A smaller copy of the same problem</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>You're in a long queue at the cinema and want to know your position. You ask the person in front: "what number are you?" They don't know either, so they ask the person in front of them, and so on, until the question reaches the first person, who just says "1". Then the answers travel back: "2", "3", ... until someone tells you, and you add one.</p>
+    </div>
+
+    <p><strong>Recursion</strong> is when a function solves a problem by calling itself on a smaller version of the same problem.{{cite:1}} Every recursive function needs two parts:</p>
+    <ul>
+      <li>a <strong>base case</strong>: a version so small the answer is obvious (the first person in the queue says "1"), and</li>
+      <li>a <strong>recursive case</strong>: do a little work and call yourself on something smaller (ask the person in front, then add one).</li>
+    </ul>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">factorial.py</span></div>
+        <pre class="code">def factorial(n):
+    if n == 0:                       # base case
+        return 1
+    return n * factorial(n - 1)      # recursive case
+
+print(factorial(4))   # 4 * 3 * 2 * 1</pre>
+        <div class="shows"><span class="label">Shows</span>24</div>
+      </div>
+    </div>
+    <p>The textbook calls these the <strong>three laws of recursion</strong>: have a base case; move towards it on every call; call yourself.{{cite:2}} Break the second law (forget the <code>- 1</code>) and the calls never stop.</p>
+  </div>
+</section>
+
+<section id="stack" data-nav="The call stack">
+  <div class="col">
+    <h2>How Python keeps track: the call stack</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Reading a book that says "see page 40", which says "see page 72". You keep a finger in each page so you can come back. When page 72 is done, you return to 40, finish it, then return to where you started. Your fingers form a stack: the last page you marked is the first you return to.</p>
+    </div>
+
+    <p>Each time a function is called, Python puts a <strong>stack frame</strong> on the <strong>call stack</strong>: a note holding that call's local variables and where to return to.{{cite:3}}{{cite:4}} For <code>factorial(4)</code>, four frames pile up (4, 3, 2, 1) above the base case. Then they finish in reverse order, each multiplying the answer from below. It's a stack, just like Lesson 23.</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">unwinding.txt</span></div>
+        <pre class="code">factorial(4) = 4 * factorial(3)
+               factorial(3) = 3 * factorial(2)
+                              factorial(2) = 2 * factorial(1)
+                                             factorial(1) = 1 * factorial(0)
+                                                            factorial(0) = 1
+                                             = 1
+                              = 2
+               = 6
+= 24</pre>
+      </div>
+    </div>
+    <p>The stack can't grow forever. Python stops at about 1,000 frames by default and raises <code>RecursionError: maximum recursion depth exceeded</code>.{{cite:5}} If you see that, your function almost certainly never reaches its base case.</p>
+  </div>
+
+  <div class="canvas exercise" id="sum-list" data-file="sum_list.py">
+    <div class="task">
+      <h3>Try it: sum a list recursively</h3>
+      <p>Write <code>sum_list(numbers)</code> without loops and without <code>sum()</code>. Base case: an empty list sums to 0. Recursive case: the first number plus the sum of the rest, <code>numbers[1:]</code>.</p>
+    </div>
+    <textarea class="code">def sum_list(numbers):
+    pass
+</textarea>
+    <script type="text/python" class="tests">
+check("[1, 2, 3, 4]", sum_list([1, 2, 3, 4]), 10)
+check("Empty list", sum_list([]), 0)
+check("One number", sum_list([7]), 7)
+check("No loops or sum()", "for " not in source() and "while " not in source() and "sum(" not in source().replace("sum_list(", ""), True)
+    </script>
+    <script type="text/python" class="solution">
+def sum_list(numbers):
+    if not numbers:
+        return 0
+    return numbers[0] + sum_list(numbers[1:])
+    </script>
+  </div>
+
+  <div class="canvas exercise" id="reverse-rec" data-file="reverse.py">
+    <div class="task">
+      <h3>Try it: reverse a string recursively</h3>
+      <p>Write <code>reverse(text)</code> with no loops and no slicing with <code>[::-1]</code>. Think: the reverse of "abc" is the reverse of "bc", followed by "a".</p>
+    </div>
+    <textarea class="code">def reverse(text):
+    pass
+</textarea>
+    <script type="text/python" class="tests">
+check("abc", reverse("abc"), "cba")
+check("Empty", reverse(""), "")
+check("racecar", reverse("racecar"), "racecar")
+check("hello world", reverse("hello world"), "dlrow olleh")
+check("No loops or [::-1]", "for " not in source() and "while " not in source() and "[::-1]" not in source(), True)
+    </script>
+    <script type="text/python" class="solution">
+def reverse(text):
+    if text == "":
+        return ""
+    return reverse(text[1:]) + text[0]
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>Base case: the reverse of <code>""</code> is <code>""</code>. Recursive case: <code>reverse(text[1:]) + text[0]</code>.</p></div>
+  </details>
+</section>
+
+<section id="fib" data-nav="Fibonacci">
+  <div class="col">
+    <h2>Fibonacci, and a warning</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Asking two friends to each work out half of a problem, and they each ask two friends, who each ask two more. The question spreads like a family tree, and most of those people end up working out the exact same sub-question as somebody else.</p>
+    </div>
+
+    <p>The Fibonacci numbers start 0, 1, and each next one is the sum of the two before: 0, 1, 1, 2, 3, 5, 8, 13... That definition is already recursive: <code>fib(n) = fib(n - 1) + fib(n - 2)</code>, with base cases <code>fib(0) = 0</code> and <code>fib(1) = 1</code>.{{cite:6}}</p>
+    <p>Written that way it's correct but very slow: each call makes two more calls, so the work roughly doubles with every step of n. That's <strong>exponential</strong> time, O(2ⁿ): <code>fib(30)</code> makes over a million calls, and <code>fib(50)</code> would take hours. The fix is to remember answers you've already worked out, which is the whole idea of dynamic programming in Lesson 33. For now, LeetCode only asks up to <code>n = 30</code>, so the plain version is accepted.</p>
+  </div>
+
+  <div class="canvas exercise" id="lc509" data-file="fibonacci.py">
+    <div class="task">
+      <h3>LeetCode 509: Fibonacci Number</h3>
+      <p>Return the nth Fibonacci number using recursion.</p>
+    </div>
+    <textarea class="code">class Solution:
+    def fib(self, n):
+        pass
+</textarea>
+    <script type="text/python" class="tests">
+check("fib(0)", Solution().fib(0), 0)
+check("fib(1)", Solution().fib(1), 1)
+check("fib(2)", Solution().fib(2), 1)
+check("fib(10)", Solution().fib(10), 55)
+check("fib(20)", Solution().fib(20), 6765)
+    </script>
+    <script type="text/python" class="solution">
+class Solution:
+    def fib(self, n):
+        if n < 2:
+            return n
+        return self.fib(n - 1) + self.fib(n - 2)
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Inside a class, call it as self.fib</summary>
+    <div><p>A method calls another method (or itself) through <code>self</code>: <code>self.fib(n - 1)</code>. Plain <code>fib(n - 1)</code> gives a NameError.</p></div>
+  </details>
+
+  <div class="col">
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Recursion</dt><dd>A function solving a problem by calling itself on a smaller version.</dd>
+        <dt>Base case</dt><dd>The smallest version, answered directly, which stops the calls.</dd>
+        <dt>Call stack</dt><dd>Python's stack of unfinished function calls, one frame per call.</dd>
+        <dt>RecursionError</dt><dd>The error when the call stack gets too deep, usually a missing base case.</dd>
+        <dt>Exponential time</dt><dd>Work that roughly doubles each time n grows by one, like O(2ⁿ).</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. What stops a recursive function from calling itself forever?</p>
+      <div class="options">
+        <button class="opt" data-correct>Reaching its base case</button>
+        <button class="opt">Python's for loop limit</button>
+        <button class="opt">The return value being None</button>
+        <button class="opt">Running out of variables</button>
+      </div>
+      <p class="why">The base case returns without calling itself again, so the calls can finish.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. You see <code>RecursionError: maximum recursion depth exceeded</code>. Most likely cause?</p>
+      <div class="options">
+        <button class="opt" data-correct>The base case is never reached</button>
+        <button class="opt">The list is already sorted</button>
+        <button class="opt">A variable name has a typo</button>
+        <button class="opt">The function returns a string</button>
+      </div>
+      <p class="why">Each call adds a frame; without reaching the base case, they pile up past the limit.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. Why is plain recursive Fibonacci slow?</p>
+      <div class="options">
+        <button class="opt" data-correct>It re-computes the same values many times</button>
+        <button class="opt">Adding numbers is slow in Python</button>
+        <button class="opt">Recursion is always slower than loops</button>
+        <button class="opt">It uses floating-point numbers</button>
+      </div>
+      <p class="why">fib(n - 1) and fib(n - 2) both recompute the same smaller values again and again.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. With <code>def f(n): return 0 if n == 0 else n + f(n - 1)</code>, what is <code>f(3)</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>6</code></button>
+        <button class="opt"><code>3</code></button>
+        <button class="opt"><code>0</code></button>
+        <button class="opt"><code>9</code></button>
+      </div>
+      <p class="why">3 + 2 + 1 + 0. (This one-line form, A if condition else B, is called a conditional expression.)</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Submit, read, then practise from memory</h2>
+
+    <div class="card">
+      <h3>Submit on LeetCode</h3>
+      <p>Submit Fibonacci Number (link in Sources).</p>
+    </div>
+
+    <div class="card">
+      <h3>Read next</h3>
+      <p><a class="source-link" href="https://runestone.academy/ns/books/published/pythonds3/Recursion/WhatIsRecursion.html">Problem Solving with Algorithms and Data Structures, 4.2 to 4.7</a></p>
+      <p>About 30 minutes. Read 4.6, Stack Frames, slowly: the rest of the chapter builds on it.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Tomorrow, before Lesson 26</h3>
+      <p>In <code>practice/power.py</code>, from memory: a recursive <code>power(base, exp)</code> where <code>power(2, 10)</code> is 1024, with no <code>**</code>. Base case: anything to the power 0 is 1.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong>: "draw the call stack for factorial(3) for me".</p>
+    </div>
+  </div>
+</section>

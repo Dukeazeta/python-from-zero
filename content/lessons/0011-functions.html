@@ -1,0 +1,264 @@
+<!--meta
+{
+ "title": "Writing your own functions",
+ "nav_title": "Functions",
+ "track": "Python basics",
+ "intro": "You've used print(), len() and input() for ten lessons. Today you build your own: named, reusable pieces of code that take inputs and hand back an answer. This is the shape every LeetCode solution takes.",
+ "minutes": 40,
+ "needs": "Just this page and an internet connection",
+ "summary": "Defining functions with def; calling them; parameters and arguments; return values and the difference between return and print; None when a function returns nothing; functions as the shape of LeetCode solutions; testing a function with different inputs.",
+ "concepts": ["function", "def", "call", "parameter", "argument", "return", "return versus print", "None"],
+ "sources": [
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 4, \"Creating Functions\"", "url": "https://automatetheboringstuff.com/3e/chapter4.html#calibre_link-1481", "note": "def statements and calling functions"},
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 4, \"Arguments and Parameters\"", "url": "https://automatetheboringstuff.com/3e/chapter4.html#calibre_link-1482", "note": "Values passed in and the variables that receive them"},
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 4, \"Return Values and return Statements\"", "url": "https://automatetheboringstuff.com/3e/chapter4.html#calibre_link-1483", "note": "return ends the function and hands back a value"},
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 4, \"The None Value\"", "url": "https://automatetheboringstuff.com/3e/chapter4.html#calibre_link-1484", "note": "Functions without return give back None"},
+  {"title": "The Python Tutorial, 4.8 Defining Functions", "url": "https://docs.python.org/3/tutorial/controlflow.html#defining-functions", "note": "def, the function body, and return"}
+ ]
+}
+-->
+<section id="def" data-nav="def">
+  <div class="col">
+    <h2>Name a piece of code, use it anywhere</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A recipe card titled "pancakes" lists the steps once. After that, whenever anyone says "make pancakes", you follow the card. You don't rewrite the steps each time, and if you improve the recipe, every future batch gets better.</p>
+    </div>
+
+    <p>A <strong>function</strong> is a named block of code. You write it once with <code>def</code> (short for "define"), and then <strong>call</strong> it by name, as many times as you like.{{cite:1}}{{cite:5}}</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">greet.py</span></div>
+        <pre class="code">def greet():
+    print("Hello!")
+    print("Welcome to the course.")
+
+greet()
+greet()</pre>
+        <div class="shows"><span class="label">Shows</span>Hello!
+Welcome to the course.
+Hello!
+Welcome to the course.</div>
+      </div>
+    </div>
+    <p>Defining the function doesn't run it; it just writes the recipe card. The lines inside run only when you call <code>greet()</code>, with the parentheses. Same colon-and-indent rule as <code>if</code> and loops.</p>
+
+    <h3>Giving a function something to work with</h3>
+    <p>Recipes often say "for <em>n</em> people". A function can take values too. The names in the <code>def</code> line's parentheses are <strong>parameters</strong>: variables that get filled in when the function is called. The values you pass in the call are <strong>arguments</strong>.{{cite:2}}</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">greet_name.py</span></div>
+        <pre class="code">def greet(name):
+    print(f"Hello, {name}!")
+
+greet("Ada")
+greet("Chidi")</pre>
+        <div class="shows"><span class="label">Shows</span>Hello, Ada!
+Hello, Chidi!</div>
+      </div>
+    </div>
+    <p>In the first call, the argument <code>"Ada"</code> goes into the parameter <code>name</code>. In the second, <code>name</code> holds <code>"Chidi"</code>. Separate several parameters with commas: <code>def area(width, height):</code>.</p>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt><code>def</code></dt><dd>Starts a function definition.</dd>
+        <dt>Call</dt><dd>Run a function by writing its name and parentheses: <code>greet()</code>.</dd>
+        <dt>Parameter</dt><dd>A variable in the <code>def</code> line that receives a value.</dd>
+        <dt>Argument</dt><dd>The value you pass in when calling: in <code>greet("Ada")</code>, <code>"Ada"</code>.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="return" data-nav="return">
+  <div class="col">
+    <h2>Handing back an answer with return</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Asking a friend to work something out: "What's 15% of 8,000?" A good friend <em>tells you</em> the answer so you can use it: add it to the bill, write it down. A friend who just mutters it to themselves hasn't really helped.</p>
+    </div>
+
+    <p><code>return</code> ends the function and hands a value back to wherever it was called.{{cite:3}} The call then <em>becomes</em> that value, so you can store it, print it, or use it in a bigger expression:</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">tip.py</span></div>
+        <pre class="code">def tip(bill):
+    return bill * 0.15
+
+amount = tip(8000)
+print(amount)
+print(8000 + tip(8000))</pre>
+        <div class="shows"><span class="label">Shows</span>1200.0
+9200.0</div>
+      </div>
+    </div>
+
+    <h3>return is not print</h3>
+    <p><code>print</code> shows something on the screen for a person to read. <code>return</code> hands a value back to the code, so the program can keep using it. A function that prints its answer instead of returning it is the friend who mutters: you see the number, but the program can't do anything with it.</p>
+    <p>A function with no <code>return</code> gives back a special value called <code>None</code>, meaning "nothing".{{cite:4}} If you ever see <code>None</code> where you expected an answer, check whether your function prints instead of returning.</p>
+
+    <h3>Functions are how LeetCode works</h3>
+    <p>Every LeetCode problem asks you to fill in a function. It calls your function with test inputs and checks what you <em>return</em>, not what you print. From now on, the exercises check your functions the same way: the tests call your function with several arguments and compare the results.</p>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Return value</dt><dd>The value a function hands back with <code>return</code>.</dd>
+        <dt><code>None</code></dt><dd>A value meaning "nothing". Functions without <code>return</code> give it back.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="canvas exercise" id="area" data-file="area.py">
+    <div class="task">
+      <h3>Try it: rectangle area</h3>
+      <p>Write a function <code>area(width, height)</code> that <strong>returns</strong> the area of a rectangle (width times height). Don't print inside the function. The tests call it for you.</p>
+    </div>
+    <textarea class="code">def area(width, height):
+    # replace pass with your code
+    pass
+</textarea>
+    <script type="text/python" class="tests">
+check("area(3, 4) returns 12", area(3, 4), 12)
+check("area(10, 2) returns 20", area(10, 2), 20)
+check("area(5, 0) returns 0", area(5, 0), 0)
+    </script>
+    <script type="text/python" class="solution">
+def area(width, height):
+    return width * height
+    </script>
+  </div>
+  <details class="hint">
+    <summary>What is pass, and why does it say "got None"?</summary>
+    <div><p><code>pass</code> means "do nothing"; it's a placeholder so the function isn't empty. A function that does nothing returns <code>None</code>. Replace <code>pass</code> with <code>return width * height</code>.</p></div>
+  </details>
+
+  <div class="canvas exercise" id="is-even" data-file="is_even.py">
+    <div class="task">
+      <h3>Try it: is_even</h3>
+      <p>Write <code>is_even(n)</code> that returns <code>True</code> if <code>n</code> is even and <code>False</code> otherwise.</p>
+    </div>
+    <textarea class="code">def is_even(n):
+    pass
+</textarea>
+    <script type="text/python" class="tests">
+check("is_even(4) is True", is_even(4), True)
+check("is_even(7) is False", is_even(7), False)
+check("is_even(0) is True", is_even(0), True)
+    </script>
+    <script type="text/python" class="solution">
+def is_even(n):
+    return n % 2 == 0
+    </script>
+  </div>
+  <details class="hint">
+    <summary>A shorter way</summary>
+    <div><p>You can use <code>if</code> / <code>else</code> with two returns, which is fine. But <code>n % 2 == 0</code> is already <code>True</code> or <code>False</code>, so <code>return n % 2 == 0</code> does it in one line.</p></div>
+  </details>
+
+  <div class="canvas exercise" id="count-vowels" data-file="vowels.py">
+    <div class="task">
+      <h3>Try it: count_vowels</h3>
+      <p>Write <code>count_vowels(text)</code> that returns how many vowels (a, e, i, o, u) the text contains, counting capitals too. <code>count_vowels("Banana")</code> returns <code>3</code>.</p>
+    </div>
+    <textarea class="code">def count_vowels(text):
+    count = 0
+    # your code here
+    return count
+</textarea>
+    <script type="text/python" class="tests">
+check("Banana has 3", count_vowels("Banana"), 3)
+check("rhythm has 0", count_vowels("rhythm"), 0)
+check("AEIOU has 5", count_vowels("AEIOU"), 5)
+check("Empty text has 0", count_vowels(""), 0)
+    </script>
+    <script type="text/python" class="solution">
+def count_vowels(text):
+    count = 0
+    for letter in text.lower():
+        if letter in "aeiou":
+            count += 1
+    return count
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>Loop over <code>text.lower()</code> so capitals become lowercase. For each letter, <code>if letter in "aeiou":</code> add one to <code>count</code>. The <code>return</code> is already there, after the loop.</p></div>
+  </details>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. In <code>def greet(name):</code> and the call <code>greet("Bo")</code>, what is <code>"Bo"</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct>The argument</button>
+        <button class="opt">The parameter</button>
+        <button class="opt">The return value</button>
+        <button class="opt">The function name</button>
+      </div>
+      <p class="why">The value passed in a call is the argument. name, in the def line, is the parameter that receives it.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. A function prints its answer but has no return. What does <code>x = f()</code> store?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>None</code></button>
+        <button class="opt">The printed answer</button>
+        <button class="opt"><code>0</code></button>
+        <button class="opt">An empty string</button>
+      </div>
+      <p class="why">Without return, a function gives back None. Printing only shows the answer; it doesn't hand it back.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. When do the lines inside a <code>def</code> run?</p>
+      <div class="options">
+        <button class="opt" data-correct>Each time the function is called</button>
+        <button class="opt">Once, when Python reads the def</button>
+        <button class="opt">Only at the end of the program</button>
+        <button class="opt">Every time any line runs</button>
+      </div>
+      <p class="why">def just defines the function. Its body runs on each call.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. What does LeetCode check about your function?</p>
+      <div class="options">
+        <button class="opt" data-correct>The value it returns</button>
+        <button class="opt">The text it prints</button>
+        <button class="opt">How many lines it has</button>
+        <button class="opt">The names of the variables</button>
+      </div>
+      <p class="why">LeetCode calls your function and compares its return value with the expected answer.</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Read, then practise from memory</h2>
+
+    <div class="card">
+      <h3>Read next</h3>
+      <p><a class="source-link" href="https://automatetheboringstuff.com/3e/chapter4.html#calibre_link-1481">Automate the Boring Stuff with Python, chapter 4: "Creating Functions" to "The None Value"</a></p>
+      <p>About 15 minutes.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Tomorrow, before Lesson 12</h3>
+      <p>In <code>practice/temperature.py</code>, from memory: write <code>to_fahrenheit(celsius)</code> that returns <code>celsius * 9 / 5 + 32</code>. Below it, use a loop to print a table for 0, 10, 20, 30 and 40 degrees by calling your function.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong>. A good question for today: "explain return versus print with another example".</p>
+    </div>
+  </div>
+</section>

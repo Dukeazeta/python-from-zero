@@ -1,0 +1,6 @@
+# Normalise text files; the server's install script must keep Linux line endings.
+* text=auto
+*.sh text eol=lf
+*.bat text eol=crlf
+*.png binary
+*.ico binary

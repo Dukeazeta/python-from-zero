@@ -1,0 +1,350 @@
+<!--meta
+{
+ "title": "Python on your own computer",
+ "nav_title": "Python on your computer",
+ "track": "Python basics",
+ "intro": "So far Python ran inside a web page. Today you run it on your own machine, the way real programs are written, and save your first program as a file you can run again whenever you like.",
+ "minutes": 30,
+ "needs": "A computer (Windows, Mac or Linux) with Python and VS Code",
+ "summary": "The terminal, the Python interactive shell, and writing and running a .py script with the edit, save, run loop.",
+ "concepts": [
+  "terminal",
+  "command",
+  "prompt",
+  "interactive shell",
+  "script",
+  ".py file",
+  "code editor",
+  "directory",
+  "cd"
+ ],
+ "sources": [
+  {
+   "title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 1, \"Entering Expressions into the Interactive Shell\"",
+   "url": "https://automatetheboringstuff.com/3e/chapter1.html#calibre_link-1407",
+   "note": "Starting Python from Windows Terminal, and running a file with <code>python</code> followed by its name."
+  },
+  {
+   "title": "The Python Tutorial, 2.1.2 Interactive Mode",
+   "url": "https://docs.python.org/3/tutorial/interpreter.html#interactive-mode",
+   "note": "The <code>&gt;&gt;&gt;</code> prompt, and leaving the interpreter."
+  },
+  {
+   "title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 1, \"Your First Program\"",
+   "url": "https://automatetheboringstuff.com/3e/chapter1.html#calibre_link-1415",
+   "note": "The shell versus the file editor, and saving a program as <code>hello.py</code>."
+  }
+ ]
+}
+-->
+<section id="warm-up" data-nav="Warm-up">
+  <div class="col">
+    <h2>Warm-up from Lesson 1</h2>
+    <p>Three quick questions from last time. Answer from memory, even if you have to guess.</p>
+
+    <div class="quiz">
+      <p class="q">1. What does <code>print(10 / 2)</code> show?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>5.0</code></button>
+        <button class="opt"><code>5</code></button>
+        <button class="opt"><code>10 / 2</code></button>
+        <button class="opt"><code>2.0</code></button>
+      </div>
+      <p class="why">Dividing with / always gives a number with a decimal point.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. Multiplying 7 by 6 gives 42. What is 42 called?</p>
+      <div class="options">
+        <button class="opt" data-correct>The product</button>
+        <button class="opt">The sum</button>
+        <button class="opt">The difference</button>
+        <button class="opt">The quotient</button>
+      </div>
+      <p class="why">Multiplying gives a product. Adding gives a sum, subtracting a difference, dividing a quotient.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. Which of these is a string?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>"42"</code></button>
+        <button class="opt"><code>42</code></button>
+        <button class="opt"><code>4.2</code></button>
+        <button class="opt"><code>40 + 2</code></button>
+      </div>
+      <p class="why">The quotes make it text, even though the text happens to be digits.</p>
+    </div>
+  </div>
+</section>
+
+<section id="terminal" data-nav="Terminal">
+  <div class="col">
+    <h2>The terminal: texting your computer</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Most of the time you use a computer by clicking and tapping. There is another way: you type a short message, press Enter, and the computer types a reply. It's like texting someone who follows instructions perfectly, but only if you spell them exactly right.</p>
+    </div>
+
+    <p>The window where you have that text conversation is called the <strong>terminal</strong>. Each message you type is a <strong>command</strong>.{{cite:1}} The steps below change a little depending on your computer, so check it's picked the right one:</p>
+
+    {{os-switch}}
+
+    <ol class="steps">
+      <li>
+        <p><strong>Open the terminal.</strong>
+          <span data-os="windows">Press the Windows key, type <code>Terminal</code>, and press Enter.</span>
+          <span data-os="mac">Press <kbd>Cmd</kbd> + <kbd>Space</kbd>, type <code>Terminal</code>, and press Enter.</span>
+          <span data-os="linux">Press <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd>, or find <strong>Terminal</strong> in your apps.</span>
+          A window opens with a line that ends in <span data-os="windows"><code>&gt;</code></span><span data-os="mac"><code>%</code></span><span data-os="linux"><code>$</code></span>, something like this:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">PS C:\Users\you&gt;</span></pre>
+        </div>
+        <p style="margin-top: 12px">That line is the <strong>prompt</strong>: the computer saying "your turn". It also shows the folder you're in right now (<span data-os="windows">yours will show your own name</span><span data-os="mac linux"><code>~</code> means your home folder</span>).</p>
+      </li>
+      <li>
+        <p><strong>Ask which Python you have.</strong> Type this and press Enter:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">PS C:\Users\you&gt;</span> python --version</pre>
+          <div class="shows"><span class="label">Shows something like</span>Python 3.12.10</div>
+        </div>
+        <div class="pastecheck" data-regex="^Python 3\.\d+">
+          <p class="ask">Paste what your terminal showed:</p>
+          <p class="ok">Python is installed and the terminal can find it. Any version starting with 3 is fine for this course.</p>
+          <p class="hint">
+            <span data-os="windows">If it says <code>'python' is not recognized</code>, or the Microsoft Store opens, Python isn't set up yet. Install it from <a href="https://www.python.org/downloads/">python.org</a> and tick <strong>Add python.exe to PATH</strong> in the installer, then open a new terminal.</span>
+            <span data-os="mac">If it says <code>command not found</code>, or a box offers to install developer tools, install Python from <a href="https://www.python.org/downloads/">python.org</a>, then open a new terminal.</span>
+            <span data-os="linux">If it says <code>command not found</code>, install Python 3 with your system's package manager (on Ubuntu: <code>sudo apt install python3</code>).</span>
+            Stuck? Ask in the chat and we'll fix it together.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="shell" data-nav="Shell">
+  <div class="col">
+    <h2>The shell: a live chat with Python</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Think of a phone call. You say one thing, you get an answer straight away, and when you hang up nothing is written down. That's fine for quick questions, but nothing is kept.</p>
+    </div>
+
+    <p>Python has the same thing, called the <strong>interactive shell</strong>. You type one line, Python answers immediately. When Python is waiting for you, it shows three arrows, <code>&gt;&gt;&gt;</code>. This is called the Python prompt.{{cite:2}}</p>
+
+    <ol class="steps">
+      <li>
+        <p><strong>Start the shell.</strong> In the terminal, type <code>{{py}}</code> and press Enter. A few lines of information appear, then <code>&gt;&gt;&gt;</code>.</p>
+      </li>
+      <li>
+        <p><strong>Ask it something.</strong> Type each line below and press Enter after each one:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Python shell</span></div>
+          <pre class="code"><span class="prompt">&gt;&gt;&gt;</span> 2 + 2
+4
+<span class="prompt">&gt;&gt;&gt;</span> 7 * 24 * 60
+10080
+<span class="prompt">&gt;&gt;&gt;</span> "Hello"
+'Hello'</pre>
+        </div>
+        <p style="margin-top: 12px">Notice: no <code>print</code> needed. The shell always shows the value of whatever you type, like a calculator showing the answer. It shows strings with quotes around them so you can tell text from numbers.</p>
+      </li>
+      <li>
+        <p><strong>Hang up.</strong> Type <code>exit()</code> and press Enter. The <code>&gt;&gt;&gt;</code> disappears and you're back at the terminal's normal prompt. Everything you typed in the shell is gone.{{cite:2}}</p>
+      </li>
+    </ol>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Terminal</dt><dd>A window where you control the computer by typing commands.</dd>
+        <dt>Command</dt><dd>One typed instruction, sent by pressing Enter.</dd>
+        <dt>Prompt</dt><dd>The text that shows it's your turn to type: <span data-os="windows"><code>&gt;</code></span><span data-os="mac"><code>%</code></span><span data-os="linux"><code>$</code></span> in the terminal, <code>&gt;&gt;&gt;</code> in Python's shell.</dd>
+        <dt>Interactive shell</dt><dd>Python answering one line at a time. Nothing is saved.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="files" data-nav="Files">
+  <div class="col">
+    <h2>Files: write it once, run it any time</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>If the shell is a phone call, a file is a written recipe. You write every step down, save it, and anyone can follow it again tomorrow, from the first step to the last, exactly the same way.</p>
+    </div>
+
+    <p>A Python program saved as a file is called a <strong>script</strong>. Python files have names ending in <code>.py</code>, like <code>hello.py</code>.{{cite:3}} You write it in a <strong>code editor</strong>, a program like a notes app made for code. We'll use VS Code.</p>
+
+    <h3>Make a folder for your course work</h3>
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>The terminal is always "standing" inside one folder, like you standing in one room of a house. Commands act on the room you're in, so first you walk to the right room.</p>
+    </div>
+    <p>The command <code>cd</code> (short for "change directory"; <strong>directory</strong> is another word for folder) moves you into a folder.</p>
+
+    <ol class="steps">
+      <li>
+        <p><strong>Make a course folder on your Desktop and walk into it.</strong> <code>mkdir</code> means "make directory". You only make it once; after that, the <code>cd</code> lines are all you need.</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">PS C:\Users\you&gt;</span> cd Desktop
+<span class="prompt">...Desktop&gt;</span> mkdir python-course
+<span class="prompt">...Desktop&gt;</span> cd python-course</pre>
+        </div>
+        <p style="margin-top: 12px">The prompt now shows <code>python-course</code>. That's how you know you're in the right room.<span data-os="linux"> (No Desktop folder? Leave out the first line, and the course folder goes in your home folder instead.)</span></p>
+      </li>
+      <li>
+        <p><strong>Make a folder for your practice code</strong>, inside the course folder:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">...python-course&gt;</span> mkdir practice</pre>
+        </div>
+      </li>
+      <li>
+        <p><strong>Open a new file in VS Code.</strong></p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">...python-course&gt;</span> code practice\hello.py</pre>
+        </div>
+        <p style="margin-top: 12px">VS Code opens with an empty tab called <code>hello.py</code>.
+          <span data-os="windows">(No VS Code? <code>notepad practice\hello.py</code> works too; say yes when it asks to create the file.)</span>
+          <span data-os="mac">If the terminal says <code>command not found: code</code>, open VS Code, press <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>, run <strong>Shell Command: Install 'code' command in PATH</strong>, then open a new terminal. (No VS Code? <code>nano practice/hello.py</code> opens a simple editor in the terminal: save with <kbd>Ctrl</kbd> + <kbd>O</kbd> then Enter, and leave with <kbd>Ctrl</kbd> + <kbd>X</kbd>.)</span>
+          <span data-os="linux">(No VS Code? <code>nano practice/hello.py</code> opens a simple editor in the terminal: save with <kbd>Ctrl</kbd> + <kbd>O</kbd> then Enter, and leave with <kbd>Ctrl</kbd> + <kbd>X</kbd>.)</span></p>
+      </li>
+      <li>
+        <p><strong>Type your program</strong>, by hand, then save with <kbd>{{mod}}</kbd> + <kbd>S</kbd>:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">hello.py</span></div>
+          <pre class="code"># My first program file
+print("Hello from my own computer!")
+print("Minutes in a week:")
+print(7 * 24 * 60)</pre>
+        </div>
+        <p style="margin-top: 12px">In a file you <em>do</em> need <code>print</code>. A recipe only does what's written in it: without <code>print</code>, Python would work out <code>7 * 24 * 60</code> and then throw the answer away without showing it.</p>
+      </li>
+      <li>
+        <p><strong>Run it.</strong> Back in the terminal:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">...python-course&gt;</span> python practice\hello.py</pre>
+          <div class="shows"><span class="label">Shows</span>Hello from my own computer!
+Minutes in a week:
+10080</div>
+        </div>
+        <div class="pastecheck" data-lines='["Hello from my own computer!", "Minutes in a week:", "10080"]'>
+          <p class="ask">Paste the three lines your program printed:</p>
+          <p class="ok">That's your first Python program, saved on your own computer and run from the terminal.</p>
+          <p class="hint">Check that you saved the file ({{mod}} + S) and that each line in hello.py matches the example, including capitals and punctuation.</p>
+        </div>
+      </li>
+    </ol>
+
+    <h3>The everyday loop: edit, save, run</h3>
+    <p>Change <code>hello.py</code> so it also prints your name on a new line at the end. Save, then run the same command again. You can press the <kbd>Up arrow</kbd> key in the terminal to bring back the last command instead of typing it.</p>
+    <p>The most common beginner surprise: you edit the file, run it, and nothing changed. Almost always the file wasn't saved. In VS Code, an unsaved tab shows a round dot next to its name where the close button usually is.</p>
+
+    <h3>When the terminal can't find your file</h3>
+    <p>If you're in the wrong folder, Python can't find the file and says so:</p>
+    <div class="window">
+      <div class="titlebar"><span class="filename">Terminal</span></div>
+      <pre class="code"><span class="prompt">PS C:\Users\you&gt;</span> python practice\hello.py</pre>
+      <div class="shows"><span class="label">Shows</span><span class="err"><span data-os="windows">... can't open file 'C:\\Users\\you\\practice\\hello.py'</span><span data-os="mac">... can't open file '/Users/you/practice/hello.py'</span><span data-os="linux">... can't open file '/home/you/practice/hello.py'</span>: [Errno 2] No such file or directory</span></div>
+    </div>
+    <p style="margin-top: 16px">Read the end first, as always: "No such file or directory". Python looked in the room you're standing in and the file wasn't there. Fix it with <span data-os="windows"><code>cd Desktop\python-course</code></span><span data-os="mac linux"><code>cd Desktop/python-course</code></span>, then run again.</p>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Script</dt><dd>A Python program saved in a file ending in <code>.py</code>.</dd>
+        <dt>Code editor</dt><dd>An app for writing code, such as VS Code.</dd>
+        <dt>Directory</dt><dd>Another word for a folder.</dd>
+        <dt><code>cd</code></dt><dd>The command that moves the terminal into a folder.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. You see <code>&gt;&gt;&gt;</code> on the screen. What does it mean?</p>
+      <div class="options">
+        <button class="opt" data-correct>Python is waiting for you</button>
+        <button class="opt">Python found an error here</button>
+        <button class="opt">The file has been saved</button>
+        <button class="opt">The program has finished</button>
+      </div>
+      <p class="why">Three arrows is Python's prompt: the interactive shell is ready for your next line.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. You want to keep your code and run it again next week. Where do you write it?</p>
+      <div class="options">
+        <button class="opt" data-correct>In a .py file</button>
+        <button class="opt">In the shell</button>
+        <button class="opt">In the prompt</button>
+        <button class="opt">In the folder</button>
+      </div>
+      <p class="why">The shell forgets everything when you exit. A file stays saved, like a written recipe.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. You changed <code>hello.py</code>, ran it, and the old output appeared. Most likely cause?</p>
+      <div class="options">
+        <button class="opt" data-correct>The file wasn't saved</button>
+        <button class="opt">Python needs restarting</button>
+        <button class="opt">The folder is wrong now</button>
+        <button class="opt">The computer is too slow</button>
+      </div>
+      <p class="why">Python runs what's saved on disk. Press Ctrl + S, then run again.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. In a <code>.py</code> file, what does the line <code>7 * 6</code> show when you run it?</p>
+      <div class="options">
+        <button class="opt" data-correct>Nothing at all</button>
+        <button class="opt">The number 42</button>
+        <button class="opt">The text 7 * 6</button>
+        <button class="opt">An error message</button>
+      </div>
+      <p class="why">Python works it out, but only print shows things when running a file. The shell is the one that shows values on its own.</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Read, then practise from memory</h2>
+
+    <div class="card">
+      <h3>Read next</h3>
+      <p><a class="source-link" href="https://automatetheboringstuff.com/3e/chapter1.html#calibre_link-1415">Automate the Boring Stuff with Python, chapter 1: "Your First Program"</a></p>
+      <p>About 5 minutes. Read only the opening paragraphs, up to where the example program starts. They explain the difference between the shell and a file, in the book's words. The book uses an editor called Mu instead of VS Code; the idea is the same. Skip the example program for now: it uses ideas from Lessons 3 and 4.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Tomorrow, before Lesson 3</h3>
+      <p>Without opening this page:</p>
+      <ol>
+        <li>Open the terminal, go to the course folder, and run <code>practice/hello.py</code>.</li>
+        <li>Start the Python shell, work out <code>365 * 24</code>, then exit the shell.</li>
+      </ol>
+      <p>If you get stuck on a command, try your best guess first, then check the <a href="../reference/python-basics">reference sheet</a>.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>Terminal trouble is normal on day one. With the course app running, press <strong>Ask your tutor</strong> at the bottom right, and paste what the terminal showed.</p>
+    </div>
+
+    <p class="small quiet">Lesson 3 introduces variables: giving a value a name so you can use it again.</p>
+  </div>
+</section>

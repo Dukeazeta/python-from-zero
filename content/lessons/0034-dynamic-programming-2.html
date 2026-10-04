@@ -1,0 +1,277 @@
+<!--meta
+{
+ "title": "Dynamic programming 2: grids and choices",
+ "nav_title": "DP: grids",
+ "track": "Algorithms",
+ "intro": "Lesson 33's answers lived in a row. Today they live in a grid, and each cell is filled from its neighbours. You'll count paths across a board, make change with the fewest coins, and compare two texts the way version control tools do.",
+ "minutes": 60,
+ "needs": "This page, plus your LeetCode account to submit",
+ "summary": "Two-dimensional DP tables built with list comprehensions; filling a grid where each cell depends on the cell above and to the left; using infinity (float('inf')) for impossible states; LeetCode 62 Unique Paths, 322 Coin Change (fewest coins, -1 if impossible), 1143 Longest Common Subsequence (match: diagonal + 1; no match: best of up or left); a five-step recipe for any DP problem.",
+ "concepts": ["2D DP table", "state", "base row and column", "float('inf')", "unbounded choices", "subsequence", "longest common subsequence", "DP recipe", "LeetCode 62", "LeetCode 322", "LeetCode 1143"],
+ "sources": [
+  {"title": "Miller and Ranum, <em>Problem Solving with Algorithms and Data Structures using Python</em>, 3rd ed., 4.12 Dynamic Programming", "url": "https://runestone.academy/ns/books/published/pythonds3/Recursion/DynamicProgramming.html", "note": "The fewest-coins change problem, solved bottom-up"},
+  {"title": "NeetCode roadmap: 2-D Dynamic Programming", "url": "https://neetcode.io/roadmap", "note": "Grid and two-sequence DP problems, with videos"},
+  {"title": "Python documentation: float() and infinity", "url": "https://docs.python.org/3/library/functions.html#float", "note": "float('inf') gives positive infinity"},
+  {"title": "LeetCode 62: Unique Paths", "url": "https://leetcode.com/problems/unique-paths/", "note": ""},
+  {"title": "LeetCode 322: Coin Change", "url": "https://leetcode.com/problems/coin-change/", "note": ""},
+  {"title": "LeetCode 1143: Longest Common Subsequence", "url": "https://leetcode.com/problems/longest-common-subsequence/", "note": ""}
+ ]
+}
+-->
+<section id="paths" data-nav="Unique Paths">
+  <div class="col">
+    <h2>A table instead of a row</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A city laid out in a grid of streets. You walk from the top-left corner to the bottom-right, only ever going right or down. How many different routes are there? To reach any corner, your last step came either from the corner above or the corner to the left.</p>
+    </div>
+
+    <p>That's LeetCode 62.{{cite:4}} The recurrence: <code>paths[r][c] = paths[r - 1][c] + paths[r][c - 1]</code>. Every cell in the top row and left column has exactly one route (straight along the edge). Fill the rest row by row, and the bottom-right cell is the answer: O(rows × columns).</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">grid.txt</span></div>
+        <pre class="code">3 rows by 4 columns:
+1  1  1  1
+1  2  3  4
+1  3  6  10     &lt;- 10 routes</pre>
+      </div>
+    </div>
+    <p>Build the table with a list comprehension (Lesson 16), never with <code>[[1] * n] * m</code>, which repeats one shared row.</p>
+  </div>
+
+  <div class="canvas exercise" id="lc62" data-file="unique_paths.py">
+    <div class="task">
+      <h3>LeetCode 62: Unique Paths</h3>
+      <p>Return the number of routes from top-left to bottom-right of an <code>m</code> by <code>n</code> grid, moving only right or down.</p>
+    </div>
+    <textarea class="code">class Solution:
+    def uniquePaths(self, m, n):
+        paths = [[1] * n for _ in range(m)]
+        # fill in every cell not in the top row or left column
+        return paths[m - 1][n - 1]
+</textarea>
+    <script type="text/python" class="tests">
+check("3 by 7", Solution().uniquePaths(3, 7), 28)
+check("3 by 2", Solution().uniquePaths(3, 2), 3)
+check("1 by 1", Solution().uniquePaths(1, 1), 1)
+check("3 by 4", Solution().uniquePaths(3, 4), 10)
+check("100 by 100, fast", Solution().uniquePaths(100, 100), 22750883079422934966181954039568885395604168260154104734000)
+    </script>
+    <script type="text/python" class="solution">
+class Solution:
+    def uniquePaths(self, m, n):
+        paths = [[1] * n for _ in range(m)]
+        for r in range(1, m):
+            for c in range(1, n):
+                paths[r][c] = paths[r - 1][c] + paths[r][c - 1]
+        return paths[m - 1][n - 1]
+    </script>
+  </div>
+</section>
+
+<section id="coins" data-nav="Coin Change">
+  <div class="col">
+    <h2>Fewest coins</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A shopkeeper giving change wants to use as few coins as possible. Grabbing the biggest coin first usually works with real currencies, but not always: with coins of 1, 3 and 4, making 6 greedily gives 4 + 1 + 1 (three coins), while 3 + 3 uses two.</p>
+    </div>
+
+    <p>So try every coin, and remember answers. Let <code>best[a]</code> be the fewest coins that make amount <code>a</code>. For each amount, try each coin as the last one used: <code>best[a] = min(best[a - coin] + 1)</code> over all coins that fit.{{cite:1}} <code>best[0]</code> is 0. Amounts you can't make start as <strong>infinity</strong>, <code>float("inf")</code>, which is bigger than any number, so <code>min</code> ignores them.{{cite:3}} If <code>best[amount]</code> is still infinity at the end, return -1.{{cite:5}}</p>
+  </div>
+
+  <div class="canvas exercise" id="lc322" data-file="coin_change.py">
+    <div class="task">
+      <h3>LeetCode 322: Coin Change</h3>
+      <p>Return the fewest coins needed to make <code>amount</code> (each coin can be used any number of times), or -1 if it's impossible.</p>
+    </div>
+    <textarea class="code">class Solution:
+    def coinChange(self, coins, amount):
+        best = [float("inf")] * (amount + 1)
+        best[0] = 0
+        # your code here
+        return best[amount] if best[amount] != float("inf") else -1
+</textarea>
+    <script type="text/python" class="tests">
+check("[1, 2, 5], 11 (5 + 5 + 1)", Solution().coinChange([1, 2, 5], 11), 3)
+check("Impossible: [2], 3", Solution().coinChange([2], 3), -1)
+check("Zero amount", Solution().coinChange([1], 0), 0)
+check("Greedy fails: [1, 3, 4], 6", Solution().coinChange([1, 3, 4], 6), 2)
+check("Large amount, fast", Solution().coinChange([186, 419, 83, 408], 6249), 20)
+    </script>
+    <script type="text/python" class="solution">
+class Solution:
+    def coinChange(self, coins, amount):
+        best = [float("inf")] * (amount + 1)
+        best[0] = 0
+        for a in range(1, amount + 1):
+            for coin in coins:
+                if coin <= a and best[a - coin] + 1 < best[a]:
+                    best[a] = best[a - coin] + 1
+        return best[amount] if best[amount] != float("inf") else -1
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>Two loops: amounts <code>a</code> from 1 to <code>amount</code>, and inside, each <code>coin</code>. If the coin fits (<code>coin &lt;= a</code>), see whether <code>best[a - coin] + 1</code> beats the current <code>best[a]</code>.</p></div>
+  </details>
+</section>
+
+<section id="lcs" data-nav="Common subsequence">
+  <div class="col">
+    <h2>Comparing two texts</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Two people write down the same shopping list from memory. Some items match and appear in the same order, some are extra. The longest run of shared items in the same order shows how similar the lists are. Tools that show "what changed" between two versions of a file, like Git (Lesson 35), are built on this idea.</p>
+    </div>
+
+    <p>A <strong>subsequence</strong> keeps some characters in order, possibly with gaps: "ace" is a subsequence of "abcde". LeetCode 1143 asks for the length of the longest one shared by two strings.{{cite:6}}</p>
+    <p>Make a table with a row for each prefix of <code>text1</code> and a column for each prefix of <code>text2</code> (plus an empty row and column of zeros). For each cell, compare the two current characters:</p>
+    <ul>
+      <li><strong>They match:</strong> 1 + the cell diagonally up-left (both strings one shorter).</li>
+      <li><strong>They don't:</strong> the bigger of the cell above and the cell to the left (drop a character from one string or the other).</li>
+    </ul>
+  </div>
+
+  <div class="canvas exercise" id="lc1143" data-file="lcs.py">
+    <div class="task">
+      <h3>LeetCode 1143: Longest Common Subsequence</h3>
+      <p>Return the length of the longest common subsequence of <code>text1</code> and <code>text2</code>.</p>
+    </div>
+    <textarea class="code">class Solution:
+    def longestCommonSubsequence(self, text1, text2):
+        rows, cols = len(text1), len(text2)
+        table = [[0] * (cols + 1) for _ in range(rows + 1)]
+        # fill table[i][j] for i in 1..rows and j in 1..cols
+        # (the current characters are text1[i - 1] and text2[j - 1])
+        return table[rows][cols]
+</textarea>
+    <script type="text/python" class="tests">
+check("abcde / ace", Solution().longestCommonSubsequence("abcde", "ace"), 3)
+check("abc / abc", Solution().longestCommonSubsequence("abc", "abc"), 3)
+check("abc / def", Solution().longestCommonSubsequence("abc", "def"), 0)
+check("Order matters: abc / cba", Solution().longestCommonSubsequence("abc", "cba"), 1)
+check("1,000 characters each, fast", Solution().longestCommonSubsequence("ab" * 500, "ba" * 500), 999)
+    </script>
+    <script type="text/python" class="solution">
+class Solution:
+    def longestCommonSubsequence(self, text1, text2):
+        rows, cols = len(text1), len(text2)
+        table = [[0] * (cols + 1) for _ in range(rows + 1)]
+        for i in range(1, rows + 1):
+            for j in range(1, cols + 1):
+                if text1[i - 1] == text2[j - 1]:
+                    table[i][j] = table[i - 1][j - 1] + 1
+                else:
+                    table[i][j] = max(table[i - 1][j], table[i][j - 1])
+        return table[rows][cols]
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>Nested loops over <code>i</code> and <code>j</code> from 1. If <code>text1[i - 1] == text2[j - 1]</code>, the cell is <code>table[i - 1][j - 1] + 1</code>; otherwise <code>max(table[i - 1][j], table[i][j - 1])</code>.</p></div>
+  </details>
+</section>
+
+<section id="recipe" data-nav="The recipe">
+  <div class="col">
+    <h2>A recipe for any DP problem</h2>
+    <ol class="steps">
+      <li><p><strong>Define the state</strong> in words: "best[a] is the fewest coins to make a". Everything follows from this sentence.</p></li>
+      <li><p><strong>Find the recurrence</strong> by thinking about the last choice: last step, last coin, last characters.</p></li>
+      <li><p><strong>Set the base cases</strong>: the smallest states, answered directly (0 coins for amount 0, one route along the edge).</p></li>
+      <li><p><strong>Choose an order</strong> so that every cell's ingredients are filled in before the cell itself.</p></li>
+      <li><p><strong>Read off the answer</strong>, then check the Big O: usually the number of states times the work per state.</p></li>
+    </ol>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>State</dt><dd>What one cell of the DP table means, in words.</dd>
+        <dt><code>float("inf")</code></dt><dd>Infinity: larger than any number, used for "impossible so far".</dd>
+        <dt>Subsequence</dt><dd>Characters kept in order, gaps allowed: "ace" in "abcde".</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. In Unique Paths, each cell is filled from which cells?</p>
+      <div class="options">
+        <button class="opt" data-correct>The one above and the one to the left</button>
+        <button class="opt">The one below and the one to the right</button>
+        <button class="opt">All eight neighbours</button>
+        <button class="opt">Only the diagonal up-left</button>
+      </div>
+      <p class="why">You can only arrive by moving down (from above) or right (from the left).</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. Why does Coin Change start every amount at infinity?</p>
+      <div class="options">
+        <button class="opt" data-correct>So unmakeable amounts never win a min()</button>
+        <button class="opt">Because coins can be used forever</button>
+        <button class="opt">To make the table use less memory</button>
+        <button class="opt">Python lists must start at infinity</button>
+      </div>
+      <p class="why">Infinity means "impossible so far": any real count is smaller, and if it stays infinity the answer is -1.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. Is "aec" a subsequence of "abcde"?</p>
+      <div class="options">
+        <button class="opt" data-correct>No: the order is wrong</button>
+        <button class="opt">Yes: all three letters appear</button>
+        <button class="opt">Yes: gaps are allowed</button>
+        <button class="opt">No: it isn't contiguous</button>
+      </div>
+      <p class="why">Gaps are allowed, but the characters must stay in the original order, and c comes before e.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. What's the first step of the DP recipe?</p>
+      <div class="options">
+        <button class="opt" data-correct>Define what a cell means in words</button>
+        <button class="opt">Write the nested loops</button>
+        <button class="opt">Fill the table with zeros</button>
+        <button class="opt">Submit to see what fails</button>
+      </div>
+      <p class="why">A clear state definition is what makes the recurrence findable.</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Submit, read, then practise from memory</h2>
+
+    <div class="card">
+      <h3>Submit on LeetCode</h3>
+      <p>Submit all three (links in Sources). That completes the algorithms track: arrays and hashing, two pointers, sliding window, stacks, binary search, recursion, sorting, linked lists, trees, BFS, heaps, graphs, backtracking and DP.</p>
+    </div>
+
+    <div class="card">
+      <h3>Keep practising</h3>
+      <p><a class="source-link" href="https://neetcode.io/roadmap">NeetCode roadmap</a></p>
+      <p>Each box on the roadmap matches a lesson you've done. Working through its "NeetCode 150" problems, a few a week, alongside the projects, is a steady way to prepare for interviews.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Tomorrow, before Lesson 35</h3>
+      <p>From a blank editor: Coin Change, writing the five recipe steps as comments first. Then try LeetCode 64, Minimum Path Sum: Unique Paths with costs and <code>min</code>.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong>: "help me define the state for a DP problem without telling me the answer".</p>
+    </div>
+  </div>
+</section>

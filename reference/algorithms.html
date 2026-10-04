@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Algorithm patterns reference</title>
+<meta name="description" content="Python from zero: Big O and the algorithm patterns from Lessons 19 to 34, with templates.">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<script src="../assets/theme.js"></script>
+</head>
+<body class="ref">
+
+<header class="topbar">
+  <a class="wordmark" href="../">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#2e2e2e"/><path d="M7 8l4 4-4 4" fill="none" stroke="#fdfcfb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 16h4" stroke="#fdfcfb" stroke-width="2" stroke-linecap="round"/></svg>
+    Python from zero
+  </a>
+  <span class="where"><a href="./">Reference</a></span>
+</header>
+
+<main>
+  <div class="hero">
+    <h1>Algorithm patterns</h1>
+    <p class="intro">The algorithms track (Lessons 19 to 34): costs, the pattern to reach for, and a template for each. Source: <a href="https://runestone.academy/ns/books/published/pythonds3/index.html">Problem Solving with Algorithms and Data Structures using Python</a> and the <a href="https://wiki.python.org/moin/TimeComplexity">Python TimeComplexity page</a>.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Big O · L19</h2>
+<pre><code>O(1)        dict/set lookup, append
+O(log n)    binary search, heap push/pop
+O(n)        one pass, x in list
+O(n log n)  sorting
+O(n²)       loop inside a loop
+O(2ⁿ) O(n!) subsets, permutations</code></pre>
+      <p>Drop constants and smaller terms. Nested loops multiply; loops in a row add.</p>
+    </div>
+
+    <div class="card">
+      <h2>Which pattern? A quick guide</h2>
+      <p><strong>Search inside a loop</strong>: hash map or set. <strong>Sorted list, pair or target</strong>: two pointers or binary search. <strong>Contiguous run</strong>: sliding window. <strong>Matching or undo</strong>: stack. <strong>Nearest first</strong>: BFS. <strong>Top k</strong>: heap. <strong>All combinations</strong>: backtracking. <strong>Repeated subproblems</strong>: DP.</p>
+    </div>
+
+    <div class="card">
+      <h2>Hash map · L20</h2>
+<pre><code>seen = {}
+for i, x in enumerate(nums):
+    if target - x in seen:
+        return [seen[target - x], i]
+    seen[x] = i</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Two pointers · L21</h2>
+<pre><code>left, right = 0, len(a) - 1
+while left &lt; right:
+    total = a[left] + a[right]
+    if total == target: return ...
+    if total &gt; target: right -= 1
+    else: left += 1</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Sliding window · L22</h2>
+<pre><code>window, left, best = set(), 0, 0
+for right in range(len(s)):
+    while s[right] in window:
+        window.remove(s[left])
+        left += 1
+    window.add(s[right])
+    best = max(best, right - left + 1)</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Stack · L23</h2>
+<pre><code>stack = []
+stack.append(x)    <span class="c"># push</span>
+stack.pop()        <span class="c"># pop</span>
+stack[-1]          <span class="c"># peek</span>
+if stack:          <span class="c"># not empty</span></code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Binary search · L24</h2>
+<pre><code>low, high = 0, len(a) - 1
+while low &lt;= high:
+    mid = (low + high) // 2
+    if a[mid] == target: return mid
+    if a[mid] &lt; target: low = mid + 1
+    else: high = mid - 1
+return low   <span class="c"># insert position</span></code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Recursion · L25</h2>
+<pre><code>def f(n):
+    if n == 0:          <span class="c"># base case</span>
+        return 1
+    return n * f(n - 1) <span class="c"># smaller problem</span></code></pre>
+      <p>RecursionError usually means a missing base case.</p>
+    </div>
+
+    <div class="card">
+      <h2>Sorting · L26</h2>
+<pre><code>sorted(xs)                <span class="c"># new list</span>
+xs.sort()                 <span class="c"># in place, None</span>
+sorted(xs, key=len, reverse=True)
+key=order     <span class="c"># order(p) returns (-p[1], p[0])</span>
+<span class="c"># merge sort: split, sort halves, merge</span></code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Linked lists · L27</h2>
+<pre><code>prev, cur = None, head
+while cur:
+    nxt = cur.next
+    cur.next = prev
+    prev, cur = cur, nxt
+<span class="c"># fast/slow: middle and cycles</span>
+<span class="c"># dummy = ListNode() to build lists</span></code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Trees, DFS · L28</h2>
+<pre><code>def depth(node):
+    if node is None:
+        return 0
+    return 1 + max(depth(node.left),
+                   depth(node.right))</code></pre>
+      <p>Preorder: node, left, right. Inorder: left, node, right (sorted for a BST).</p>
+    </div>
+
+    <div class="card">
+      <h2>BFS · L29</h2>
+<pre><code>from collections import deque
+queue = deque([start])
+while queue:
+    for _ in range(len(queue)):
+        node = queue.popleft()
+        <span class="c"># queue.append(child)</span></code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Heaps · L30</h2>
+<pre><code>import heapq
+heapq.heappush(h, x)   heapq.heappop(h)
+h[0]                   <span class="c"># smallest</span>
+heapq.heapify(xs)      <span class="c"># O(n)</span>
+heapq.heappush(h, -x)  <span class="c"># max-heap</span>
+<span class="c"># k largest: min-heap of size k</span></code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Graphs · L31</h2>
+<pre><code>graph.setdefault(a, []).append(b)
+def dfs(v):
+    visited.add(v)
+    for w in graph[v]:
+        if w not in visited:
+            dfs(w)</code></pre>
+      <p>Grids: neighbours are up, down, left, right. O(V + E).</p>
+    </div>
+
+    <div class="card">
+      <h2>Backtracking · L32</h2>
+<pre><code>def backtrack(...):
+    if complete:
+        results.append(path[:])
+        return
+    for choice in choices:
+        path.append(choice)
+        backtrack(...)
+        path.pop()</code></pre>
+    </div>
+
+    <div class="card">
+      <h2>Dynamic programming · L33, L34</h2>
+<pre><code>cache = {}                 <span class="c"># top-down</span>
+best = [0] * (n + 1)       <span class="c"># bottom-up</span>
+for i in range(2, n + 1):
+    best[i] = best[i-1] + best[i-2]
+table = [[0] * (m + 1) for _ in range(n + 1)]</code></pre>
+      <p>Recipe: define the state, find the recurrence, set base cases, choose an order, read the answer.</p>
+    </div>
+  </div>
+
+  <div class="col">
+    <nav class="pager" aria-label="Reference navigation">
+      <a href="python-basics"><span class="quiet">Back to</span> Python basics</a>
+      <a href="./">Reference</a>
+    </nav>
+  </div>
+</main>
+</body>
+</html>

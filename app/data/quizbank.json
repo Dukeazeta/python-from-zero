@@ -1,0 +1,3914 @@
+[
+ {
+  "qid": "0001-q1",
+  "lesson": "0001",
+  "question": "What does <code>print(\"4 + 4\")</code> show?",
+  "options": [
+   {
+    "html": "<code>4 + 4</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>8</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>\"4 + 4\"</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>8.0</code>",
+    "correct": false
+   }
+  ],
+  "why": "The quotes make it a string, so Python shows the text as written, without the quotes."
+ },
+ {
+  "qid": "0001-q2",
+  "lesson": "0001",
+  "question": "What does <code>print(9 / 3)</code> show?",
+  "options": [
+   {
+    "html": "<code>3.0</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>3</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>9 / 3</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>0.3</code>",
+    "correct": false
+   }
+  ],
+  "why": "Division with / always gives a number with a decimal point."
+ },
+ {
+  "qid": "0001-q3",
+  "lesson": "0001",
+  "question": "Which line causes an error?",
+  "options": [
+   {
+    "html": "<code>Print(\"Hi\")</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>print(\"Hi\")</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>print('Hi')</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>print(2 * 3)</code>",
+    "correct": false
+   }
+  ],
+  "why": "Python cares about capitals. Only print, all lower case, exists."
+ },
+ {
+  "qid": "0001-q4",
+  "lesson": "0001",
+  "question": "Where should you look first in an error message?",
+  "options": [
+   {
+    "html": "The very last line",
+    "correct": true
+   },
+   {
+    "html": "The very first line",
+    "correct": false
+   },
+   {
+    "html": "The longest line shown",
+    "correct": false
+   },
+   {
+    "html": "The line saying File",
+    "correct": false
+   }
+  ],
+  "why": "The last line names the kind of problem. The lines above it point to where it happened."
+ },
+ {
+  "qid": "0002-q1",
+  "lesson": "0002",
+  "question": "What does <code>print(10 / 2)</code> show?",
+  "options": [
+   {
+    "html": "<code>5.0</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>5</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>10 / 2</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>2.0</code>",
+    "correct": false
+   }
+  ],
+  "why": "Dividing with / always gives a number with a decimal point."
+ },
+ {
+  "qid": "0002-q2",
+  "lesson": "0002",
+  "question": "Multiplying 7 by 6 gives 42. What is 42 called?",
+  "options": [
+   {
+    "html": "The product",
+    "correct": true
+   },
+   {
+    "html": "The sum",
+    "correct": false
+   },
+   {
+    "html": "The difference",
+    "correct": false
+   },
+   {
+    "html": "The quotient",
+    "correct": false
+   }
+  ],
+  "why": "Multiplying gives a product. Adding gives a sum, subtracting a difference, dividing a quotient."
+ },
+ {
+  "qid": "0002-q3",
+  "lesson": "0002",
+  "question": "Which of these is a string?",
+  "options": [
+   {
+    "html": "<code>\"42\"</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>42</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>4.2</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>40 + 2</code>",
+    "correct": false
+   }
+  ],
+  "why": "The quotes make it text, even though the text happens to be digits."
+ },
+ {
+  "qid": "0002-q4",
+  "lesson": "0002",
+  "question": "You see <code>&gt;&gt;&gt;</code> on the screen. What does it mean?",
+  "options": [
+   {
+    "html": "Python is waiting for you",
+    "correct": true
+   },
+   {
+    "html": "Python found an error here",
+    "correct": false
+   },
+   {
+    "html": "The file has been saved",
+    "correct": false
+   },
+   {
+    "html": "The program has finished",
+    "correct": false
+   }
+  ],
+  "why": "Three arrows is Python's prompt: the interactive shell is ready for your next line."
+ },
+ {
+  "qid": "0002-q5",
+  "lesson": "0002",
+  "question": "You want to keep your code and run it again next week. Where do you write it?",
+  "options": [
+   {
+    "html": "In a .py file",
+    "correct": true
+   },
+   {
+    "html": "In the shell",
+    "correct": false
+   },
+   {
+    "html": "In the prompt",
+    "correct": false
+   },
+   {
+    "html": "In the folder",
+    "correct": false
+   }
+  ],
+  "why": "The shell forgets everything when you exit. A file stays saved, like a written recipe."
+ },
+ {
+  "qid": "0002-q6",
+  "lesson": "0002",
+  "question": "You changed <code>hello.py</code>, ran it, and the old output appeared. Most likely cause?",
+  "options": [
+   {
+    "html": "The file wasn't saved",
+    "correct": true
+   },
+   {
+    "html": "Python needs restarting",
+    "correct": false
+   },
+   {
+    "html": "The folder is wrong now",
+    "correct": false
+   },
+   {
+    "html": "The computer is too slow",
+    "correct": false
+   }
+  ],
+  "why": "Python runs what's saved on disk. Press Ctrl + S, then run again."
+ },
+ {
+  "qid": "0002-q7",
+  "lesson": "0002",
+  "question": "In a <code>.py</code> file, what does the line <code>7 * 6</code> show when you run it?",
+  "options": [
+   {
+    "html": "Nothing at all",
+    "correct": true
+   },
+   {
+    "html": "The number 42",
+    "correct": false
+   },
+   {
+    "html": "The text 7 * 6",
+    "correct": false
+   },
+   {
+    "html": "An error message",
+    "correct": false
+   }
+  ],
+  "why": "Python works it out, but only print shows things when running a file. The shell is the one that shows values on its own."
+ },
+ {
+  "qid": "0003-q1",
+  "lesson": "0003",
+  "question": "After these lines run, what is in <code>x</code>? <code>x = 5</code> then <code>x = x + 2</code>",
+  "options": [
+   {
+    "html": "<code>7</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>5</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>2</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>52</code>",
+    "correct": false
+   }
+  ],
+  "why": "Python works out x + 2 using the current value 5, gets 7, and stores 7 back in x."
+ },
+ {
+  "qid": "0003-q2",
+  "lesson": "0003",
+  "question": "Which variable name is allowed in Python?",
+  "options": [
+   {
+    "html": "<code>total_cost</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>total cost</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>total-cost</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>2total_cost</code>",
+    "correct": false
+   }
+  ],
+  "why": "Only letters, numbers and underscores, and it can't start with a number."
+ },
+ {
+  "qid": "0003-q3",
+  "lesson": "0003",
+  "question": "In <code>age = 21</code>, what does <code>=</code> do?",
+  "options": [
+   {
+    "html": "Stores 21 under the name age",
+    "correct": true
+   },
+   {
+    "html": "Checks whether age equals 21",
+    "correct": false
+   },
+   {
+    "html": "Prints age and 21 together",
+    "correct": false
+   },
+   {
+    "html": "Joins age and 21 into text",
+    "correct": false
+   }
+  ],
+  "why": "In Python, a single = is assignment: it stores the value on the right in the name on the left."
+ },
+ {
+  "qid": "0003-q4",
+  "lesson": "0003",
+  "question": "What happens when you run <code>print(\"Score: \" + 10)</code>?",
+  "options": [
+   {
+    "html": "A TypeError appears",
+    "correct": true
+   },
+   {
+    "html": "It shows Score: 10",
+    "correct": false
+   },
+   {
+    "html": "It shows Score: + 10",
+    "correct": false
+   },
+   {
+    "html": "It shows the number 10",
+    "correct": false
+   }
+  ],
+  "why": "You can't join a string and a number with +. Use str(10) to turn the number into text first."
+ },
+ {
+  "qid": "0004-q1",
+  "lesson": "0004",
+  "question": "The person types <code>42</code> into <code>input()</code>. What type is the value you get back?",
+  "options": [
+   {
+    "html": "<code>str</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>int</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>float</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>bool</code>",
+    "correct": false
+   }
+  ],
+  "why": "input() always returns a string, even when the person types digits."
+ },
+ {
+  "qid": "0004-q2",
+  "lesson": "0004",
+  "question": "What does <code>print(int(\"42\") + 1)</code> show?",
+  "options": [
+   {
+    "html": "<code>43</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>421</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>42 + 1</code>",
+    "correct": false
+   },
+   {
+    "html": "A TypeError",
+    "correct": false
+   }
+  ],
+  "why": "int(\"42\") turns the text into the number 42, so adding 1 gives 43."
+ },
+ {
+  "qid": "0004-q3",
+  "lesson": "0004",
+  "question": "What does <code>print(f\"{2 + 3} apples\")</code> show?",
+  "options": [
+   {
+    "html": "<code>5 apples</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>{2 + 3} apples</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>2 + 3 apples</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>23 apples</code>",
+    "correct": false
+   }
+  ],
+  "why": "In an f-string, Python works out what's inside the braces and fills in the result."
+ },
+ {
+  "qid": "0004-q4",
+  "lesson": "0004",
+  "question": "What happens with <code>int(\"twenty\")</code>?",
+  "options": [
+   {
+    "html": "A ValueError appears",
+    "correct": true
+   },
+   {
+    "html": "It gives the number 20",
+    "correct": false
+   },
+   {
+    "html": "It gives the text twenty",
+    "correct": false
+   },
+   {
+    "html": "A NameError appears",
+    "correct": false
+   }
+  ],
+  "why": "int() only understands digits. The string is the right type but the wrong content, which is a ValueError."
+ },
+ {
+  "qid": "0005-q1",
+  "lesson": "0005",
+  "question": "What does <code>print(7 &gt;= 7)</code> show?",
+  "options": [
+   {
+    "html": "<code>True</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>False</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>7</code>",
+    "correct": false
+   },
+   {
+    "html": "An error",
+    "correct": false
+   }
+  ],
+  "why": "&gt;= means \"greater than or equal to\", and 7 is equal to 7."
+ },
+ {
+  "qid": "0005-q2",
+  "lesson": "0005",
+  "question": "Which line checks whether <code>name</code> is Ada?",
+  "options": [
+   {
+    "html": "<code>if name == \"Ada\":</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>if name = \"Ada\":</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>if name == \"Ada\"</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>if (name is Ada)</code>",
+    "correct": false
+   }
+  ],
+  "why": "Comparing needs ==, and the if line must end with a colon."
+ },
+ {
+  "qid": "0005-q3",
+  "lesson": "0005",
+  "question": "With <code>x = 15</code>, which line prints? <code>if x &gt; 10:</code> print A, <code>elif x &gt; 5:</code> print B, <code>else:</code> print C",
+  "options": [
+   {
+    "html": "Only A",
+    "correct": true
+   },
+   {
+    "html": "A and B",
+    "correct": false
+   },
+   {
+    "html": "Only B",
+    "correct": false
+   },
+   {
+    "html": "A, B and C",
+    "correct": false
+   }
+  ],
+  "why": "15 &gt; 10 is true, so the first block runs and Python skips every elif and else after it."
+ },
+ {
+  "qid": "0005-q4",
+  "lesson": "0005",
+  "question": "How does Python know which lines belong to an <code>if</code>?",
+  "options": [
+   {
+    "html": "They're indented under it",
+    "correct": true
+   },
+   {
+    "html": "They're inside curly braces",
+    "correct": false
+   },
+   {
+    "html": "They end with semicolons",
+    "correct": false
+   },
+   {
+    "html": "They come before the if",
+    "correct": false
+   }
+  ],
+  "why": "The colon starts a block, and the indented lines under it are the block."
+ },
+ {
+  "qid": "0006-q1",
+  "lesson": "0006",
+  "question": "What is <code>True and False</code>?",
+  "options": [
+   {
+    "html": "<code>False</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>True</code>",
+    "correct": false
+   },
+   {
+    "html": "An error",
+    "correct": false
+   },
+   {
+    "html": "<code>None</code>",
+    "correct": false
+   }
+  ],
+  "why": "and needs both sides to be true."
+ },
+ {
+  "qid": "0006-q2",
+  "lesson": "0006",
+  "question": "What is <code>17 % 5</code>?",
+  "options": [
+   {
+    "html": "<code>2</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>3</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>3.4</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>12</code>",
+    "correct": false
+   }
+  ],
+  "why": "5 goes into 17 three times (15), leaving 2 over."
+ },
+ {
+  "qid": "0006-q3",
+  "lesson": "0006",
+  "question": "Which condition correctly checks for Saturday or Sunday?",
+  "options": [
+   {
+    "html": "<code>day == \"Sat\" or day == \"Sun\"</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>day == \"Sat\" or \"Sun\"</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>day == \"Sat\" and day == \"Sun\"</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>day == (\"Sat\" or \"Sun\")</code>",
+    "correct": false
+   }
+  ],
+  "why": "Each side of or needs its own full comparison."
+ },
+ {
+  "qid": "0006-q4",
+  "lesson": "0006",
+  "question": "With <code>n = 9</code>, what is <code>not (n % 2 == 0)</code>?",
+  "options": [
+   {
+    "html": "<code>True</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>False</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>1</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>0</code>",
+    "correct": false
+   }
+  ],
+  "why": "9 % 2 is 1, so n % 2 == 0 is False, and not flips it to True."
+ },
+ {
+  "qid": "0007-q1",
+  "lesson": "0007",
+  "question": "How many times does this print? <code>n = 0</code>, then <code>while n &lt; 3:</code> with <code>print(n)</code> and <code>n += 1</code> inside.",
+  "options": [
+   {
+    "html": "3 times",
+    "correct": true
+   },
+   {
+    "html": "2 times",
+    "correct": false
+   },
+   {
+    "html": "4 times",
+    "correct": false
+   },
+   {
+    "html": "Forever",
+    "correct": false
+   }
+  ],
+  "why": "It prints 0, 1 and 2. When n becomes 3, 3 &lt; 3 is false and the loop ends."
+ },
+ {
+  "qid": "0007-q2",
+  "lesson": "0007",
+  "question": "Most common cause of an infinite loop?",
+  "options": [
+   {
+    "html": "Nothing changes the condition",
+    "correct": true
+   },
+   {
+    "html": "The loop has too many lines",
+    "correct": false
+   },
+   {
+    "html": "The condition uses a number",
+    "correct": false
+   },
+   {
+    "html": "The computer is too slow",
+    "correct": false
+   }
+  ],
+  "why": "If nothing inside the loop affects the condition, a true condition stays true forever."
+ },
+ {
+  "qid": "0007-q3",
+  "lesson": "0007",
+  "question": "What does <code>break</code> do?",
+  "options": [
+   {
+    "html": "Ends the loop right away",
+    "correct": true
+   },
+   {
+    "html": "Skips to the next iteration",
+    "correct": false
+   },
+   {
+    "html": "Stops the whole program",
+    "correct": false
+   },
+   {
+    "html": "Pauses until Enter is pressed",
+    "correct": false
+   }
+  ],
+  "why": "break leaves the loop; the program carries on after it. continue is the one that skips to the next iteration."
+ },
+ {
+  "qid": "0007-q4",
+  "lesson": "0007",
+  "question": "After <code>x = 10</code> and <code>x -= 3</code>, what is <code>x</code>?",
+  "options": [
+   {
+    "html": "<code>7</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>13</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>-3</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>30</code>",
+    "correct": false
+   }
+  ],
+  "why": "x -= 3 is short for x = x - 3."
+ },
+ {
+  "qid": "0008-q1",
+  "lesson": "0008",
+  "question": "Which numbers does <code>range(2, 6)</code> give?",
+  "options": [
+   {
+    "html": "2, 3, 4, 5",
+    "correct": true
+   },
+   {
+    "html": "2, 3, 4, 5, 6",
+    "correct": false
+   },
+   {
+    "html": "3, 4, 5, 6",
+    "correct": false
+   },
+   {
+    "html": "0, 1, 2, 3, 4, 5",
+    "correct": false
+   }
+  ],
+  "why": "range starts at the first number and stops before the second."
+ },
+ {
+  "qid": "0008-q2",
+  "lesson": "0008",
+  "question": "Which range counts from 1 to 10, including 10?",
+  "options": [
+   {
+    "html": "<code>range(1, 11)</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>range(1, 10)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>range(10)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>range(0, 10)</code>",
+    "correct": false
+   }
+  ],
+  "why": "The stop value is never included, so to reach 10 you stop before 11."
+ },
+ {
+  "qid": "0008-q3",
+  "lesson": "0008",
+  "question": "In the accumulator pattern, where does <code>total = 0</code> go?",
+  "options": [
+   {
+    "html": "Before the loop starts",
+    "correct": true
+   },
+   {
+    "html": "Inside the loop, first line",
+    "correct": false
+   },
+   {
+    "html": "Inside the loop, last line",
+    "correct": false
+   },
+   {
+    "html": "After the loop finishes",
+    "correct": false
+   }
+  ],
+  "why": "Inside the loop, it would reset to 0 every time round and you'd lose the running total."
+ },
+ {
+  "qid": "0008-q4",
+  "lesson": "0008",
+  "question": "You want to keep asking until someone types quit. Which loop fits best?",
+  "options": [
+   {
+    "html": "A while loop",
+    "correct": true
+   },
+   {
+    "html": "A for loop over range",
+    "correct": false
+   },
+   {
+    "html": "A for loop over a string",
+    "correct": false
+   },
+   {
+    "html": "No loop is needed",
+    "correct": false
+   }
+  ],
+  "why": "You don't know how many times in advance; you're waiting for something to change."
+ },
+ {
+  "qid": "0009-q1",
+  "lesson": "0009",
+  "question": "With <code>colours = [\"red\", \"green\", \"blue\"]</code>, what is <code>colours[1]</code>?",
+  "options": [
+   {
+    "html": "<code>\"green\"</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>\"red\"</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>\"blue\"</code>",
+    "correct": false
+   },
+   {
+    "html": "An IndexError",
+    "correct": false
+   }
+  ],
+  "why": "Indexes start at 0, so index 1 is the second item."
+ },
+ {
+  "qid": "0009-q2",
+  "lesson": "0009",
+  "question": "A list has 5 items. What is the index of the last one?",
+  "options": [
+   {
+    "html": "<code>4</code> (or <code>-1</code>)",
+    "correct": true
+   },
+   {
+    "html": "<code>5</code> (or <code>-5</code>)",
+    "correct": false
+   },
+   {
+    "html": "<code>6</code> (or <code>-6</code>)",
+    "correct": false
+   },
+   {
+    "html": "<code>0</code> (or <code>-0</code>)",
+    "correct": false
+   }
+  ],
+  "why": "Counting from 0, five items have indexes 0 to 4. -1 always means the last one."
+ },
+ {
+  "qid": "0009-q3",
+  "lesson": "0009",
+  "question": "What does <code>[10, 20, 30, 40][1:3]</code> give?",
+  "options": [
+   {
+    "html": "<code>[20, 30]</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>[10, 20, 30]</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>[20, 30, 40]</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>[10, 20]</code>",
+    "correct": false
+   }
+  ],
+  "why": "Start at index 1 (20) and stop before index 3."
+ },
+ {
+  "qid": "0009-q4",
+  "lesson": "0009",
+  "question": "Which line adds \"tea\" to the end of the list <code>drinks</code>?",
+  "options": [
+   {
+    "html": "<code>drinks.append(\"tea\")</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>drinks = \"tea\"</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>append(drinks, \"tea\")</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>drinks[-1] = \"tea\"</code>",
+    "correct": false
+   }
+  ],
+  "why": "append is a list method. drinks[-1] = \"tea\" would replace the last item instead of adding one."
+ },
+ {
+  "qid": "0010-q1",
+  "lesson": "0010",
+  "question": "What is <code>\"hello\"[1:4]</code>?",
+  "options": [
+   {
+    "html": "<code>\"ell\"</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>\"hell\"</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>\"ello\"</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>\"el\"</code>",
+    "correct": false
+   }
+  ],
+  "why": "Start at index 1 (e) and stop before index 4 (o)."
+ },
+ {
+  "qid": "0010-q2",
+  "lesson": "0010",
+  "question": "After <code>name = \"ada\"</code> and <code>name.upper()</code>, what is in <code>name</code>?",
+  "options": [
+   {
+    "html": "<code>\"ada\"</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>\"ADA\"</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>\"Ada\"</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>None</code>",
+    "correct": false
+   }
+  ],
+  "why": "Methods return a new string; they don't change the original. You'd need name = name.upper()."
+ },
+ {
+  "qid": "0010-q3",
+  "lesson": "0010",
+  "question": "What does <code>\"a,b,c\".split(\",\")</code> give?",
+  "options": [
+   {
+    "html": "<code>['a', 'b', 'c']</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>\"a b c\"</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>['a,b,c']</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>\"abc\"</code>",
+    "correct": false
+   }
+  ],
+  "why": "split breaks the string at each comma and returns a list of the pieces."
+ },
+ {
+  "qid": "0010-q4",
+  "lesson": "0010",
+  "question": "What is <code>\"stressed\"[::-1]</code>?",
+  "options": [
+   {
+    "html": "<code>\"desserts\"</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>\"stressed\"</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>\"s\"</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>\"d\"</code>",
+    "correct": false
+   }
+  ],
+  "why": "A step of -1 reverses the string."
+ },
+ {
+  "qid": "0011-q1",
+  "lesson": "0011",
+  "question": "In <code>def greet(name):</code> and the call <code>greet(\"Bo\")</code>, what is <code>\"Bo\"</code>?",
+  "options": [
+   {
+    "html": "The argument",
+    "correct": true
+   },
+   {
+    "html": "The parameter",
+    "correct": false
+   },
+   {
+    "html": "The return value",
+    "correct": false
+   },
+   {
+    "html": "The function name",
+    "correct": false
+   }
+  ],
+  "why": "The value passed in a call is the argument. name, in the def line, is the parameter that receives it."
+ },
+ {
+  "qid": "0011-q2",
+  "lesson": "0011",
+  "question": "A function prints its answer but has no return. What does <code>x = f()</code> store?",
+  "options": [
+   {
+    "html": "<code>None</code>",
+    "correct": true
+   },
+   {
+    "html": "The printed answer",
+    "correct": false
+   },
+   {
+    "html": "<code>0</code>",
+    "correct": false
+   },
+   {
+    "html": "An empty string",
+    "correct": false
+   }
+  ],
+  "why": "Without return, a function gives back None. Printing only shows the answer; it doesn't hand it back."
+ },
+ {
+  "qid": "0011-q3",
+  "lesson": "0011",
+  "question": "When do the lines inside a <code>def</code> run?",
+  "options": [
+   {
+    "html": "Each time the function is called",
+    "correct": true
+   },
+   {
+    "html": "Once, when Python reads the def",
+    "correct": false
+   },
+   {
+    "html": "Only at the end of the program",
+    "correct": false
+   },
+   {
+    "html": "Every time any line runs",
+    "correct": false
+   }
+  ],
+  "why": "def just defines the function. Its body runs on each call."
+ },
+ {
+  "qid": "0011-q4",
+  "lesson": "0011",
+  "question": "What does LeetCode check about your function?",
+  "options": [
+   {
+    "html": "The value it returns",
+    "correct": true
+   },
+   {
+    "html": "The text it prints",
+    "correct": false
+   },
+   {
+    "html": "How many lines it has",
+    "correct": false
+   },
+   {
+    "html": "The names of the variables",
+    "correct": false
+   }
+  ],
+  "why": "LeetCode calls your function and compares its return value with the expected answer."
+ },
+ {
+  "qid": "0012-q1",
+  "lesson": "0012",
+  "question": "A function sets <code>total = 99</code> inside it. After it returns, what happens to that <code>total</code>?",
+  "options": [
+   {
+    "html": "It's gone: it was local",
+    "correct": true
+   },
+   {
+    "html": "It replaces any outside total",
+    "correct": false
+   },
+   {
+    "html": "It's kept for the next call",
+    "correct": false
+   },
+   {
+    "html": "It's printed automatically",
+    "correct": false
+   }
+  ],
+  "why": "Variables made inside a function are local and are wiped when it returns. Use return to get values out."
+ },
+ {
+  "qid": "0012-q2",
+  "lesson": "0012",
+  "question": "With <code>def power(x, n=2):</code>, what does <code>power(5)</code> use for <code>n</code>?",
+  "options": [
+   {
+    "html": "<code>2</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>5</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>None</code>",
+    "correct": false
+   },
+   {
+    "html": "It raises an error",
+    "correct": false
+   }
+  ],
+  "why": "No second argument was passed, so n uses its default value, 2."
+ },
+ {
+  "qid": "0012-q3",
+  "lesson": "0012",
+  "question": "A <code>return</code> runs in the middle of a <code>for</code> loop inside a function. What happens?",
+  "options": [
+   {
+    "html": "The whole function ends there",
+    "correct": true
+   },
+   {
+    "html": "Only that iteration is skipped",
+    "correct": false
+   },
+   {
+    "html": "The loop restarts from the top",
+    "correct": false
+   },
+   {
+    "html": "It waits for the loop to end",
+    "correct": false
+   }
+  ],
+  "why": "return ends the function immediately, loop and all."
+ },
+ {
+  "qid": "0012-q4",
+  "lesson": "0012",
+  "question": "In <code>def fizzBuzz(self, n: int) -&gt; List[str]:</code>, what does <code>n: int</code> do when the code runs?",
+  "options": [
+   {
+    "html": "Nothing: it's only a note",
+    "correct": true
+   },
+   {
+    "html": "Converts n to an int",
+    "correct": false
+   },
+   {
+    "html": "Rejects n if not an int",
+    "correct": false
+   },
+   {
+    "html": "Sets n to zero first",
+    "correct": false
+   }
+  ],
+  "why": "Type hints are notes for readers and tools. Python doesn't enforce them."
+ },
+ {
+  "qid": "0013-q1",
+  "lesson": "0013",
+  "question": "With <code>ages = {\"Ada\": 21, \"Bo\": 30}</code>, what is <code>ages[\"Bo\"]</code>?",
+  "options": [
+   {
+    "html": "<code>30</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>21</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>\"Bo\"</code>",
+    "correct": false
+   },
+   {
+    "html": "A KeyError",
+    "correct": false
+   }
+  ],
+  "why": "Square brackets with a key give that key's value."
+ },
+ {
+  "qid": "0013-q2",
+  "lesson": "0013",
+  "question": "What does <code>ages.get(\"Chi\", 0)</code> give if \"Chi\" isn't a key?",
+  "options": [
+   {
+    "html": "<code>0</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>None</code>",
+    "correct": false
+   },
+   {
+    "html": "A KeyError",
+    "correct": false
+   },
+   {
+    "html": "<code>\"Chi\"</code>",
+    "correct": false
+   }
+  ],
+  "why": "get returns the fallback value when the key is missing, instead of raising an error."
+ },
+ {
+  "qid": "0013-q3",
+  "lesson": "0013",
+  "question": "What does <code>\"Ada\" in ages</code> check?",
+  "options": [
+   {
+    "html": "Whether \"Ada\" is a key",
+    "correct": true
+   },
+   {
+    "html": "Whether \"Ada\" is a value",
+    "correct": false
+   },
+   {
+    "html": "Whether ages is a string",
+    "correct": false
+   },
+   {
+    "html": "Whether ages is empty",
+    "correct": false
+   }
+  ],
+  "why": "in on a dictionary checks its keys."
+ },
+ {
+  "qid": "0013-q4",
+  "lesson": "0013",
+  "question": "After <code>d = {}</code>, <code>d[\"x\"] = 1</code>, <code>d[\"x\"] = 5</code>, what is <code>d</code>?",
+  "options": [
+   {
+    "html": "<code>{'x': 5}</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>{'x': 1, 'x': 5}</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>{'x': 6}</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>{'x': 1}</code>",
+    "correct": false
+   }
+  ],
+  "why": "Keys are unique. Writing to an existing key replaces its value."
+ },
+ {
+  "qid": "0014-q1",
+  "lesson": "0014",
+  "question": "After <code>a, b = 1, 2</code> and <code>a, b = b, a</code>, what is <code>a</code>?",
+  "options": [
+   {
+    "html": "<code>2</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>1</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>(1, 2)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>(2, 1)</code>",
+    "correct": false
+   }
+  ],
+  "why": "The right side is worked out first as (2, 1), then unpacked into a and b, swapping them."
+ },
+ {
+  "qid": "0014-q2",
+  "lesson": "0014",
+  "question": "What is <code>len(set(\"banana\"))</code>?",
+  "options": [
+   {
+    "html": "<code>3</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>6</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>1</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>2</code>",
+    "correct": false
+   }
+  ],
+  "why": "The unique letters are b, a and n."
+ },
+ {
+  "qid": "0014-q3",
+  "lesson": "0014",
+  "question": "What does <code>{}</code> create?",
+  "options": [
+   {
+    "html": "An empty dictionary",
+    "correct": true
+   },
+   {
+    "html": "An empty set",
+    "correct": false
+   },
+   {
+    "html": "An empty tuple",
+    "correct": false
+   },
+   {
+    "html": "An empty list",
+    "correct": false
+   }
+  ],
+  "why": "Empty curly braces are a dictionary. An empty set is set()."
+ },
+ {
+  "qid": "0014-q4",
+  "lesson": "0014",
+  "question": "What is <code>{1, 2, 3} - {2, 3, 4}</code>?",
+  "options": [
+   {
+    "html": "<code>{1}</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>{4}</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>{1, 4}</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>{2, 3}</code>",
+    "correct": false
+   }
+  ],
+  "why": "Difference keeps what's in the first set but not in the second."
+ },
+ {
+  "qid": "0015-q1",
+  "lesson": "0015",
+  "question": "In a traceback, which line names the kind of error?",
+  "options": [
+   {
+    "html": "The very last line",
+    "correct": true
+   },
+   {
+    "html": "The very first line",
+    "correct": false
+   },
+   {
+    "html": "The longest line",
+    "correct": false
+   },
+   {
+    "html": "The line with File",
+    "correct": false
+   }
+  ],
+  "why": "The last line names the error. The lines above show the route of calls that led there."
+ },
+ {
+  "qid": "0015-q2",
+  "lesson": "0015",
+  "question": "<code>[1, 2, 3][5]</code> raises which error?",
+  "options": [
+   {
+    "html": "<code>IndexError</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>KeyError</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>ValueError</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>TypeError</code>",
+    "correct": false
+   }
+  ],
+  "why": "Index 5 is past the end of a 3-item list."
+ },
+ {
+  "qid": "0015-q3",
+  "lesson": "0015",
+  "question": "Why name the error in <code>except ValueError:</code> instead of a bare <code>except:</code>?",
+  "options": [
+   {
+    "html": "So unexpected bugs aren't hidden",
+    "correct": true
+   },
+   {
+    "html": "Because bare except is a SyntaxError",
+    "correct": false
+   },
+   {
+    "html": "So the program runs faster",
+    "correct": false
+   },
+   {
+    "html": "Because ValueError is the only error",
+    "correct": false
+   }
+  ],
+  "why": "A bare except also catches mistakes you didn't expect, like typos, and silently hides them."
+ },
+ {
+  "qid": "0015-q4",
+  "lesson": "0015",
+  "question": "Which is the best edge case to test for a function that averages a list?",
+  "options": [
+   {
+    "html": "An empty list",
+    "correct": true
+   },
+   {
+    "html": "A list of three numbers",
+    "correct": false
+   },
+   {
+    "html": "A list of even numbers",
+    "correct": false
+   },
+   {
+    "html": "A list of small numbers",
+    "correct": false
+   }
+  ],
+  "why": "An empty list makes len() zero, which would divide by zero. That's an extreme the normal cases never touch."
+ },
+ {
+  "qid": "0016-q1",
+  "lesson": "0016",
+  "question": "An outer loop runs 4 times and an inner loop 5 times. How many times does the inner block run?",
+  "options": [
+   {
+    "html": "<code>20</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>9</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>5</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>4</code>",
+    "correct": false
+   }
+  ],
+  "why": "The inner loop runs fully for every outer step: 4 times 5."
+ },
+ {
+  "qid": "0016-q2",
+  "lesson": "0016",
+  "question": "With <code>g = [[1, 2], [3, 4], [5, 6]]</code>, what is <code>g[2][0]</code>?",
+  "options": [
+   {
+    "html": "<code>5</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>2</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>3</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>6</code>",
+    "correct": false
+   }
+  ],
+  "why": "Row 2 is [5, 6], and column 0 of that row is 5."
+ },
+ {
+  "qid": "0016-q3",
+  "lesson": "0016",
+  "question": "What does <code>[n + 1 for n in [1, 2, 3]]</code> give?",
+  "options": [
+   {
+    "html": "<code>[2, 3, 4]</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>[1, 2, 3, 1]</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>[1, 2, 3]</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>[3, 4, 5]</code>",
+    "correct": false
+   }
+  ],
+  "why": "It takes each n and puts n + 1 in the new list."
+ },
+ {
+  "qid": "0016-q4",
+  "lesson": "0016",
+  "question": "Why is <code>[[0] * 3] * 3</code> a bad way to make a grid?",
+  "options": [
+   {
+    "html": "All three rows are the same list",
+    "correct": true
+   },
+   {
+    "html": "It makes a grid of ones",
+    "correct": false
+   },
+   {
+    "html": "It raises a TypeError",
+    "correct": false
+   },
+   {
+    "html": "It only makes one row",
+    "correct": false
+   }
+  ],
+  "why": "The outer * 3 repeats a reference to one row, so changing one row changes them all."
+ },
+ {
+  "qid": "0017-q1",
+  "lesson": "0017",
+  "question": "What does <code>self</code> refer to inside a method?",
+  "options": [
+   {
+    "html": "The object the method was called on",
+    "correct": true
+   },
+   {
+    "html": "The class blueprint itself",
+    "correct": false
+   },
+   {
+    "html": "The first argument you passed",
+    "correct": false
+   },
+   {
+    "html": "The whole running program",
+    "correct": false
+   }
+  ],
+  "why": "In rex.learn(\"sit\"), Python passes rex as self."
+ },
+ {
+  "qid": "0017-q2",
+  "lesson": "0017",
+  "question": "When does <code>__init__</code> run?",
+  "options": [
+   {
+    "html": "When a new object is created",
+    "correct": true
+   },
+   {
+    "html": "When the class is written",
+    "correct": false
+   },
+   {
+    "html": "Whenever any method is called",
+    "correct": false
+   },
+   {
+    "html": "When the program finishes",
+    "correct": false
+   }
+  ],
+  "why": "Calling the class, like Dog(\"Rex\"), creates an object and runs __init__ to set it up."
+ },
+ {
+  "qid": "0017-q3",
+  "lesson": "0017",
+  "question": "<code>a = Counter()</code> and <code>b = Counter()</code>, then <code>a.click()</code>. What is <code>b.count</code>?",
+  "options": [
+   {
+    "html": "<code>0</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>1</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>2</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>None</code>",
+    "correct": false
+   }
+  ],
+  "why": "Each object has its own attributes. Clicking a doesn't change b."
+ },
+ {
+  "qid": "0017-q4",
+  "lesson": "0017",
+  "question": "Why do LeetCode methods have a <code>self</code> parameter?",
+  "options": [
+   {
+    "html": "They're methods of a Solution class",
+    "correct": true
+   },
+   {
+    "html": "LeetCode needs your username there",
+    "correct": false
+   },
+   {
+    "html": "It stores the expected answer",
+    "correct": false
+   },
+   {
+    "html": "It makes the code run faster",
+    "correct": false
+   }
+  ],
+  "why": "Every method's first parameter is the object it's called on. LeetCode calls Solution().yourMethod(...)."
+ },
+ {
+  "qid": "0018-q1",
+  "lesson": "0018",
+  "question": "Which numbers can <code>random.randint(1, 3)</code> return?",
+  "options": [
+   {
+    "html": "1, 2 or 3",
+    "correct": true
+   },
+   {
+    "html": "1 or 2 only",
+    "correct": false
+   },
+   {
+    "html": "0, 1 or 2",
+    "correct": false
+   },
+   {
+    "html": "Any decimal number",
+    "correct": false
+   }
+  ],
+  "why": "randint includes both ends, unlike range."
+ },
+ {
+  "qid": "0018-q2",
+  "lesson": "0018",
+  "question": "After <code>from math import sqrt</code>, how do you call it?",
+  "options": [
+   {
+    "html": "<code>sqrt(16)</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>math.sqrt(16)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>import sqrt(16)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>math(sqrt, 16)</code>",
+    "correct": false
+   }
+  ],
+  "why": "from ... import brings the name in directly, so you don't need the math. prefix."
+ },
+ {
+  "qid": "0018-q3",
+  "lesson": "0018",
+  "question": "Your project shows <code>ModuleNotFoundError</code> for a package you installed. Most likely cause?",
+  "options": [
+   {
+    "html": "The wrong Python is running it",
+    "correct": true
+   },
+   {
+    "html": "The package is broken forever",
+    "correct": false
+   },
+   {
+    "html": "The file name is too long",
+    "correct": false
+   },
+   {
+    "html": "Python needs reinstalling first",
+    "correct": false
+   }
+  ],
+  "why": "Packages live in one environment. Run your code with that environment's Python, like <span data-os=\"windows\">.venv\\Scripts\\python</span><span data-os=\"mac linux\">.venv/bin/python</span>."
+ },
+ {
+  "qid": "0018-q4",
+  "lesson": "0018",
+  "question": "When does the code under <code>if __name__ == \"__main__\":</code> run?",
+  "options": [
+   {
+    "html": "When the file is run directly",
+    "correct": true
+   },
+   {
+    "html": "When the file is imported",
+    "correct": false
+   },
+   {
+    "html": "Every time, no matter what",
+    "correct": false
+   },
+   {
+    "html": "Never, it's only a comment",
+    "correct": false
+   }
+  ],
+  "why": "It's skipped when another file imports this one, so it's a safe spot for quick tests."
+ },
+ {
+  "qid": "0019-q1",
+  "lesson": "0019",
+  "question": "A function loops once over a list of n items, doing a fixed amount of work each time. Its Big O?",
+  "options": [
+   {
+    "html": "<code>O(n)</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>O(1)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O(n²)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O(log n)</code>",
+    "correct": false
+   }
+  ],
+  "why": "One pass over n items is linear."
+ },
+ {
+  "qid": "0019-q2",
+  "lesson": "0019",
+  "question": "Simplify 4n² + 3n + 7 in Big O.",
+  "options": [
+   {
+    "html": "<code>O(n²)</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>O(4n²)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O(n)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O(n² + n)</code>",
+    "correct": false
+   }
+  ],
+  "why": "Drop constants and smaller terms: only the fastest-growing part matters."
+ },
+ {
+  "qid": "0019-q3",
+  "lesson": "0019",
+  "question": "Inside a loop over n items you check <code>if x in other_list</code> (also n items). The total?",
+  "options": [
+   {
+    "html": "<code>O(n²)</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>O(n)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O(1)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O(log n)</code>",
+    "correct": false
+   }
+  ],
+  "why": "in on a list is a hidden loop, so this is a loop inside a loop. With a set it would be O(n)."
+ },
+ {
+  "qid": "0019-q4",
+  "lesson": "0019",
+  "question": "Which grows slowest as n gets huge?",
+  "options": [
+   {
+    "html": "<code>O(log n)</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>O(n)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O(n log n)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O(n²)</code>",
+    "correct": false
+   }
+  ],
+  "why": "Halving means a million items need only about 20 steps."
+ },
+ {
+  "qid": "0020-q1",
+  "lesson": "0020",
+  "question": "What's the Big O of the hash map Two Sum?",
+  "options": [
+   {
+    "html": "O(n) time, O(n) space",
+    "correct": true
+   },
+   {
+    "html": "O(n²) time, O(1) space",
+    "correct": false
+   },
+   {
+    "html": "O(1) time, O(n) space",
+    "correct": false
+   },
+   {
+    "html": "O(log n) time, O(1) space",
+    "correct": false
+   }
+  ],
+  "why": "One pass with O(1) lookups is O(n) time; the dictionary can hold up to n numbers."
+ },
+ {
+  "qid": "0020-q2",
+  "lesson": "0020",
+  "question": "In Two Sum with target 10, you're at the number 4. What do you look up?",
+  "options": [
+   {
+    "html": "<code>6</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>4</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>14</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>10</code>",
+    "correct": false
+   }
+  ],
+  "why": "The complement is target minus the current number: 10 - 4."
+ },
+ {
+  "qid": "0020-q3",
+  "lesson": "0020",
+  "question": "Why are \"listen\" and \"silent\" given the same key in Group Anagrams?",
+  "options": [
+   {
+    "html": "Sorted, both letters spell eilnst",
+    "correct": true
+   },
+   {
+    "html": "They have the same first letter",
+    "correct": false
+   },
+   {
+    "html": "They both have six characters",
+    "correct": false
+   },
+   {
+    "html": "Python treats them as equal",
+    "correct": false
+   }
+  ],
+  "why": "Sorting the letters gives the same string for every anagram."
+ },
+ {
+  "qid": "0020-q4",
+  "lesson": "0020",
+  "question": "When is the hash map pattern a good idea?",
+  "options": [
+   {
+    "html": "When you'd otherwise search inside a loop",
+    "correct": true
+   },
+   {
+    "html": "When the list is already sorted",
+    "correct": false
+   },
+   {
+    "html": "When memory is extremely limited",
+    "correct": false
+   },
+   {
+    "html": "When the list has one item",
+    "correct": false
+   }
+  ],
+  "why": "A search inside a loop is O(n²); a set or dict lookup turns it into O(n), using extra memory."
+ },
+ {
+  "qid": "0021-q1",
+  "lesson": "0021",
+  "question": "What extra space does Reverse String with two pointers use?",
+  "options": [
+   {
+    "html": "O(1): just two indexes",
+    "correct": true
+   },
+   {
+    "html": "O(n): a reversed copy",
+    "correct": false
+   },
+   {
+    "html": "O(n²): a grid of swaps",
+    "correct": false
+   },
+   {
+    "html": "O(log n): halving each time",
+    "correct": false
+   }
+  ],
+  "why": "Swapping in place needs only the two pointer variables."
+ },
+ {
+  "qid": "0021-q2",
+  "lesson": "0021",
+  "question": "Two Sum II: the two pointed-at numbers add up to more than the target. What do you do?",
+  "options": [
+   {
+    "html": "Move the right pointer left",
+    "correct": true
+   },
+   {
+    "html": "Move the left pointer right",
+    "correct": false
+   },
+   {
+    "html": "Move both pointers inwards",
+    "correct": false
+   },
+   {
+    "html": "Restart from the beginning",
+    "correct": false
+   }
+  ],
+  "why": "The list is sorted, so moving right gives a smaller number and a smaller sum."
+ },
+ {
+  "qid": "0021-q3",
+  "lesson": "0021",
+  "question": "Why does Two Sum II's two-pointer trick need the list to be sorted?",
+  "options": [
+   {
+    "html": "To know which way makes the sum smaller",
+    "correct": true
+   },
+   {
+    "html": "So the answer is always at the ends",
+    "correct": false
+   },
+   {
+    "html": "Because unsorted lists can't be indexed",
+    "correct": false
+   },
+   {
+    "html": "So duplicates are removed first",
+    "correct": false
+   }
+  ],
+  "why": "Sorted order tells you which pointer to move. Unsorted, that decision means nothing."
+ },
+ {
+  "qid": "0021-q4",
+  "lesson": "0021",
+  "question": "What is <code>\"a1!\".isalnum()</code>?",
+  "options": [
+   {
+    "html": "<code>False</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>True</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>\"a1\"</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>2</code>",
+    "correct": false
+   }
+  ],
+  "why": "It's True only if every character is a letter or digit; \"!\" is neither."
+ },
+ {
+  "qid": "0022-q1",
+  "lesson": "0022",
+  "question": "A window of size k slides one step right. How do you update its sum?",
+  "options": [
+   {
+    "html": "Add the new item, subtract the old",
+    "correct": true
+   },
+   {
+    "html": "Add up all k items again",
+    "correct": false
+   },
+   {
+    "html": "Multiply the old sum by k",
+    "correct": false
+   },
+   {
+    "html": "Subtract the new, add the old",
+    "correct": false
+   }
+  ],
+  "why": "Only two items change, so updating is O(1) per step instead of O(k)."
+ },
+ {
+  "qid": "0022-q2",
+  "lesson": "0022",
+  "question": "In Best Time to Buy and Sell Stock, what do you track as you go?",
+  "options": [
+   {
+    "html": "The lowest price so far",
+    "correct": true
+   },
+   {
+    "html": "The highest price so far",
+    "correct": false
+   },
+   {
+    "html": "Every pair of prices",
+    "correct": false
+   },
+   {
+    "html": "The average price so far",
+    "correct": false
+   }
+  ],
+  "why": "The best sale today always uses the cheapest earlier buy."
+ },
+ {
+  "qid": "0022-q3",
+  "lesson": "0022",
+  "question": "Why is LeetCode 3 O(n) even with a while loop inside the for loop?",
+  "options": [
+   {
+    "html": "Each character leaves the window once",
+    "correct": true
+   },
+   {
+    "html": "The while loop never actually runs",
+    "correct": false
+   },
+   {
+    "html": "Sets make every loop O(1)",
+    "correct": false
+   },
+   {
+    "html": "The string is always short",
+    "correct": false
+   }
+  ],
+  "why": "left only moves forward, so across the whole run the inner loop does at most n removals in total."
+ },
+ {
+  "qid": "0022-q4",
+  "lesson": "0022",
+  "question": "Which of these is a contiguous subarray of <code>[3, 1, 4, 1, 5]</code>?",
+  "options": [
+   {
+    "html": "<code>[1, 4, 1]</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>[3, 4, 5]</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>[5, 1, 4]</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>[3, 1, 5]</code>",
+    "correct": false
+   }
+  ],
+  "why": "Contiguous means neighbouring items in their original order, with no gaps."
+ },
+ {
+  "qid": "0023-q1",
+  "lesson": "0023",
+  "question": "Push 1, push 2, push 3, then pop. What comes off?",
+  "options": [
+   {
+    "html": "<code>3</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>1</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>2</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>[1, 2]</code>",
+    "correct": false
+   }
+  ],
+  "why": "Last in, first out: the most recent push is on top."
+ },
+ {
+  "qid": "0023-q2",
+  "lesson": "0023",
+  "question": "Checking brackets, you reach <code>)</code> and the top of the stack is <code>[</code>. Then?",
+  "options": [
+   {
+    "html": "Return False: wrong partner",
+    "correct": true
+   },
+   {
+    "html": "Pop it and keep going",
+    "correct": false
+   },
+   {
+    "html": "Push the closing bracket",
+    "correct": false
+   },
+   {
+    "html": "Skip it and check later",
+    "correct": false
+   }
+  ],
+  "why": "The most recent opener must match. A [ closed by ) is invalid."
+ },
+ {
+  "qid": "0023-q3",
+  "lesson": "0023",
+  "question": "What does <code>[\"3\", \"4\", \"+\", \"2\", \"*\"]</code> evaluate to?",
+  "options": [
+   {
+    "html": "<code>14</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>11</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>24</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>10</code>",
+    "correct": false
+   }
+  ],
+  "why": "3 + 4 = 7, then 7 × 2 = 14."
+ },
+ {
+  "qid": "0023-q4",
+  "lesson": "0023",
+  "question": "Why does Min Stack keep a second stack?",
+  "options": [
+   {
+    "html": "So getMin is O(1) after any pop",
+    "correct": true
+   },
+   {
+    "html": "To store the items twice for safety",
+    "correct": false
+   },
+   {
+    "html": "So pop can remove two at once",
+    "correct": false
+   },
+   {
+    "html": "Because one list can't hold numbers",
+    "correct": false
+   }
+  ],
+  "why": "The second stack remembers the minimum at every height, so it's still right after the smallest is popped."
+ },
+ {
+  "qid": "0024-q1",
+  "lesson": "0024",
+  "question": "About how many checks does binary search need for 1,000,000 sorted items?",
+  "options": [
+   {
+    "html": "About 20",
+    "correct": true
+   },
+   {
+    "html": "About 1,000",
+    "correct": false
+   },
+   {
+    "html": "About 500,000",
+    "correct": false
+   },
+   {
+    "html": "About 1,000,000",
+    "correct": false
+   }
+  ],
+  "why": "Halving a million down to one takes about 20 steps: O(log n)."
+ },
+ {
+  "qid": "0024-q2",
+  "lesson": "0024",
+  "question": "<code>nums[mid]</code> is smaller than the target. What next?",
+  "options": [
+   {
+    "html": "<code>low = mid + 1</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>high = mid - 1</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>low = mid</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>high = mid</code>",
+    "correct": false
+   }
+  ],
+  "why": "The target must be to the right, and mid itself is already ruled out."
+ },
+ {
+  "qid": "0024-q3",
+  "lesson": "0024",
+  "question": "What is <code>17 // 5</code>?",
+  "options": [
+   {
+    "html": "<code>3</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>3.4</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>2</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>4</code>",
+    "correct": false
+   }
+  ],
+  "why": "Floor division drops the decimal part of 3.4."
+ },
+ {
+  "qid": "0024-q4",
+  "lesson": "0024",
+  "question": "What does binary search require of its input?",
+  "options": [
+   {
+    "html": "It must be sorted",
+    "correct": true
+   },
+   {
+    "html": "It must have no duplicates",
+    "correct": false
+   },
+   {
+    "html": "It must have an even length",
+    "correct": false
+   },
+   {
+    "html": "It must contain the target",
+    "correct": false
+   }
+  ],
+  "why": "Discarding half only works if order tells you which half can't hold the answer."
+ },
+ {
+  "qid": "0025-q1",
+  "lesson": "0025",
+  "question": "What stops a recursive function from calling itself forever?",
+  "options": [
+   {
+    "html": "Reaching its base case",
+    "correct": true
+   },
+   {
+    "html": "Python's for loop limit",
+    "correct": false
+   },
+   {
+    "html": "The return value being None",
+    "correct": false
+   },
+   {
+    "html": "Running out of variables",
+    "correct": false
+   }
+  ],
+  "why": "The base case returns without calling itself again, so the calls can finish."
+ },
+ {
+  "qid": "0025-q2",
+  "lesson": "0025",
+  "question": "You see <code>RecursionError: maximum recursion depth exceeded</code>. Most likely cause?",
+  "options": [
+   {
+    "html": "The base case is never reached",
+    "correct": true
+   },
+   {
+    "html": "The list is already sorted",
+    "correct": false
+   },
+   {
+    "html": "A variable name has a typo",
+    "correct": false
+   },
+   {
+    "html": "The function returns a string",
+    "correct": false
+   }
+  ],
+  "why": "Each call adds a frame; without reaching the base case, they pile up past the limit."
+ },
+ {
+  "qid": "0025-q3",
+  "lesson": "0025",
+  "question": "Why is plain recursive Fibonacci slow?",
+  "options": [
+   {
+    "html": "It re-computes the same values many times",
+    "correct": true
+   },
+   {
+    "html": "Adding numbers is slow in Python",
+    "correct": false
+   },
+   {
+    "html": "Recursion is always slower than loops",
+    "correct": false
+   },
+   {
+    "html": "It uses floating-point numbers",
+    "correct": false
+   }
+  ],
+  "why": "fib(n - 1) and fib(n - 2) both recompute the same smaller values again and again."
+ },
+ {
+  "qid": "0025-q4",
+  "lesson": "0025",
+  "question": "With <code>def f(n): return 0 if n == 0 else n + f(n - 1)</code>, what is <code>f(3)</code>?",
+  "options": [
+   {
+    "html": "<code>6</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>3</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>0</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>9</code>",
+    "correct": false
+   }
+  ],
+  "why": "3 + 2 + 1 + 0. (This one-line form, A if condition else B, is called a conditional expression.)"
+ },
+ {
+  "qid": "0026-q1",
+  "lesson": "0026",
+  "question": "What is the Big O of merge sort?",
+  "options": [
+   {
+    "html": "<code>O(n log n)</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>O(n²)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O(n)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O(log n)</code>",
+    "correct": false
+   }
+  ],
+  "why": "About log n levels of halving, with O(n) merging work on each level."
+ },
+ {
+  "qid": "0026-q2",
+  "lesson": "0026",
+  "question": "What does <code>nums.sort()</code> return?",
+  "options": [
+   {
+    "html": "<code>None</code>",
+    "correct": true
+   },
+   {
+    "html": "A new sorted list",
+    "correct": false
+   },
+   {
+    "html": "The original list unchanged",
+    "correct": false
+   },
+   {
+    "html": "The smallest item",
+    "correct": false
+   }
+  ],
+  "why": "list.sort() sorts in place and returns None. sorted() is the one that returns a new list."
+ },
+ {
+  "qid": "0026-q3",
+  "lesson": "0026",
+  "question": "What does <code>sorted([\"bb\", \"a\", \"ccc\"], key=len)</code> give?",
+  "options": [
+   {
+    "html": "<code>['a', 'bb', 'ccc']</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>['ccc', 'bb', 'a']</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>[1, 2, 3]</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>['bb', 'a', 'ccc']</code>",
+    "correct": false
+   }
+  ],
+  "why": "key=len compares the lengths, but the items themselves are what's returned."
+ },
+ {
+  "qid": "0026-q4",
+  "lesson": "0026",
+  "question": "In Merge Sorted Array, why fill <code>nums1</code> from the back?",
+  "options": [
+   {
+    "html": "The back is empty, so nothing is overwritten",
+    "correct": true
+   },
+   {
+    "html": "Big numbers are easier to compare",
+    "correct": false
+   },
+   {
+    "html": "LeetCode reads the answer backwards",
+    "correct": false
+   },
+   {
+    "html": "It makes the algorithm O(log n)",
+    "correct": false
+   }
+  ],
+  "why": "The spare slots are at the end, so writing there never destroys an item you still need."
+ },
+ {
+  "qid": "0027-q1",
+  "lesson": "0027",
+  "question": "What's the cost of getting the 1000th value of a linked list?",
+  "options": [
+   {
+    "html": "O(n): walk node by node",
+    "correct": true
+   },
+   {
+    "html": "O(1): jump straight there",
+    "correct": false
+   },
+   {
+    "html": "O(log n): halve each time",
+    "correct": false
+   },
+   {
+    "html": "O(n²): compare every pair",
+    "correct": false
+   }
+  ],
+  "why": "There's no index; you follow next links from the head."
+ },
+ {
+  "qid": "0027-q2",
+  "lesson": "0027",
+  "question": "Reversing a list, why save <code>cur.next</code> before changing it?",
+  "options": [
+   {
+    "html": "Otherwise the rest of the list is lost",
+    "correct": true
+   },
+   {
+    "html": "Python requires a temporary variable",
+    "correct": false
+   },
+   {
+    "html": "To make the code run in O(1)",
+    "correct": false
+   },
+   {
+    "html": "So the values can be compared",
+    "correct": false
+   }
+  ],
+  "why": "Once cur.next points backwards, nothing points to the remaining nodes unless you saved them."
+ },
+ {
+  "qid": "0027-q3",
+  "lesson": "0027",
+  "question": "When <code>fast</code> reaches the end, where is <code>slow</code>?",
+  "options": [
+   {
+    "html": "In the middle",
+    "correct": true
+   },
+   {
+    "html": "At the start",
+    "correct": false
+   },
+   {
+    "html": "One node behind fast",
+    "correct": false
+   },
+   {
+    "html": "At the end too",
+    "correct": false
+   }
+  ],
+  "why": "It has moved half as far."
+ },
+ {
+  "qid": "0027-q4",
+  "lesson": "0027",
+  "question": "What does the dummy node in Merge Two Sorted Lists give you?",
+  "options": [
+   {
+    "html": "Something to attach the first node to",
+    "correct": true
+   },
+   {
+    "html": "A spare value for comparisons",
+    "correct": false
+   },
+   {
+    "html": "The smallest value in both lists",
+    "correct": false
+   },
+   {
+    "html": "A way to detect cycles",
+    "correct": false
+   }
+  ],
+  "why": "With a dummy, every node, even the first, is attached the same way; you return dummy.next."
+ },
+ {
+  "qid": "0028-q1",
+  "lesson": "0028",
+  "question": "What is the usual base case in a recursive tree function?",
+  "options": [
+   {
+    "html": "The node is None",
+    "correct": true
+   },
+   {
+    "html": "The node is the root",
+    "correct": false
+   },
+   {
+    "html": "The node's value is 0",
+    "correct": false
+   },
+   {
+    "html": "The tree has two levels",
+    "correct": false
+   }
+  ],
+  "why": "The empty tree is the smallest case, and every path down eventually reaches it."
+ },
+ {
+  "qid": "0028-q2",
+  "lesson": "0028",
+  "question": "Inorder traversal of the tree <code>[2, 1, 3]</code> gives?",
+  "options": [
+   {
+    "html": "<code>[1, 2, 3]</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>[2, 1, 3]</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>[1, 3, 2]</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>[3, 2, 1]</code>",
+    "correct": false
+   }
+  ],
+  "why": "Left (1), node (2), right (3)."
+ },
+ {
+  "qid": "0028-q3",
+  "lesson": "0028",
+  "question": "What's the time cost of Maximum Depth on a tree with n nodes?",
+  "options": [
+   {
+    "html": "<code>O(n)</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>O(log n)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O(n²)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O(1)</code>",
+    "correct": false
+   }
+  ],
+  "why": "Each node is visited exactly once."
+ },
+ {
+  "qid": "0028-q4",
+  "lesson": "0028",
+  "question": "A node with no children is called?",
+  "options": [
+   {
+    "html": "A leaf",
+    "correct": true
+   },
+   {
+    "html": "A root",
+    "correct": false
+   },
+   {
+    "html": "A parent",
+    "correct": false
+   },
+   {
+    "html": "A branch",
+    "correct": false
+   }
+  ],
+  "why": "Leaves are at the bottom of the tree."
+ },
+ {
+  "qid": "0029-q1",
+  "lesson": "0029",
+  "question": "Why use <code>deque.popleft()</code> instead of <code>list.pop(0)</code>?",
+  "options": [
+   {
+    "html": "popleft is O(1); pop(0) is O(n)",
+    "correct": true
+   },
+   {
+    "html": "pop(0) removes the wrong item",
+    "correct": false
+   },
+   {
+    "html": "Lists can't hold tree nodes",
+    "correct": false
+   },
+   {
+    "html": "popleft also sorts the queue",
+    "correct": false
+   }
+  ],
+  "why": "Removing a list's first item shifts all the others along."
+ },
+ {
+  "qid": "0029-q2",
+  "lesson": "0029",
+  "question": "A stack is LIFO. What is a queue?",
+  "options": [
+   {
+    "html": "FIFO: first in, first out",
+    "correct": true
+   },
+   {
+    "html": "LIFO: last in, first out",
+    "correct": false
+   },
+   {
+    "html": "Sorted: smallest out first",
+    "correct": false
+   },
+   {
+    "html": "Random: any item out",
+    "correct": false
+   }
+  ],
+  "why": "Like a queue at the bank, whoever arrived first leaves first."
+ },
+ {
+  "qid": "0029-q3",
+  "lesson": "0029",
+  "question": "In level-order BFS, what tells you how many nodes are on the current level?",
+  "options": [
+   {
+    "html": "The queue's length when the level starts",
+    "correct": true
+   },
+   {
+    "html": "The depth of the tree",
+    "correct": false
+   },
+   {
+    "html": "The number of leaves",
+    "correct": false
+   },
+   {
+    "html": "Double the previous level's size",
+    "correct": false
+   }
+  ],
+  "why": "At that moment the queue holds exactly one level; children added during it belong to the next."
+ },
+ {
+  "qid": "0029-q4",
+  "lesson": "0029",
+  "question": "Why can BFS stop at the first leaf in Minimum Depth?",
+  "options": [
+   {
+    "html": "It meets nearer nodes before farther ones",
+    "correct": true
+   },
+   {
+    "html": "Leaves are always on the left",
+    "correct": false
+   },
+   {
+    "html": "The first leaf is the deepest",
+    "correct": false
+   },
+   {
+    "html": "It visits nodes in sorted order",
+    "correct": false
+   }
+  ],
+  "why": "BFS goes level by level, so the first leaf found is on the shallowest level with a leaf."
+ },
+ {
+  "qid": "0030-q1",
+  "lesson": "0030",
+  "question": "In a Python heap <code>h</code>, where is the smallest item?",
+  "options": [
+   {
+    "html": "<code>h[0]</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>h[-1]</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>h[len(h) // 2]</code>",
+    "correct": false
+   },
+   {
+    "html": "Anywhere: you must search",
+    "correct": false
+   }
+  ],
+  "why": "heapq keeps the smallest at index 0, the top of the tree."
+ },
+ {
+  "qid": "0030-q2",
+  "lesson": "0030",
+  "question": "How do you make <code>heapq</code> give the largest item first?",
+  "options": [
+   {
+    "html": "Push negative values",
+    "correct": true
+   },
+   {
+    "html": "Pass reverse=True",
+    "correct": false
+   },
+   {
+    "html": "Pop from the end",
+    "correct": false
+   },
+   {
+    "html": "Use heapq.maxpop()",
+    "correct": false
+   }
+  ],
+  "why": "Negating flips the order, so the largest original value becomes the smallest stored one."
+ },
+ {
+  "qid": "0030-q3",
+  "lesson": "0030",
+  "question": "What's the cost of <code>heappop</code> on a heap of n items?",
+  "options": [
+   {
+    "html": "<code>O(log n)</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>O(1)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O(n)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O(n log n)</code>",
+    "correct": false
+   }
+  ],
+  "why": "Restoring the heap rule moves an item down one path of the tree, about log n levels."
+ },
+ {
+  "qid": "0030-q4",
+  "lesson": "0030",
+  "question": "To find the 3rd largest of a million numbers, keep a min-heap of what size?",
+  "options": [
+   {
+    "html": "3",
+    "correct": true
+   },
+   {
+    "html": "1,000,000",
+    "correct": false
+   },
+   {
+    "html": "500,000",
+    "correct": false
+   },
+   {
+    "html": "1",
+    "correct": false
+   }
+  ],
+  "why": "A size-k min-heap holds the k largest so far; its top is the k-th largest."
+ },
+ {
+  "qid": "0031-q1",
+  "lesson": "0031",
+  "question": "Why does graph DFS need a visited set when tree DFS didn't?",
+  "options": [
+   {
+    "html": "Graphs can have cycles",
+    "correct": true
+   },
+   {
+    "html": "Graphs are always bigger",
+    "correct": false
+   },
+   {
+    "html": "Graphs have no root node",
+    "correct": false
+   },
+   {
+    "html": "Sets make DFS run in O(1)",
+    "correct": false
+   }
+  ],
+  "why": "A cycle leads back to a vertex you've seen; without marking it, you'd loop forever."
+ },
+ {
+  "qid": "0031-q2",
+  "lesson": "0031",
+  "question": "In an undirected adjacency list, the edge A-B is stored how?",
+  "options": [
+   {
+    "html": "B in A's list and A in B's list",
+    "correct": true
+   },
+   {
+    "html": "Only B in A's list",
+    "correct": false
+   },
+   {
+    "html": "Only A in B's list",
+    "correct": false
+   },
+   {
+    "html": "As a separate key \"A-B\"",
+    "correct": false
+   }
+  ],
+  "why": "Two-way edges are recorded from both ends."
+ },
+ {
+  "qid": "0031-q3",
+  "lesson": "0031",
+  "question": "In Number of Islands, which cells count as neighbours?",
+  "options": [
+   {
+    "html": "Up, down, left and right",
+    "correct": true
+   },
+   {
+    "html": "All eight surrounding cells",
+    "correct": false
+   },
+   {
+    "html": "Only the cell to the right",
+    "correct": false
+   },
+   {
+    "html": "Any cell in the same row",
+    "correct": false
+   }
+  ],
+  "why": "The problem connects land horizontally and vertically only, so diagonal land is a separate island."
+ },
+ {
+  "qid": "0031-q4",
+  "lesson": "0031",
+  "question": "The time cost of BFS on a graph with V vertices and E edges?",
+  "options": [
+   {
+    "html": "<code>O(V + E)</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>O(V × E)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O(V²)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O(log V)</code>",
+    "correct": false
+   }
+  ],
+  "why": "Each vertex is visited once and each edge checked a constant number of times."
+ },
+ {
+  "qid": "0032-q1",
+  "lesson": "0032",
+  "question": "Why save <code>path[:]</code> rather than <code>path</code>?",
+  "options": [
+   {
+    "html": "path keeps changing; the slice is a frozen copy",
+    "correct": true
+   },
+   {
+    "html": "path[:] is sorted automatically",
+    "correct": false
+   },
+   {
+    "html": "Python can't append a list to a list",
+    "correct": false
+   },
+   {
+    "html": "path[:] removes duplicate items",
+    "correct": false
+   }
+  ],
+  "why": "There's only one path list. Without a copy, every saved answer points at it and changes with it."
+ },
+ {
+  "qid": "0032-q2",
+  "lesson": "0032",
+  "question": "How many subsets does a set of 5 different items have?",
+  "options": [
+   {
+    "html": "<code>32</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>25</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>120</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>10</code>",
+    "correct": false
+   }
+  ],
+  "why": "Each item is in or out: 2 × 2 × 2 × 2 × 2."
+ },
+ {
+  "qid": "0032-q3",
+  "lesson": "0032",
+  "question": "What does <code>path.pop()</code> after the recursive call do?",
+  "options": [
+   {
+    "html": "Undoes the choice to try the next one",
+    "correct": true
+   },
+   {
+    "html": "Returns the answer to the caller",
+    "correct": false
+   },
+   {
+    "html": "Removes duplicate answers",
+    "correct": false
+   },
+   {
+    "html": "Stops the search completely",
+    "correct": false
+   }
+  ],
+  "why": "It restores the path to how it was before this choice: the backtrack step."
+ },
+ {
+  "qid": "0032-q4",
+  "lesson": "0032",
+  "question": "In Combination Sum, why recurse with <code>i</code> instead of <code>i + 1</code>?",
+  "options": [
+   {
+    "html": "So the same number can be reused",
+    "correct": true
+   },
+   {
+    "html": "So the answers come out sorted",
+    "correct": false
+   },
+   {
+    "html": "To skip numbers already used",
+    "correct": false
+   },
+   {
+    "html": "Because i + 1 could go out of range",
+    "correct": false
+   }
+  ],
+  "why": "Staying at i lets the next choice be the same number again. Starting at i, not 0, still prevents re-orderings."
+ },
+ {
+  "qid": "0033-q1",
+  "lesson": "0033",
+  "question": "What makes a problem suitable for dynamic programming?",
+  "options": [
+   {
+    "html": "The same subproblems come up repeatedly",
+    "correct": true
+   },
+   {
+    "html": "The input list is already sorted",
+    "correct": false
+   },
+   {
+    "html": "The answer is always a single number",
+    "correct": false
+   },
+   {
+    "html": "It can be solved with one loop",
+    "correct": false
+   }
+  ],
+  "why": "Overlapping subproblems are what make storing answers pay off."
+ },
+ {
+  "qid": "0033-q2",
+  "lesson": "0033",
+  "question": "What's the difference between memoisation and tabulation?",
+  "options": [
+   {
+    "html": "Top-down with a cache vs bottom-up with a table",
+    "correct": true
+   },
+   {
+    "html": "One uses lists, the other uses sets",
+    "correct": false
+   },
+   {
+    "html": "Memoisation is exponential, tabulation linear",
+    "correct": false
+   },
+   {
+    "html": "Tabulation only works for Fibonacci",
+    "correct": false
+   }
+  ],
+  "why": "Both solve each subproblem once; they differ in direction."
+ },
+ {
+  "qid": "0033-q3",
+  "lesson": "0033",
+  "question": "With 1 or 2 steps at a time, how many ways are there to climb 4 steps?",
+  "options": [
+   {
+    "html": "<code>5</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>4</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>6</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>8</code>",
+    "correct": false
+   }
+  ],
+  "why": "ways(4) = ways(3) + ways(2) = 3 + 2."
+ },
+ {
+  "qid": "0033-q4",
+  "lesson": "0033",
+  "question": "In House Robber, the best total at a house is the larger of?",
+  "options": [
+   {
+    "html": "Skip it, or its money plus best two back",
+    "correct": true
+   },
+   {
+    "html": "Its money, or the previous house's money",
+    "correct": false
+   },
+   {
+    "html": "The sum of all houses so far, or zero",
+    "correct": false
+   },
+   {
+    "html": "Best one back plus best two back",
+    "correct": false
+   }
+  ],
+  "why": "Taking it forbids the neighbour, so it pairs with the best up to two houses back."
+ },
+ {
+  "qid": "0034-q1",
+  "lesson": "0034",
+  "question": "In Unique Paths, each cell is filled from which cells?",
+  "options": [
+   {
+    "html": "The one above and the one to the left",
+    "correct": true
+   },
+   {
+    "html": "The one below and the one to the right",
+    "correct": false
+   },
+   {
+    "html": "All eight neighbours",
+    "correct": false
+   },
+   {
+    "html": "Only the diagonal up-left",
+    "correct": false
+   }
+  ],
+  "why": "You can only arrive by moving down (from above) or right (from the left)."
+ },
+ {
+  "qid": "0034-q2",
+  "lesson": "0034",
+  "question": "Why does Coin Change start every amount at infinity?",
+  "options": [
+   {
+    "html": "So unmakeable amounts never win a min()",
+    "correct": true
+   },
+   {
+    "html": "Because coins can be used forever",
+    "correct": false
+   },
+   {
+    "html": "To make the table use less memory",
+    "correct": false
+   },
+   {
+    "html": "Python lists must start at infinity",
+    "correct": false
+   }
+  ],
+  "why": "Infinity means \"impossible so far\": any real count is smaller, and if it stays infinity the answer is -1."
+ },
+ {
+  "qid": "0034-q3",
+  "lesson": "0034",
+  "question": "Is \"aec\" a subsequence of \"abcde\"?",
+  "options": [
+   {
+    "html": "No: the order is wrong",
+    "correct": true
+   },
+   {
+    "html": "Yes: all three letters appear",
+    "correct": false
+   },
+   {
+    "html": "Yes: gaps are allowed",
+    "correct": false
+   },
+   {
+    "html": "No: it isn't contiguous",
+    "correct": false
+   }
+  ],
+  "why": "Gaps are allowed, but the characters must stay in the original order, and c comes before e."
+ },
+ {
+  "qid": "0034-q4",
+  "lesson": "0034",
+  "question": "What's the first step of the DP recipe?",
+  "options": [
+   {
+    "html": "Define what a cell means in words",
+    "correct": true
+   },
+   {
+    "html": "Write the nested loops",
+    "correct": false
+   },
+   {
+    "html": "Fill the table with zeros",
+    "correct": false
+   },
+   {
+    "html": "Submit to see what fails",
+    "correct": false
+   }
+  ],
+  "why": "A clear state definition is what makes the recurrence findable."
+ },
+ {
+  "qid": "0035-q1",
+  "lesson": "0035",
+  "question": "What's the right order to save your work?",
+  "options": [
+   {
+    "html": "add, then commit, then push",
+    "correct": true
+   },
+   {
+    "html": "commit, then add, then push",
+    "correct": false
+   },
+   {
+    "html": "push, then add, then commit",
+    "correct": false
+   },
+   {
+    "html": "add, then push, then commit",
+    "correct": false
+   }
+  ],
+  "why": "Stage the changes, take the snapshot, then send it to GitHub."
+ },
+ {
+  "qid": "0035-q2",
+  "lesson": "0035",
+  "question": "Why put <code>.venv/</code> in <code>.gitignore</code>?",
+  "options": [
+   {
+    "html": "Anyone can recreate it; it's big and personal",
+    "correct": true
+   },
+   {
+    "html": "Git can't read files in .venv",
+    "correct": false
+   },
+   {
+    "html": "It contains your GitHub password",
+    "correct": false
+   },
+   {
+    "html": "It makes your code run faster",
+    "correct": false
+   }
+  ],
+  "why": "Environments are rebuilt from a list of packages; committing them bloats the repo."
+ },
+ {
+  "qid": "0035-q3",
+  "lesson": "0035",
+  "question": "Which command tells you what Git currently sees?",
+  "options": [
+   {
+    "html": "<code>git status</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>git push</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>git init</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>git remote</code>",
+    "correct": false
+   }
+  ],
+  "why": "status shows the branch, staged changes, unstaged changes and untracked files."
+ },
+ {
+  "qid": "0035-q4",
+  "lesson": "0035",
+  "question": "What does <code>origin</code> usually mean?",
+  "options": [
+   {
+    "html": "Your repository's copy on GitHub",
+    "correct": true
+   },
+   {
+    "html": "The very first commit",
+    "correct": false
+   },
+   {
+    "html": "The folder you started Git in",
+    "correct": false
+   },
+   {
+    "html": "The main branch of history",
+    "correct": false
+   }
+  ],
+  "why": "It's the conventional nickname for the remote you push to."
+ },
+ {
+  "qid": "0036-q1",
+  "lesson": "0036",
+  "question": "A dead cell with 3 live neighbours. Next step?",
+  "options": [
+   {
+    "html": "It becomes alive",
+    "correct": true
+   },
+   {
+    "html": "It stays dead",
+    "correct": false
+   },
+   {
+    "html": "It dies twice",
+    "correct": false
+   },
+   {
+    "html": "Its neighbours die",
+    "correct": false
+   }
+  ],
+  "why": "Exactly three live neighbours is the reproduction rule."
+ },
+ {
+  "qid": "0036-q2",
+  "lesson": "0036",
+  "question": "Why build a new board instead of updating the old one cell by cell?",
+  "options": [
+   {
+    "html": "Later cells would count already-updated neighbours",
+    "correct": true
+   },
+   {
+    "html": "Python lists can't be changed after creation",
+    "correct": false
+   },
+   {
+    "html": "A new board makes the program run faster",
+    "correct": false
+   },
+   {
+    "html": "The render function needs two boards",
+    "correct": false
+   }
+  ],
+  "why": "All cells must update together, based only on the previous step."
+ },
+ {
+  "qid": "0036-q3",
+  "lesson": "0036",
+  "question": "What is a blinker?",
+  "options": [
+   {
+    "html": "A line of three that flips each step",
+    "correct": true
+   },
+   {
+    "html": "A square of four that never changes",
+    "correct": false
+   },
+   {
+    "html": "A cell that is born and dies at once",
+    "correct": false
+   },
+   {
+    "html": "A pattern that moves across the board",
+    "correct": false
+   }
+  ],
+  "why": "It's the simplest oscillator: horizontal, vertical, horizontal..."
+ },
+ {
+  "qid": "0036-q4",
+  "lesson": "0036",
+  "question": "What's the Big O of one step on a w by h board?",
+  "options": [
+   {
+    "html": "<code>O(w × h)</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>O(w + h)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O((w × h)²)</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>O(1)</code>",
+    "correct": false
+   }
+  ],
+  "why": "Each of the w × h cells checks a fixed 8 neighbours."
+ },
+ {
+  "qid": "0037-q1",
+  "lesson": "0037",
+  "question": "On the opponent's turn, which score does minimax pick?",
+  "options": [
+   {
+    "html": "The lowest",
+    "correct": true
+   },
+   {
+    "html": "The highest",
+    "correct": false
+   },
+   {
+    "html": "The average",
+    "correct": false
+   },
+   {
+    "html": "The first one found",
+    "correct": false
+   }
+  ],
+  "why": "It assumes the opponent plays their best, which is the worst for the AI."
+ },
+ {
+  "qid": "0037-q2",
+  "lesson": "0037",
+  "question": "Why remove each trial mark after scoring it?",
+  "options": [
+   {
+    "html": "So the next trial starts from the same board",
+    "correct": true
+   },
+   {
+    "html": "To make the board print correctly",
+    "correct": false
+   },
+   {
+    "html": "Because Python lists can't hold None",
+    "correct": false
+   },
+   {
+    "html": "So the AI forgets the opponent's moves",
+    "correct": false
+   }
+  ],
+  "why": "Place, recurse, undo: the backtracking pattern from Lesson 32."
+ },
+ {
+  "qid": "0037-q3",
+  "lesson": "0037",
+  "question": "What does minimax return for a finished game the AI lost?",
+  "options": [
+   {
+    "html": "<code>-10</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>10</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>0</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>None</code>",
+    "correct": false
+   }
+  ],
+  "why": "Scores are from the AI's point of view: a loss is -10."
+ },
+ {
+  "qid": "0037-q4",
+  "lesson": "0037",
+  "question": "What does <code>None or \".\"</code> evaluate to?",
+  "options": [
+   {
+    "html": "<code>\".\"</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>None</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>True</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>False</code>",
+    "correct": false
+   }
+  ],
+  "why": "or gives the first value that counts as true; None counts as false, so it gives \".\"."
+ },
+ {
+  "qid": "0038-q1",
+  "lesson": "0038",
+  "question": "When the snake eats, what's different about the move?",
+  "options": [
+   {
+    "html": "The tail isn't removed",
+    "correct": true
+   },
+   {
+    "html": "The head isn't added",
+    "correct": false
+   },
+   {
+    "html": "The snake moves two squares",
+    "correct": false
+   },
+   {
+    "html": "The direction is reversed",
+    "correct": false
+   }
+  ],
+  "why": "Adding a head and keeping the tail makes it one square longer."
+ },
+ {
+  "qid": "0038-q2",
+  "lesson": "0038",
+  "question": "Why use <code>screen.timeout(120)</code> rather than waiting for a key?",
+  "options": [
+   {
+    "html": "So the snake moves even with no key pressed",
+    "correct": true
+   },
+   {
+    "html": "So the screen refreshes more slowly",
+    "correct": false
+   },
+   {
+    "html": "So only arrow keys are accepted",
+    "correct": false
+   },
+   {
+    "html": "To limit the game to 120 moves",
+    "correct": false
+   }
+  ],
+  "why": "getch gives up after 120 ms and returns -1, so every loop is one tick of the game."
+ },
+ {
+  "qid": "0038-q3",
+  "lesson": "0038",
+  "question": "Why keep the game logic in a separate file from the curses code?",
+  "options": [
+   {
+    "html": "So the logic can be tested without a screen",
+    "correct": true
+   },
+   {
+    "html": "Because curses can't import functions",
+    "correct": false
+   },
+   {
+    "html": "So the game runs twice as fast",
+    "correct": false
+   },
+   {
+    "html": "Because Python allows one function per file",
+    "correct": false
+   }
+  ],
+  "why": "Plain functions in, plain values out: easy to test, as you did on this page."
+ },
+ {
+  "qid": "0038-q4",
+  "lesson": "0038",
+  "question": "How does <code>is_dead</code> detect the snake biting itself?",
+  "options": [
+   {
+    "html": "The head is in the rest of the body",
+    "correct": true
+   },
+   {
+    "html": "The snake is longer than the board",
+    "correct": false
+   },
+   {
+    "html": "Two keys were pressed at once",
+    "correct": false
+   },
+   {
+    "html": "The tail is next to the head",
+    "correct": false
+   }
+  ],
+  "why": "snake[0] in snake[1:] checks whether the head shares a square with any body part."
+ },
+ {
+  "qid": "0039-q1",
+  "lesson": "0039",
+  "question": "What does the lexer produce?",
+  "options": [
+   {
+    "html": "A list of tokens",
+    "correct": true
+   },
+   {
+    "html": "The final answer",
+    "correct": false
+   },
+   {
+    "html": "A list of characters",
+    "correct": false
+   },
+   {
+    "html": "The grammar rules",
+    "correct": false
+   }
+  ],
+  "why": "It groups characters into meaningful pieces; the parser does the rest."
+ },
+ {
+  "qid": "0039-q2",
+  "lesson": "0039",
+  "question": "Why does <code>2 + 3 * 4</code> give 14 and not 20?",
+  "options": [
+   {
+    "html": "term sits inside expr, so * finishes first",
+    "correct": true
+   },
+   {
+    "html": "The lexer sorts the tokens by operator",
+    "correct": false
+   },
+   {
+    "html": "Python's own maths overrides the parser",
+    "correct": false
+   },
+   {
+    "html": "expr reads the tokens from right to left",
+    "correct": false
+   }
+  ],
+  "why": "expr asks term for its pieces, and term has already done the multiplication."
+ },
+ {
+  "qid": "0039-q3",
+  "lesson": "0039",
+  "question": "What does <code>eat(\"RPAREN\")</code> do if the current token is <code>INT</code>?",
+  "options": [
+   {
+    "html": "Raises a ValueError",
+    "correct": true
+   },
+   {
+    "html": "Skips the INT token",
+    "correct": false
+   },
+   {
+    "html": "Returns None quietly",
+    "correct": false
+   },
+   {
+    "html": "Inserts a bracket",
+    "correct": false
+   }
+  ],
+  "why": "eat insists on the expected kind; anything else is a syntax error."
+ },
+ {
+  "qid": "0039-q4",
+  "lesson": "0039",
+  "question": "What does REPL stand for?",
+  "options": [
+   {
+    "html": "Read, evaluate, print, loop",
+    "correct": true
+   },
+   {
+    "html": "Run every Python line",
+    "correct": false
+   },
+   {
+    "html": "Repeat each parse later",
+    "correct": false
+   },
+   {
+    "html": "Return each printed line",
+    "correct": false
+   }
+  ],
+  "why": "Read a line, work it out, show the result, and go round again."
+ },
+ {
+  "qid": "0040-q1",
+  "lesson": "0040",
+  "question": "What does Git hash to get a blob's ID?",
+  "options": [
+   {
+    "html": "A header plus the file's content",
+    "correct": true
+   },
+   {
+    "html": "Only the file's name",
+    "correct": false
+   },
+   {
+    "html": "The file's name plus its date",
+    "correct": false
+   },
+   {
+    "html": "The compressed file only",
+    "correct": false
+   }
+  ],
+  "why": "It's \"blob\", the size, a zero byte, then the content. Names and dates aren't part of a blob."
+ },
+ {
+  "qid": "0040-q2",
+  "lesson": "0040",
+  "question": "Two files with exactly the same contents but different names. Their blob IDs?",
+  "options": [
+   {
+    "html": "Identical",
+    "correct": true
+   },
+   {
+    "html": "Different",
+    "correct": false
+   },
+   {
+    "html": "One of them gets no ID",
+    "correct": false
+   },
+   {
+    "html": "Random each time",
+    "correct": false
+   }
+  ],
+  "why": "The ID comes from the contents only, so Git stores that content just once."
+ },
+ {
+  "qid": "0040-q3",
+  "lesson": "0040",
+  "question": "Where does the object with ID <code>ab12...</code> live?",
+  "options": [
+   {
+    "html": "<code>.git/objects/ab/12...</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>.git/ab12...</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>.git/objects/ab12.../</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>objects/12.../ab</code>",
+    "correct": false
+   }
+  ],
+  "why": "The first two characters name the folder; the remaining 38 name the file."
+ },
+ {
+  "qid": "0040-q4",
+  "lesson": "0040",
+  "question": "With <code><span data-os=\"windows\">python</span><span data-os=\"mac linux\">python3</span> mygit.py cat-file abc</code>, what is <code>sys.argv[2]</code>?",
+  "options": [
+   {
+    "html": "<code>\"abc\"</code>",
+    "correct": true
+   },
+   {
+    "html": "<code>\"cat-file\"</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>\"mygit.py\"</code>",
+    "correct": false
+   },
+   {
+    "html": "<code>\"python\"</code>",
+    "correct": false
+   }
+  ],
+  "why": "sys.argv[0] is the script's name, [1] is \"cat-file\", and [2] is \"abc\"."
+ }
+]

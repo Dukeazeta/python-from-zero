@@ -1,0 +1,20 @@
+# Secrets and personal data never go in the repository.
+.env
+app/data/course.db*
+app/data/progress*.json
+learning-records/
+
+# Build and test leftovers
+__pycache__/
+*.pyc
+deploy/out/
+.test-*/
+.venv/
+
+# Editors and tools
+.claude/
+.impeccable/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

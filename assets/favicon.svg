@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Python from zero: a terminal prompt (>) with the tutor's blue typing cursor. -->
+  <style>
+    .tile { fill: #2e2e2e; }
+    .chev { stroke: #fdfcfb; }
+    @media (prefers-color-scheme: dark) {
+      .tile { fill: #fdfcfb; }
+      .chev { stroke: #2e2e2e; }
+    }
+  </style>
+  <rect class="tile" width="32" height="32" rx="8"/>
+  <path class="chev" d="M9 10 L15 16 L9 22" fill="none" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="17" y="19.4" width="7.5" height="3.2" rx="1.6" fill="#207dff"/>
+</svg>

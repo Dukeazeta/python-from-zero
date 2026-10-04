@@ -1,0 +1,304 @@
+<!--meta
+{
+ "title": "Project: write your own Git",
+ "nav_title": "Your own Git",
+ "track": "Projects",
+ "intro": "You've used Git since Lesson 35. Today you'll find out how it actually stores your files, and write a tool that saves files in Git's own format, so well that the real Git can read them. It's the last lesson: you'll look inside a tool you use every day.",
+ "minutes": 100,
+ "needs": "This page, your terminal, and your GitHub account",
+ "summary": "Following Write yourself a Git and Pro Git's Git Objects chapter: content-addressed storage; bytes versus str and .encode(); a blob object is the header blob <size>, a zero byte, then the content; its ID is the SHA-1 hash in hex (hashlib.sha1().hexdigest()); objects live in .git/objects/<first two hex>/<other 38>, compressed with zlib; reading an object back by decompressing and splitting at the zero byte; a command-line tool with sys.argv; writing objects that the real git cat-file can read.",
+ "concepts": ["content-addressed storage", "bytes vs str", ".encode() / .decode()", "blob object", "object header", "SHA-1 hash", "hex digest", "object path", "zlib compression", "sys.argv", "command-line tool", "Git internals"],
+ "sources": [
+  {"title": "Thibault Polge, Write yourself a Git!", "url": "https://wyag.thb.lt/", "note": "The full project: re-implementing Git's core in Python"},
+  {"title": "Pro Git book: Git Internals, Git Objects", "url": "https://git-scm.com/book/en/v2/Git-Internals-Git-Objects", "note": "Blob objects, the header, SHA-1 and zlib storage"},
+  {"title": "Python documentation: hashlib", "url": "https://docs.python.org/3/library/hashlib.html", "note": "sha1() and hexdigest()"},
+  {"title": "Python documentation: zlib", "url": "https://docs.python.org/3/library/zlib.html", "note": "compress() and decompress()"},
+  {"title": "Python documentation: sys.argv", "url": "https://docs.python.org/3/library/sys.html#sys.argv", "note": "The command-line arguments passed to a script"},
+  {"title": "Project Based Learning list (practical-tutorials), Python section", "url": "https://github.com/practical-tutorials/project-based-learning#python", "note": "\"Write yourself a Git\""}
+ ]
+}
+-->
+<section id="idea" data-nav="How Git stores files">
+  <div class="col">
+    <h2>A filing system labelled by content</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Imagine a library where every book's shelf label is calculated from the book's exact words. Two identical copies always get the same label, so the library only ever keeps one. Change a single comma and the label is completely different. You can find any book instantly if you know its label, and you can check a book hasn't been tampered with by recalculating it.</p>
+    </div>
+
+    <p>Git stores every version of every file like that. A file's contents are turned into a 40-character ID by a <strong>hash function</strong> called SHA-1, and the file is saved under that ID. This is called <strong>content-addressed storage</strong>.{{cite:2}} The stored file is called a <strong>blob</strong> object. Those commit IDs like <code>a60018f</code> from Lesson 35 are the start of hashes too.</p>
+    <p>This project follows "Write yourself a Git", from the Project Based Learning list, which rebuilds Git's core in Python, together with the Pro Git chapter on Git's objects.{{cite:1}}{{cite:2}}{{cite:6}} Today: the blob, hashing, storing and reading back.</p>
+
+    <h3>Bytes, not text</h3>
+    <p>Hashing and compression work on raw <strong>bytes</strong>, not on Python strings. A bytes value is written with a <code>b</code> before the quote: <code>b"hello"</code>. Convert text to bytes with <code>"hello".encode()</code> and back with <code>.decode()</code>. A byte with value zero, written <code>b"\x00"</code>, is how Git separates the header from the content.</p>
+  </div>
+</section>
+
+<section id="blob" data-nav="Hashing a blob">
+  <div class="col">
+    <h2>The blob format and its ID</h2>
+    <p>Git doesn't hash the content alone. It first adds a short header: the word <code>blob</code>, a space, the content's length in bytes, and a zero byte. For content <code>b"hello\n"</code> (6 bytes), the full object is <code>b"blob 6\x00hello\n"</code>. Its SHA-1 hash, written as 40 hex characters, is the blob's ID.{{cite:2}}{{cite:3}}</p>
+  </div>
+
+  <div class="canvas exercise" id="wyag-hash" data-file="mygit.py">
+    <div class="task">
+      <h3>Milestone 1: blob bytes and hash</h3>
+      <p>Write <code>blob_bytes(data)</code> returning the header plus content, and <code>hash_object(data)</code> returning the 40-character hex ID, using <code>hashlib.sha1(...).hexdigest()</code>. The tests compare against IDs the real Git produces.</p>
+    </div>
+    <textarea class="code">import hashlib
+
+def blob_bytes(data):
+    # b"blob " + the length as bytes + b"\x00" + data
+    pass
+
+def hash_object(data):
+    pass
+</textarea>
+    <script type="text/python" class="tests">
+check("Header for hello", blob_bytes(b"hello\n"), b"blob 6\x00hello\n")
+check("Empty content", blob_bytes(b""), b"blob 0\x00")
+check("Same ID as real Git: hello", hash_object(b"hello\n"), "ce013625030ba8dba906f756967f9e9ca394464a")
+check("Same ID as real Git: empty file", hash_object(b""), "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391")
+check("Changing one character changes everything", hash_object(b"hellO\n") != hash_object(b"hello\n"), True)
+    </script>
+    <script type="text/python" class="solution">
+import hashlib
+
+def blob_bytes(data):
+    return b"blob " + str(len(data)).encode() + b"\x00" + data
+
+def hash_object(data):
+    return hashlib.sha1(blob_bytes(data)).hexdigest()
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>The length is a number: turn it into text with <code>str()</code>, then into bytes with <code>.encode()</code>. Bytes join with <code>+</code> just like strings. For the hash: <code>hashlib.sha1(blob_bytes(data)).hexdigest()</code>.</p></div>
+  </details>
+</section>
+
+<section id="store" data-nav="Storing objects">
+  <div class="col">
+    <h2>Where and how objects are saved</h2>
+    <p>Git saves each object inside the repo's <code>.git/objects</code> folder: the first two characters of the ID name a sub-folder, and the other 38 name the file. So <code>ce0136...</code> lives at <code>.git/objects/ce/013625030ba8dba906f756967f9e9ca394464a</code>. Splitting by the first two characters keeps any one folder from holding millions of files.{{cite:2}}</p>
+    <p>The file isn't stored as plain bytes: it's compressed with <strong>zlib</strong>, using <code>zlib.compress()</code>, and read back with <code>zlib.decompress()</code>.{{cite:2}}{{cite:4}}</p>
+  </div>
+
+  <div class="canvas exercise" id="wyag-store" data-file="mygit.py">
+    <div class="task">
+      <h3>Milestone 2: path, pack and unpack</h3>
+      <p>Write <code>object_path(sha)</code> returning the path as a string with forward slashes. Write <code>read_object(stored)</code>: decompress the stored bytes, split at the first zero byte, and return a tuple <code>(kind, content)</code>, where <code>kind</code> is the header's first word as text (like <code>"blob"</code>) and <code>content</code> is the bytes after the zero byte. <code>blob_bytes</code> is already written for you.</p>
+    </div>
+    <script type="text/python" class="setup">
+def blob_bytes(data):
+    return b"blob " + str(len(data)).encode() + b"\x00" + data
+    </script>
+    <textarea class="code">import zlib
+
+def object_path(sha):
+    pass
+
+def read_object(stored):
+    raw = zlib.decompress(stored)
+    # split raw at the first b"\x00" into header and content
+    # the header looks like b"blob 6": its first word is the kind
+    pass
+</textarea>
+    <script type="text/python" class="tests">
+check("Path for ce0136...", object_path("ce013625030ba8dba906f756967f9e9ca394464a"), ".git/objects/ce/013625030ba8dba906f756967f9e9ca394464a")
+check("Round trip: hello", read_object(zlib.compress(blob_bytes(b"hello\n"))), ("blob", b"hello\n"))
+check("Round trip: empty", read_object(zlib.compress(blob_bytes(b""))), ("blob", b""))
+check("Content containing a zero byte", read_object(zlib.compress(blob_bytes(b"a\x00b"))), ("blob", b"a\x00b"))
+    </script>
+    <script type="text/python" class="solution">
+import zlib
+
+def object_path(sha):
+    return ".git/objects/" + sha[:2] + "/" + sha[2:]
+
+def read_object(stored):
+    raw = zlib.decompress(stored)
+    header, content = raw.split(b"\x00", 1)
+    kind = header.split(b" ")[0].decode()
+    return kind, content
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Splitting only once</summary>
+    <div><p><code>raw.split(b"\x00", 1)</code> splits at the <em>first</em> zero byte only, so content that itself contains zero bytes survives. Then <code>header.split(b" ")[0].decode()</code> gives <code>"blob"</code>.</p></div>
+  </details>
+</section>
+
+<section id="tool" data-nav="A real tool">
+  <div class="col">
+    <h2>A command-line tool the real Git agrees with</h2>
+    <p>Real tools take instructions from the command line: <code>git hash-object hello.txt</code>. In Python, the words typed after the script's name arrive in the list <code>sys.argv</code>: <code>{{py}} mygit.py hash-object hello.txt</code> gives <code>["mygit.py", "hash-object", "hello.txt"]</code>.{{cite:5}}</p>
+    <ol class="steps">
+      <li>
+        <p><strong>Make a playground repo</strong> (a throwaway one, so experiments can't harm a real project):</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">...python-course&gt;</span> mkdir projects\mygit
+<span class="prompt">...python-course&gt;</span> cd projects\mygit
+<span class="prompt">...mygit&gt;</span> git init -b main</pre>
+        </div>
+      </li>
+      <li>
+        <p><strong>Write <code>mygit.py</code></strong> with <code>blob_bytes</code>, <code>hash_object</code>, <code>object_path</code> and <code>read_object</code>, then this at the bottom:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">mygit.py (the end)</span></div>
+          <pre class="code">import os
+import sys
+
+
+def write_object(data):
+    sha = hash_object(data)
+    path = object_path(sha)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "wb") as f:
+        f.write(zlib.compress(blob_bytes(data)))
+    return sha
+
+
+def main():
+    command, filename = sys.argv[1], sys.argv[2]
+    if command == "hash-object":
+        with open(filename, "rb") as f:
+            data = f.read()
+        if "-w" in sys.argv:
+            print(write_object(data))
+        else:
+            print(hash_object(data))
+    elif command == "cat-file":
+        with open(object_path(filename), "rb") as f:
+            kind, content = read_object(f.read())
+        print(content.decode(), end="")
+    else:
+        print(f"Unknown command: {command}")
+
+
+if __name__ == "__main__":
+    main()</pre>
+        </div>
+        <p style="margin-top: 12px">Three new tools here. <code>open(path, "rb")</code> opens a file to <strong>r</strong>ead <strong>b</strong>ytes, and <code>"wb"</code> to write them; the <code>with</code> block closes the file for you afterwards. <code>os.makedirs(..., exist_ok=True)</code> creates the sub-folder if it's missing. Reading and writing files is covered properly in <a href="https://automatetheboringstuff.com/3e/chapter10.html">ATBS chapter 10</a>.</p>
+      </li>
+      <li>
+        <p><strong>Compare with the real Git.</strong> Make a file <code>hello.txt</code> with some text, then run both:</p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">...mygit&gt;</span> python mygit.py hash-object hello.txt
+<span class="prompt">...mygit&gt;</span> git hash-object hello.txt</pre>
+        </div>
+        <p style="margin-top: 12px">The two 40-character IDs should be identical.</p>
+        <div class="pastecheck" id="wyag-compare" data-regex="^[0-9a-f]{40}$">
+          <p class="ask">Paste the ID your mygit.py printed:</p>
+          <p class="ok">That's a valid object ID. If it matches git's line character for character, your code computes IDs exactly the way Git does.</p>
+          <p class="hint">If they differ, check the header: the length must be the length of the bytes, and there's exactly one space after <code>blob</code> and one zero byte after the length.</p>
+        </div>
+      </li>
+      <li>
+        <p><strong>The real test: let Git read what you wrote.</strong></p>
+        <div class="window">
+          <div class="titlebar"><span class="filename">Terminal</span></div>
+          <pre class="code"><span class="prompt">...mygit&gt;</span> python mygit.py hash-object hello.txt -w
+<span class="prompt">...mygit&gt;</span> git cat-file -p THE-ID-IT-PRINTED</pre>
+        </div>
+        <p style="margin-top: 12px">Git prints your file's contents. It read an object written entirely by your Python code, from scratch. <code>{{py}} mygit.py cat-file THE-ID</code> does the same with your own reader.</p>
+      </li>
+    </ol>
+
+    <h3>Where to go next</h3>
+    <p>"Write yourself a Git" continues to trees (folders), commits, <code>log</code> and <code>checkout</code>.{{cite:1}} Working through its next chapters, using these functions as your starting point, would make a strong portfolio project.</p>
+    <p>Write the README, commit, and push as <code>mygit</code>. Note in the README which Git commands your version supports.</p>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Hash function</dt><dd>Turns any data into a short fixed-length ID; the same data always gives the same ID.</dd>
+        <dt>Content-addressed storage</dt><dd>Saving things under an ID calculated from their contents.</dd>
+        <dt>Blob</dt><dd>Git's object for a file's contents.</dd>
+        <dt>Bytes</dt><dd>Raw data, written <code>b"..."</code>; <code>.encode()</code> and <code>.decode()</code> convert to and from text.</dd>
+        <dt><code>sys.argv</code></dt><dd>The list of words typed on the command line after <code>{{py}}</code>.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. What does Git hash to get a blob's ID?</p>
+      <div class="options">
+        <button class="opt" data-correct>A header plus the file's content</button>
+        <button class="opt">Only the file's name</button>
+        <button class="opt">The file's name plus its date</button>
+        <button class="opt">The compressed file only</button>
+      </div>
+      <p class="why">It's "blob", the size, a zero byte, then the content. Names and dates aren't part of a blob.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. Two files with exactly the same contents but different names. Their blob IDs?</p>
+      <div class="options">
+        <button class="opt" data-correct>Identical</button>
+        <button class="opt">Different</button>
+        <button class="opt">One of them gets no ID</button>
+        <button class="opt">Random each time</button>
+      </div>
+      <p class="why">The ID comes from the contents only, so Git stores that content just once.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. Where does the object with ID <code>ab12...</code> live?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>.git/objects/ab/12...</code></button>
+        <button class="opt"><code>.git/ab12...</code></button>
+        <button class="opt"><code>.git/objects/ab12.../</code></button>
+        <button class="opt"><code>objects/12.../ab</code></button>
+      </div>
+      <p class="why">The first two characters name the folder; the remaining 38 name the file.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. With <code>{{py}} mygit.py cat-file abc</code>, what is <code>sys.argv[2]</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>"abc"</code></button>
+        <button class="opt"><code>"cat-file"</code></button>
+        <button class="opt"><code>"mygit.py"</code></button>
+        <button class="opt"><code>"python"</code></button>
+      </div>
+      <p class="why">sys.argv[0] is the script's name, [1] is "cat-file", and [2] is "abc".</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="What next">
+  <div class="col">
+    <h2>You've finished the course</h2>
+
+    <div class="card">
+      <h3>Read</h3>
+      <p><a class="source-link" href="https://git-scm.com/book/en/v2/Git-Internals-Git-Objects">Pro Git: Git Objects</a></p>
+      <p>About 20 minutes. It shows the same blob experiments using Git's own commands, then moves on to trees and commits.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>From here</h3>
+      <ul>
+        <li>Keep a steady rhythm of algorithm practice: a few NeetCode roadmap problems a week, mixing old patterns with new ones.</li>
+        <li>Pick one project to take further: Write yourself a Git, Ruslan's interpreter series, or your own idea. Depth in one project impresses more than five half-finished ones.</li>
+        <li>Make sure every project on GitHub has a README that says what it is, how to run it and what you learned.</li>
+        <li>Share your work in a community such as the Python Discord, and ask for code reviews.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong>: "which of my weak spots should I practise before job interviews?" It has your whole history of mistakes to go on.</p>
+    </div>
+  </div>
+</section>

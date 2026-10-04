@@ -1,0 +1,284 @@
+<!--meta
+{
+ "title": "Sliding window",
+ "nav_title": "Sliding window",
+ "track": "Algorithms",
+ "intro": "Many problems ask about a stretch of neighbouring items: the best run of days, the longest piece of text without repeats. Instead of re-checking every stretch from scratch, you slide a window along and update it as it moves.",
+ "minutes": 50,
+ "needs": "This page, plus your LeetCode account to submit",
+ "summary": "The sliding window pattern for contiguous subarrays and substrings; fixed-size windows updated by adding the new item and removing the old; tracking the best so far (minimum price) in one pass; variable-size windows with a set that grow on the right and shrink on the left; LeetCode 121 Best Time to Buy and Sell Stock, 643 Maximum Average Subarray I, 3 Longest Substring Without Repeating Characters.",
+ "concepts": ["contiguous", "subarray / substring", "sliding window", "fixed-size window", "variable-size window", "best so far", "shrinking the window", "LeetCode 121", "LeetCode 643", "LeetCode 3"],
+ "sources": [
+  {"title": "NeetCode roadmap: Sliding Window", "url": "https://neetcode.io/roadmap", "note": "The pattern, with video walkthroughs for each problem here"},
+  {"title": "Python Wiki: TimeComplexity", "url": "https://wiki.python.org/moin/TimeComplexity", "note": "Set add, remove and membership are O(1) on average"},
+  {"title": "LeetCode 121: Best Time to Buy and Sell Stock", "url": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/", "note": ""},
+  {"title": "LeetCode 643: Maximum Average Subarray I", "url": "https://leetcode.com/problems/maximum-average-subarray-i/", "note": ""},
+  {"title": "LeetCode 3: Longest Substring Without Repeating Characters", "url": "https://leetcode.com/problems/longest-substring-without-repeating-characters/", "note": ""}
+ ]
+}
+-->
+<section id="stock" data-nav="Best so far">
+  <div class="col">
+    <h2>Remember the best so far</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Looking back over a month of a share's price, you want the biggest profit from buying on one day and selling on a later day. You don't need to compare every pair of days. Walk forward day by day remembering one thing: the cheapest price so far. Each day, ask "if I'd bought at that cheapest point and sold today, what would I make?"</p>
+    </div>
+
+    <p>That's LeetCode 121.{{cite:3}} Comparing every buy day with every later sell day is O(n²). Keeping the lowest price seen so far makes it one pass, O(n), with O(1) extra space. It's the simplest version of this lesson's idea: as you move along, keep a small summary of what's behind you instead of looking back.</p>
+  </div>
+
+  <div class="canvas exercise" id="lc121" data-file="stock.py">
+    <div class="task">
+      <h3>LeetCode 121: Best Time to Buy and Sell Stock</h3>
+      <p><code>prices[i]</code> is the price on day <code>i</code>. Return the most profit from one buy followed by one later sell, or <code>0</code> if no profit is possible.</p>
+    </div>
+    <textarea class="code">class Solution:
+    def maxProfit(self, prices):
+        lowest = prices[0]
+        best = 0
+        # your code here
+        return best
+</textarea>
+    <script type="text/python" class="tests">
+check("[7, 1, 5, 3, 6, 4]", Solution().maxProfit([7, 1, 5, 3, 6, 4]), 5)
+check("Only falls: [7, 6, 4, 3, 1]", Solution().maxProfit([7, 6, 4, 3, 1]), 0)
+check("Low comes after an earlier high", Solution().maxProfit([2, 4, 1]), 2)
+check("100,000 days, fast", Solution().maxProfit(list(range(100000, 0, -1)) + [200000]), 199999)
+    </script>
+    <script type="text/python" class="solution">
+class Solution:
+    def maxProfit(self, prices):
+        lowest = prices[0]
+        best = 0
+        for price in prices:
+            if price < lowest:
+                lowest = price
+            if price - lowest > best:
+                best = price - lowest
+        return best
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>For each price: first update <code>lowest</code> if today is cheaper. Then work out today's profit, <code>price - lowest</code>, and keep it if it beats <code>best</code>.</p></div>
+  </details>
+</section>
+
+<section id="fixed" data-nav="Fixed window">
+  <div class="col">
+    <h2>A window of fixed size</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A train window shows exactly four fields at a time. As the train moves, one new field appears on the right and one disappears on the left. To keep a running total of cows in view, you don't recount everything: add the cows in the new field, subtract the cows in the one that left.</p>
+    </div>
+
+    <p>A <strong>contiguous</strong> stretch of a list (items next to each other, no gaps) is called a <strong>subarray</strong>; in a string it's a <strong>substring</strong>. A <strong>sliding window</strong> is a subarray you move along one step at a time.{{cite:1}} For a window of size <code>k</code>, summing each window from scratch costs O(n·k). Sliding costs O(n): add the item entering on the right, subtract the item leaving on the left.</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">slide.txt</span></div>
+        <pre class="code">nums = [1, 12, -5, -6, 50, 3], k = 4
+first window  [1, 12, -5, -6]        sum 2
+slide: +50 -1  [12, -5, -6, 50]       sum 51
+slide: +3 -12  [-5, -6, 50, 3]        sum 42</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="canvas exercise" id="lc643" data-file="max_average.py">
+    <div class="task">
+      <h3>LeetCode 643: Maximum Average Subarray I</h3>
+      <p>Return the largest average of any <code>k</code> neighbouring numbers in <code>nums</code>.{{cite:4}} Find the largest window <em>sum</em> by sliding, then divide by <code>k</code> once at the end.</p>
+    </div>
+    <textarea class="code">class Solution:
+    def findMaxAverage(self, nums, k):
+        window = sum(nums[:k])
+        best = window
+        # slide the window from position k onwards
+        return best / k
+</textarea>
+    <script type="text/python" class="tests">
+check("Example", Solution().findMaxAverage([1, 12, -5, -6, 50, 3], 4), 12.75)
+check("Window is the whole list", Solution().findMaxAverage([5], 1), 5.0)
+check("All negative", Solution().findMaxAverage([-1, -2, -3], 2), -1.5)
+check("100,000 numbers, k = 1000, fast", Solution().findMaxAverage(list(range(100000)), 1000), 99499.5)
+    </script>
+    <script type="text/python" class="solution">
+class Solution:
+    def findMaxAverage(self, nums, k):
+        window = sum(nums[:k])
+        best = window
+        for i in range(k, len(nums)):
+            window += nums[i] - nums[i - k]
+            best = max(best, window)
+        return best / k
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>Loop <code>for i in range(k, len(nums)):</code>. The item entering is <code>nums[i]</code>; the one leaving is <code>nums[i - k]</code>. Update <code>window</code>, then <code>best = max(best, window)</code>.</p></div>
+  </details>
+</section>
+
+<section id="variable" data-nav="Growing window">
+  <div class="col">
+    <h2>A window that grows and shrinks</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A caterpillar crawling along a leaf: its head stretches forward, and when it gets uncomfortable, its tail catches up. It's never longer than it can comfortably be, and it never goes backwards.</p>
+    </div>
+
+    <p>LeetCode 3 asks for the longest substring with no repeated characters.{{cite:5}} Keep a window from <code>left</code> to the current position <code>right</code>, and a set of the characters inside it. Move <code>right</code> forward one character at a time. If the new character is already in the window, shrink from the left (removing characters from the set) until it isn't. Then add it and check the length.</p>
+    <p>Each character is added once and removed at most once, so even with the inner <code>while</code> loop, the total work is O(n).{{cite:2}}</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">caterpillar.txt</span></div>
+        <pre class="code">s = "abcabcbb"
+right=0 'a'  window "a"      best 1
+right=1 'b'  window "ab"     best 2
+right=2 'c'  window "abc"    best 3
+right=3 'a'  'a' is inside: drop 'a' from the left -&gt; "bca"
+right=4 'b'  'b' is inside: drop 'b' -&gt; "cab"
+...          best stays 3</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="canvas exercise" id="lc3" data-file="longest_substring.py">
+    <div class="task">
+      <h3>LeetCode 3: Longest Substring Without Repeating Characters</h3>
+      <p>Return the length of the longest substring of <code>s</code> with all different characters.</p>
+    </div>
+    <textarea class="code">class Solution:
+    def lengthOfLongestSubstring(self, s):
+        window = set()
+        left = 0
+        best = 0
+        for right in range(len(s)):
+            pass  # your code here
+        return best
+</textarea>
+    <script type="text/python" class="tests">
+check("abcabcbb", Solution().lengthOfLongestSubstring("abcabcbb"), 3)
+check("bbbbb", Solution().lengthOfLongestSubstring("bbbbb"), 1)
+check("pwwkew (wke)", Solution().lengthOfLongestSubstring("pwwkew"), 3)
+check("Empty string", Solution().lengthOfLongestSubstring(""), 0)
+check("Repeat far back: abba", Solution().lengthOfLongestSubstring("abba"), 2)
+check("Long input, fast", Solution().lengthOfLongestSubstring("abcdefghij" * 20000), 10)
+    </script>
+    <script type="text/python" class="solution">
+class Solution:
+    def lengthOfLongestSubstring(self, s):
+        window = set()
+        left = 0
+        best = 0
+        for right in range(len(s)):
+            while s[right] in window:
+                window.remove(s[left])
+                left += 1
+            window.add(s[right])
+            best = max(best, right - left + 1)
+        return best
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Hint 1: shrinking</summary>
+    <div><p><code>while s[right] in window:</code> remove <code>s[left]</code> from the set and move <code>left</code> forward. Sets have <code>.remove()</code>, the opposite of <code>.add()</code>.</p></div>
+  </details>
+  <details class="hint">
+    <summary>Hint 2: the window's length</summary>
+    <div><p>After adding <code>s[right]</code>, the window runs from <code>left</code> to <code>right</code> inclusive, so its length is <code>right - left + 1</code>.</p></div>
+  </details>
+
+  <div class="col">
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Contiguous</dt><dd>Next to each other, with no gaps.</dd>
+        <dt>Subarray / substring</dt><dd>A contiguous piece of a list / of a string.</dd>
+        <dt>Sliding window</dt><dd>A subarray that moves along, updated rather than recomputed.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. A window of size k slides one step right. How do you update its sum?</p>
+      <div class="options">
+        <button class="opt" data-correct>Add the new item, subtract the old</button>
+        <button class="opt">Add up all k items again</button>
+        <button class="opt">Multiply the old sum by k</button>
+        <button class="opt">Subtract the new, add the old</button>
+      </div>
+      <p class="why">Only two items change, so updating is O(1) per step instead of O(k).</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. In Best Time to Buy and Sell Stock, what do you track as you go?</p>
+      <div class="options">
+        <button class="opt" data-correct>The lowest price so far</button>
+        <button class="opt">The highest price so far</button>
+        <button class="opt">Every pair of prices</button>
+        <button class="opt">The average price so far</button>
+      </div>
+      <p class="why">The best sale today always uses the cheapest earlier buy.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. Why is LeetCode 3 O(n) even with a while loop inside the for loop?</p>
+      <div class="options">
+        <button class="opt" data-correct>Each character leaves the window once</button>
+        <button class="opt">The while loop never actually runs</button>
+        <button class="opt">Sets make every loop O(1)</button>
+        <button class="opt">The string is always short</button>
+      </div>
+      <p class="why">left only moves forward, so across the whole run the inner loop does at most n removals in total.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. Which of these is a contiguous subarray of <code>[3, 1, 4, 1, 5]</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>[1, 4, 1]</code></button>
+        <button class="opt"><code>[3, 4, 5]</code></button>
+        <button class="opt"><code>[5, 1, 4]</code></button>
+        <button class="opt"><code>[3, 1, 5]</code></button>
+      </div>
+      <p class="why">Contiguous means neighbouring items in their original order, with no gaps.</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Submit, read, then practise from memory</h2>
+
+    <div class="card">
+      <h3>Submit on LeetCode</h3>
+      <p>Submit all three (links in Sources). LeetCode 3 is rated Medium: your first one.</p>
+    </div>
+
+    <div class="card">
+      <h3>Read next</h3>
+      <p><a class="source-link" href="https://neetcode.io/roadmap">NeetCode roadmap: Sliding Window</a></p>
+      <p>Watch the explanation for Longest Substring Without Repeating Characters, and compare it with your own solution.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Tomorrow, before Lesson 23</h3>
+      <p>On LeetCode, from a blank editor: Best Time to Buy and Sell Stock. Then try LeetCode 219, Contains Duplicate II: it combines a window of size k with the set from Lesson 20.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong>: "trace the sliding window on pwwkew for me".</p>
+    </div>
+  </div>
+</section>

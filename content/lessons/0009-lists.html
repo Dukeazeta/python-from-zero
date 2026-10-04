@@ -1,0 +1,317 @@
+<!--meta
+{
+ "title": "Lists: many values in one place",
+ "nav_title": "Lists",
+ "track": "Python basics",
+ "intro": "One variable holding one value only gets you so far. A list holds as many values as you like, in order. Lists are the first data structure you'll learn, and almost every algorithm problem starts with one.",
+ "minutes": 40,
+ "needs": "Just this page and an internet connection",
+ "summary": "Creating lists; indexes starting at 0 and negative indexes; IndexError; len(); changing items; append(); in and not in; looping over a list; sum(), min(), max() and the average; finding the largest value by hand with a loop; slices.",
+ "concepts": ["list", "item", "index (from 0)", "negative index", "IndexError", "len()", "append()", "in / not in", "looping over a list", "sum() min() max()", "slice"],
+ "sources": [
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 6, \"The List Data Type\"", "url": "https://automatetheboringstuff.com/3e/chapter6.html#calibre_link-1529", "note": "Indexes, negative indexes, slices, len() and changing values"},
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 6, \"Working with Lists\"", "url": "https://automatetheboringstuff.com/3e/chapter6.html#calibre_link-1537", "note": "for loops over lists, and the in and not in operators"},
+  {"title": "Al Sweigart, <em>Automate the Boring Stuff with Python</em>, 3rd ed., ch. 6, \"Methods\"", "url": "https://automatetheboringstuff.com/3e/chapter6.html#calibre_link-1544", "note": "append() and other list methods"},
+  {"title": "The Python Tutorial, 3.1.3 Lists", "url": "https://docs.python.org/3/tutorial/introduction.html#lists", "note": "Lists can be indexed and sliced; append() adds to the end"},
+  {"title": "Python documentation: built-in functions sum(), min() and max()", "url": "https://docs.python.org/3/library/functions.html#sum", "note": "Totals and smallest and largest items"}
+ ]
+}
+-->
+<section id="lists" data-nav="Lists">
+  <div class="col">
+    <h2>A list keeps things in order</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A train has carriages joined in a line. Each carriage has a number painted on it so you can find your seat. Odd thing about this train: the first carriage is numbered 0, not 1.</p>
+    </div>
+
+    <p>A <strong>list</strong> is a value that holds other values in order, written inside square brackets with commas between them. Each value in it is an <strong>item</strong>.{{cite:1}}</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">train.py</span></div>
+        <pre class="code">foods = ["rice", "beans", "plantain", "yam"]
+print(foods[0])
+print(foods[2])
+print(len(foods))</pre>
+        <div class="shows"><span class="label">Shows</span>rice
+plantain
+4</div>
+      </div>
+    </div>
+
+    <p>The number in square brackets after a list is its <strong>index</strong>: which carriage you want. Indexes start at <strong>0</strong>, so the first item is <code>foods[0]</code> and the fourth is <code>foods[3]</code>.{{cite:1}} <code>len()</code> tells you how many items there are, just as it counts the characters in a string.</p>
+
+    <h3>Counting from the back</h3>
+    <p>A negative index counts from the end: <code>foods[-1]</code> is the last item (<code>"yam"</code>) and <code>foods[-2]</code> the one before it.{{cite:1}} Handy when you don't know how long the list is.</p>
+    <p>Ask for a carriage that doesn't exist, like <code>foods[4]</code> on a four-item list, and you get <code>IndexError: list index out of range</code>. The last index is always one less than the length.</p>
+
+    <h3>Changing a list</h3>
+    <p>Lists can be changed after they're made. Put an index on the left of <code>=</code> to replace an item, and use <code>.append()</code> to add one to the end:{{cite:3}}</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">shopping.py</span></div>
+        <pre class="code">shopping = ["milk", "eggs"]
+shopping[0] = "oat milk"
+shopping.append("bread")
+print(shopping)</pre>
+        <div class="shows"><span class="label">Shows</span>['oat milk', 'eggs', 'bread']</div>
+      </div>
+    </div>
+    <p>The dot in <code>shopping.append("bread")</code> means "the list's own append tool". A function that belongs to a value like this is called a <strong>method</strong>. You'll meet lots of them.</p>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>List</dt><dd>A value holding other values in order, written <code>[a, b, c]</code>.</dd>
+        <dt>Item</dt><dd>One value inside a list.</dd>
+        <dt>Index</dt><dd>An item's position, starting from 0. <code>-1</code> is the last item.</dd>
+        <dt>Method</dt><dd>A function that belongs to a value, used with a dot: <code>shopping.append("bread")</code>.</dd>
+        <dt>IndexError</dt><dd>The error for an index past the end of a list.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="canvas exercise" id="first-last" data-file="first_last.py">
+    <div class="task">
+      <h3>Try it: first and last</h3>
+      <p>Print the first planet, then the last planet, using indexes. Use a negative index for the last one, so it would still work if more planets were added.</p>
+    </div>
+    <textarea class="code">planets = ["Mercury", "Venus", "Earth", "Mars"]
+</textarea>
+    <script type="text/python" class="tests">
+check("Shows Mercury then Mars", printed(), ["Mercury", "Mars"])
+check("Uses a negative index", "[-1]" in source(), True)
+    </script>
+    <script type="text/python" class="solution">
+planets = ["Mercury", "Venus", "Earth", "Mars"]
+print(planets[0])
+print(planets[-1])
+    </script>
+  </div>
+
+  <div class="canvas exercise" id="build-list" data-file="guests.py" data-inputs='["Ada", "Bo", "Chi"]'>
+    <div class="task">
+      <h3>Try it: a guest list</h3>
+      <p>Start with an empty list, <code>guests = []</code>. Use a <code>for</code> loop to ask <code>Guest name? </code> three times, appending each answer. Then print the list.</p>
+    </div>
+    <textarea class="code">guests = []
+</textarea>
+    <script type="text/python" class="tests">
+check("Collects three guests", run(["Ada", "Bo", "Chi"]), ["Guest name? Ada", "Guest name? Bo", "Guest name? Chi", "['Ada', 'Bo', 'Chi']"])
+check("Uses append", ".append(" in source(), True)
+    </script>
+    <script type="text/python" class="solution">
+guests = []
+for i in range(3):
+    name = input("Guest name? ")
+    guests.append(name)
+print(guests)
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p><code>for i in range(3):</code> repeats three times (you don't have to use <code>i</code>). Inside, ask with <code>input()</code> and <code>guests.append(...)</code> the answer. Print after the loop.</p></div>
+  </details>
+</section>
+
+<section id="looping" data-nav="Looping">
+  <div class="col">
+    <h2>Going through every item</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Ticking off a shopping list in the supermarket: you look at each line in turn and do something with it. Same with checking whether something is on the list at all: you scan it from top to bottom.</p>
+    </div>
+
+    <p>A <code>for</code> loop works on lists exactly as it does on strings: the loop variable holds each item in turn.{{cite:2}} And <code>in</code> asks whether a value is anywhere in the list; <code>not in</code> asks the opposite.{{cite:2}}</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">tick.py</span></div>
+        <pre class="code">shopping = ["milk", "eggs", "bread"]
+for item in shopping:
+    print("Got " + item)
+if "eggs" in shopping:
+    print("Remember: eggs are fragile")</pre>
+        <div class="shows"><span class="label">Shows</span>Got milk
+Got eggs
+Got bread
+Remember: eggs are fragile</div>
+      </div>
+    </div>
+
+    <h3>Quick answers about numbers</h3>
+    <p>For a list of numbers, <code>sum()</code> adds them all, and <code>min()</code> and <code>max()</code> give the smallest and largest.{{cite:5}} The average is the sum divided by how many there are: <code>sum(scores) / len(scores)</code>.</p>
+  </div>
+
+  <div class="canvas exercise" id="average-score" data-file="average.py">
+    <div class="task">
+      <h3>Try it: class average</h3>
+      <p>Print the average of the scores, then the highest score, on separate lines. The average of this list is <code>75.0</code>.</p>
+    </div>
+    <textarea class="code">scores = [70, 85, 90, 55]
+</textarea>
+    <script type="text/python" class="tests">
+check("Shows the average then the top score", printed(), ["75.0", "90"])
+    </script>
+    <script type="text/python" class="solution">
+scores = [70, 85, 90, 55]
+print(sum(scores) / len(scores))
+print(max(scores))
+    </script>
+  </div>
+
+  <div class="col">
+    <h3>Doing it by hand</h3>
+    <p><code>max()</code> is great, but you need to know how it works inside: interviewers often ask you to find things in a list without the shortcut, and the same idea powers many algorithms. The trick: remember the biggest value seen <em>so far</em>, and update it whenever you see something bigger.</p>
+  </div>
+
+  <div class="canvas exercise" id="largest-by-hand" data-file="largest.py">
+    <div class="task">
+      <h3>Try it: largest, without max()</h3>
+      <p>Find the largest number in <code>numbers</code> using a <code>for</code> loop, without using <code>max()</code>, and print it. Start <code>largest</code> as the first item, then compare each item to it.</p>
+    </div>
+    <textarea class="code">numbers = [12, 45, 7, 88, 23, 88, 3]
+largest = numbers[0]
+</textarea>
+    <script type="text/python" class="tests">
+check("Shows 88", printed(), ["88"])
+check("largest is 88", largest, 88)
+check("Doesn't use max()", "max(" not in source(), True)
+    </script>
+    <script type="text/python" class="solution">
+numbers = [12, 45, 7, 88, 23, 88, 3]
+largest = numbers[0]
+for n in numbers:
+    if n > largest:
+        largest = n
+print(largest)
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>Inside <code>for n in numbers:</code>, ask <code>if n &gt; largest:</code> and if so, <code>largest = n</code>. Print after the loop.</p></div>
+  </details>
+</section>
+
+<section id="slices" data-nav="Slices">
+  <div class="col">
+    <h2>Taking part of a list</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>Cutting a slice of bread from a loaf: you say where the cut starts and where it ends, and you get that piece. The loaf itself stays whole.</p>
+    </div>
+
+    <p>A <strong>slice</strong> gives you a new list with part of the original: <code>items[start:stop]</code>. Like <code>range</code>, it starts at <code>start</code> and stops <em>before</em> <code>stop</code>.{{cite:1}}{{cite:4}} Leave out a number to go from the very start or to the very end.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>With <code>letters = ["a", "b", "c", "d", "e"]</code></th><th>Gives</th></tr></thead>
+        <tbody>
+          <tr><td><code>letters[1:3]</code></td><td><code>['b', 'c']</code></td></tr>
+          <tr><td><code>letters[:2]</code></td><td><code>['a', 'b']</code> (the first two)</td></tr>
+          <tr><td><code>letters[2:]</code></td><td><code>['c', 'd', 'e']</code> (from index 2 to the end)</td></tr>
+          <tr><td><code>letters[-2:]</code></td><td><code>['d', 'e']</code> (the last two)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Slice</dt><dd>Part of a list, written <code>items[start:stop]</code>. Stops before <code>stop</code>.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="canvas exercise" id="podium-slice" data-file="podium.py">
+    <div class="task">
+      <h3>Try it: the podium</h3>
+      <p>The runners are listed in finishing order. Use slices to print the top three as a list, then everyone who didn't make the podium as a list.</p>
+    </div>
+    <textarea class="code">finishers = ["Ada", "Bo", "Chi", "Dayo", "Efe", "Femi"]
+</textarea>
+    <script type="text/python" class="tests">
+check("Top three, then the rest", printed(), ["['Ada', 'Bo', 'Chi']", "['Dayo', 'Efe', 'Femi']"])
+check("Uses slices", source().count(":") >= 2 and "[" in source().split("\n", 1)[1], True)
+    </script>
+    <script type="text/python" class="solution">
+finishers = ["Ada", "Bo", "Chi", "Dayo", "Efe", "Femi"]
+print(finishers[:3])
+print(finishers[3:])
+    </script>
+  </div>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. With <code>colours = ["red", "green", "blue"]</code>, what is <code>colours[1]</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>"green"</code></button>
+        <button class="opt"><code>"red"</code></button>
+        <button class="opt"><code>"blue"</code></button>
+        <button class="opt">An IndexError</button>
+      </div>
+      <p class="why">Indexes start at 0, so index 1 is the second item.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. A list has 5 items. What is the index of the last one?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>4</code> (or <code>-1</code>)</button>
+        <button class="opt"><code>5</code> (or <code>-5</code>)</button>
+        <button class="opt"><code>6</code> (or <code>-6</code>)</button>
+        <button class="opt"><code>0</code> (or <code>-0</code>)</button>
+      </div>
+      <p class="why">Counting from 0, five items have indexes 0 to 4. -1 always means the last one.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. What does <code>[10, 20, 30, 40][1:3]</code> give?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>[20, 30]</code></button>
+        <button class="opt"><code>[10, 20, 30]</code></button>
+        <button class="opt"><code>[20, 30, 40]</code></button>
+        <button class="opt"><code>[10, 20]</code></button>
+      </div>
+      <p class="why">Start at index 1 (20) and stop before index 3.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. Which line adds "tea" to the end of the list <code>drinks</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>drinks.append("tea")</code></button>
+        <button class="opt"><code>drinks = "tea"</code></button>
+        <button class="opt"><code>append(drinks, "tea")</code></button>
+        <button class="opt"><code>drinks[-1] = "tea"</code></button>
+      </div>
+      <p class="why">append is a list method. drinks[-1] = "tea" would replace the last item instead of adding one.</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Read, then practise from memory</h2>
+
+    <div class="card">
+      <h3>Read next</h3>
+      <p><a class="source-link" href="https://automatetheboringstuff.com/3e/chapter6.html#calibre_link-1529">Automate the Boring Stuff with Python, chapter 6: "The List Data Type" and "Working with Lists"</a></p>
+      <p>About 20 minutes. Skip "Random Selection and Ordering" for now (it needs <code>import random</code>, Lesson 18).</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Tomorrow, before Lesson 10</h3>
+      <p>In <code>practice/smallest.py</code>, from memory and without <code>min()</code>: find the smallest number in a list and also <em>where</em> it is (its index). Hint: loop over <code>range(len(numbers))</code> so you have the index each time round.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong>. A good question for today: "why do indexes start at 0?"</p>
+    </div>
+  </div>
+</section>

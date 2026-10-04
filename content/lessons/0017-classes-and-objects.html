@@ -1,0 +1,295 @@
+<!--meta
+{
+ "title": "Classes and objects",
+ "nav_title": "Classes",
+ "track": "Python basics",
+ "intro": "You've been using objects all along: every string and list carries its own methods. Today you design your own kinds of object, bundling data with the actions that go with it. It also explains LeetCode's class Solution, and sets you up for linked lists and trees.",
+ "minutes": 45,
+ "needs": "Just this page and an internet connection",
+ "summary": "Classes as blueprints and objects (instances) made from them; __init__ and self; attributes; methods; calling methods on objects; strings and lists as objects; LeetCode's class Solution wrapper and why self is there; a Node class with a value and a link to the next node as a preview of linked lists.",
+ "concepts": ["class", "object / instance", "__init__", "self", "attribute", "method", "constructor call", "class Solution", "node with next"],
+ "sources": [
+  {"title": "The Python Tutorial, 9.3 A First Look at Classes", "url": "https://docs.python.org/3/tutorial/classes.html#a-first-look-at-classes", "note": "Class definition syntax, class objects, instance objects, method objects"},
+  {"title": "The Python Tutorial, 9.3.2 Class Objects", "url": "https://docs.python.org/3/tutorial/classes.html#class-objects", "note": "__init__ runs when a new instance is created"},
+  {"title": "The Python Tutorial, 9.3.4 Method Objects", "url": "https://docs.python.org/3/tutorial/classes.html#method-objects", "note": "The instance is passed as the first argument, by convention called self"},
+  {"title": "LeetCode 1480: Running Sum of 1d Array", "url": "https://leetcode.com/problems/running-sum-of-1d-array/", "note": "The problem in the last exercise"}
+ ]
+}
+-->
+<section id="classes" data-nav="Classes">
+  <div class="col">
+    <h2>Blueprints and the things made from them</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A cookie cutter isn't a cookie. It's the shape you use to make as many cookies as you like. Each cookie is separate: you can put icing on one without changing the others, but they all share the same shape.</p>
+    </div>
+
+    <p>A <strong>class</strong> is the cookie cutter: a blueprint describing what data a kind of thing holds and what it can do. An <strong>object</strong> (also called an <strong>instance</strong>) is one cookie made from it.{{cite:1}} You've used objects already: every string is an object of the class <code>str</code>, which is why it has methods like <code>.upper()</code>.</p>
+
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">pets.py</span></div>
+        <pre class="code">class Dog:
+    def __init__(self, name):
+        self.name = name
+        self.tricks = []
+
+    def learn(self, trick):
+        self.tricks.append(trick)
+
+    def show_off(self):
+        return f"{self.name} can: {', '.join(self.tricks)}"
+
+rex = Dog("Rex")
+bella = Dog("Bella")
+rex.learn("sit")
+rex.learn("roll over")
+print(rex.show_off())
+print(len(bella.tricks))</pre>
+        <div class="shows"><span class="label">Shows</span>Rex can: sit, roll over
+0</div>
+      </div>
+    </div>
+
+    <h3>Taking it apart</h3>
+    <ul>
+      <li><code>class Dog:</code> starts the blueprint. Class names use CapitalisedWords by convention.</li>
+      <li><code>Dog("Rex")</code> makes a new object. Python then runs <code>__init__</code> (two underscores each side, said "dunder init") to set it up.{{cite:2}}</li>
+      <li><code>self</code> means "this particular object". Inside the class, <code>self.name</code> is <em>this</em> dog's name. When you call <code>rex.learn("sit")</code>, Python passes <code>rex</code> in as <code>self</code> automatically.{{cite:3}}</li>
+      <li><code>self.name</code> and <code>self.tricks</code> are <strong>attributes</strong>: variables that belong to one object. Rex's tricks and Bella's tricks are separate lists.</li>
+      <li><code>learn</code> and <code>show_off</code> are <strong>methods</strong>: functions that belong to the class, with <code>self</code> as their first parameter.</li>
+    </ul>
+
+    <div class="words">
+      <p class="words-title">New words</p>
+      <dl>
+        <dt>Class</dt><dd>A blueprint for a kind of object.</dd>
+        <dt>Object / instance</dt><dd>One thing made from a class: <code>Dog("Rex")</code>.</dd>
+        <dt><code>__init__</code></dt><dd>The method that sets up a new object.</dd>
+        <dt><code>self</code></dt><dd>Inside a class, the particular object being used.</dd>
+        <dt>Attribute</dt><dd>A variable that belongs to an object: <code>rex.name</code>.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="canvas exercise" id="counter-class" data-file="clicker.py">
+    <div class="task">
+      <h3>Try it: a click counter</h3>
+      <p>Write a class <code>Counter</code>. A new counter starts with a <code>count</code> attribute of 0. Its method <code>click()</code> adds 1, and <code>reset()</code> puts it back to 0.</p>
+    </div>
+    <textarea class="code">class Counter:
+    def __init__(self):
+        pass
+</textarea>
+    <script type="text/python" class="tests">
+check("A new counter is 0", Counter().count, 0)
+check("Three clicks make 3", (c := Counter(), c.click(), c.click(), c.click(), c.count)[-1], 3)
+check("Reset goes back to 0", (c := Counter(), c.click(), c.reset(), c.count)[-1], 0)
+check("Two counters are separate", (a := Counter(), b := Counter(), a.click(), b.count)[-1], 0)
+    </script>
+    <script type="text/python" class="solution">
+class Counter:
+    def __init__(self):
+        self.count = 0
+
+    def click(self):
+        self.count += 1
+
+    def reset(self):
+        self.count = 0
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Getting "has no attribute 'count'"?</summary>
+    <div><p>Inside <code>__init__</code>, write <code>self.count = 0</code>. Without <code>self.</code>, <code>count</code> would be a local variable that's wiped when <code>__init__</code> finishes (Lesson 12).</p></div>
+  </details>
+
+  <div class="canvas exercise" id="bank-account" data-file="bank.py">
+    <div class="task">
+      <h3>Try it: a bank account</h3>
+      <p>Write <code>BankAccount(owner)</code> with a <code>balance</code> starting at 0. <code>deposit(amount)</code> adds money. <code>withdraw(amount)</code> takes it out and returns <code>True</code>, but if there isn't enough money it changes nothing and returns <code>False</code>.</p>
+    </div>
+    <textarea class="code">class BankAccount:
+    def __init__(self, owner):
+        self.owner = owner
+        self.balance = 0
+</textarea>
+    <script type="text/python" class="tests">
+check("Starts empty", BankAccount("Ada").balance, 0)
+check("Deposit 500", (a := BankAccount("Ada"), a.deposit(500), a.balance)[-1], 500)
+check("Withdraw 200 of 500 returns True", (a := BankAccount("Ada"), a.deposit(500), a.withdraw(200))[-1], True)
+check("Balance after withdrawing 200", (a := BankAccount("Ada"), a.deposit(500), a.withdraw(200), a.balance)[-1], 300)
+check("Can't overdraw", (a := BankAccount("Ada"), a.deposit(100), a.withdraw(150))[-1], False)
+check("Failed withdrawal changes nothing", (a := BankAccount("Ada"), a.deposit(100), a.withdraw(150), a.balance)[-1], 100)
+    </script>
+    <script type="text/python" class="solution">
+class BankAccount:
+    def __init__(self, owner):
+        self.owner = owner
+        self.balance = 0
+
+    def deposit(self, amount):
+        self.balance += amount
+
+    def withdraw(self, amount):
+        if amount > self.balance:
+            return False
+        self.balance -= amount
+        return True
+    </script>
+  </div>
+</section>
+
+<section id="solution" data-nav="class Solution">
+  <div class="col">
+    <h2>LeetCode's class Solution, explained</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>An exam paper with a box marked "Write your answer here". The box is just where the examiner knows to look. LeetCode's <code>class Solution</code> is that box.</p>
+    </div>
+
+    <p>LeetCode wraps every answer as a method of a class called <code>Solution</code>. Its test system makes an object, <code>Solution()</code>, and calls your method on it with each test input. That's why there's a <code>self</code> parameter you never use: every method gets one.{{cite:3}}</p>
+    <p>So writing for LeetCode means: write your function as you normally would, then indent it inside <code>class Solution:</code> and add <code>self</code> as the first parameter.</p>
+  </div>
+
+  <div class="canvas exercise" id="running-sum" data-file="running_sum.py">
+    <div class="task">
+      <h3>Solve it: LeetCode 1480, Running Sum</h3>
+      <p>Inside <code>class Solution</code>, write <code>runningSum(self, nums)</code> that returns a list where each item is the total of all numbers up to and including that position. <code>[1, 2, 3, 4]</code> gives <code>[1, 3, 6, 10]</code>.{{cite:4}}</p>
+    </div>
+    <textarea class="code">class Solution:
+    def runningSum(self, nums):
+        pass
+</textarea>
+    <script type="text/python" class="tests">
+check("[1, 2, 3, 4]", Solution().runningSum([1, 2, 3, 4]), [1, 3, 6, 10])
+check("All ones", Solution().runningSum([1, 1, 1, 1, 1]), [1, 2, 3, 4, 5])
+check("With negatives", Solution().runningSum([3, -1, 2]), [3, 2, 4])
+check("One number", Solution().runningSum([7]), [7])
+    </script>
+    <script type="text/python" class="solution">
+class Solution:
+    def runningSum(self, nums):
+        result = []
+        total = 0
+        for n in nums:
+            total += n
+            result.append(total)
+        return result
+    </script>
+  </div>
+  <details class="hint">
+    <summary>Stuck? A hint</summary>
+    <div><p>The accumulator pattern from Lesson 8, with one extra step: after adding each number to <code>total</code>, append the current <code>total</code> to the result list.</p></div>
+  </details>
+</section>
+
+<section id="nodes" data-nav="Nodes">
+  <div class="col">
+    <h2>A preview: objects that point to objects</h2>
+
+    <div class="analogy">
+      <p class="analogy-title">In real life</p>
+      <p>A treasure hunt: each clue tells you something and also where to find the next clue. You can follow the whole chain from the first clue, one step at a time, until a clue says "the end".</p>
+    </div>
+
+    <p>An attribute can hold another object. A tiny class with a value and a link to the next one is the building block of a <strong>linked list</strong>, which you'll study in Lesson 27:</p>
+    <div class="canvas">
+      <div class="window">
+        <div class="titlebar"><span class="filename">clues.py</span></div>
+        <pre class="code">class Node:
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+
+third = Node("under the mat")
+second = Node("in the oven", third)
+first = Node("behind the clock", second)
+
+clue = first
+while clue is not None:
+    print(clue.val)
+    clue = clue.next</pre>
+        <div class="shows"><span class="label">Shows</span>behind the clock
+in the oven
+under the mat</div>
+      </div>
+    </div>
+    <p><code>is not None</code> asks "is there actually a node here?". The last node's <code>next</code> is <code>None</code>, so the loop stops there. Read that loop slowly; you'll write lots like it.</p>
+  </div>
+</section>
+
+<section id="check" data-nav="Check">
+  <div class="col">
+    <h2>Check yourself</h2>
+    <p>From memory, without scrolling up. A wrong answer here costs nothing: you just pick again.</p>
+
+    <div class="quiz">
+      <p class="q">1. What does <code>self</code> refer to inside a method?</p>
+      <div class="options">
+        <button class="opt" data-correct>The object the method was called on</button>
+        <button class="opt">The class blueprint itself</button>
+        <button class="opt">The first argument you passed</button>
+        <button class="opt">The whole running program</button>
+      </div>
+      <p class="why">In rex.learn("sit"), Python passes rex as self.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">2. When does <code>__init__</code> run?</p>
+      <div class="options">
+        <button class="opt" data-correct>When a new object is created</button>
+        <button class="opt">When the class is written</button>
+        <button class="opt">Whenever any method is called</button>
+        <button class="opt">When the program finishes</button>
+      </div>
+      <p class="why">Calling the class, like Dog("Rex"), creates an object and runs __init__ to set it up.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">3. <code>a = Counter()</code> and <code>b = Counter()</code>, then <code>a.click()</code>. What is <code>b.count</code>?</p>
+      <div class="options">
+        <button class="opt" data-correct><code>0</code></button>
+        <button class="opt"><code>1</code></button>
+        <button class="opt"><code>2</code></button>
+        <button class="opt"><code>None</code></button>
+      </div>
+      <p class="why">Each object has its own attributes. Clicking a doesn't change b.</p>
+    </div>
+
+    <div class="quiz">
+      <p class="q">4. Why do LeetCode methods have a <code>self</code> parameter?</p>
+      <div class="options">
+        <button class="opt" data-correct>They're methods of a Solution class</button>
+        <button class="opt">LeetCode needs your username there</button>
+        <button class="opt">It stores the expected answer</button>
+        <button class="opt">It makes the code run faster</button>
+      </div>
+      <p class="why">Every method's first parameter is the object it's called on. LeetCode calls Solution().yourMethod(...).</p>
+    </div>
+  </div>
+</section>
+
+<section id="next" data-nav="Next">
+  <div class="col">
+    <h2>Read, then practise from memory</h2>
+
+    <div class="card">
+      <h3>Read next</h3>
+      <p><a class="source-link" href="https://docs.python.org/3/tutorial/classes.html#a-first-look-at-classes">The Python Tutorial, 9.3 A First Look at Classes</a></p>
+      <p>About 20 minutes. It's written for experienced programmers, so read for the examples and skip any paragraph that loses you. Sections 9.3.1 to 9.3.5 are the useful part.</p>
+    </div>
+
+    <div class="card on-cloud">
+      <h3>Tomorrow, before Lesson 18</h3>
+      <p>In <code>practice/library.py</code>, from memory: a <code>Book</code> class with title, author and an <code>on_loan</code> attribute starting as <code>False</code>, plus <code>lend()</code> and <code>give_back()</code> methods. Then make a list of three books and print the titles that are available.</p>
+    </div>
+
+    <div class="card">
+      <h3>Stuck? Ask your tutor</h3>
+      <p>With the course app running, press <strong>Ask your tutor</strong>. A good question for today: "explain self with a different example".</p>
+    </div>
+  </div>
+</section>
