@@ -77,6 +77,22 @@
       <li><strong>Save <code>path[:]</code>, not <code>path</code>.</strong> A slice makes a new copy of the list.<sup class="cite"><a href="#src-3" aria-label="Source 3">3</a></sup> Saving <code>path</code> itself saves a reference to the one shared list, which keeps changing, and ends up empty.</li>
     </ul>
   </div>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="Zq4upTEaQyM">
+      <button type="button" class="video-play" aria-label="Play video: The Backtracking Blueprint: The Legendary 3 Keys To Backtracking Algorithms, by Back To Back SWE">
+        <img src="https://i.ytimg.com/vi/Zq4upTEaQyM/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">13:44</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">The Backtracking Blueprint: The Legendary 3 Keys To Backtracking Algorithms</span>
+        <span class="video-by">Back To Back SWE · <a href="https://www.youtube.com/watch?v=Zq4upTEaQyM" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="subsets" data-nav="Subsets">
@@ -144,6 +160,22 @@ class Solution:
     <summary>Getting a list of empty lists?</summary>
     <div><p>You saved <code>path</code> instead of <code>path[:]</code>. Every saved answer is the same list, which is empty by the end.</p></div>
   </details>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="REOH22Xwdkk">
+      <button type="button" class="video-play" aria-label="Play video: Subsets - Backtracking - Leetcode 78, by NeetCode">
+        <img src="https://i.ytimg.com/vi/REOH22Xwdkk/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">8:47</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">Subsets - Backtracking - Leetcode 78</span>
+        <span class="video-by">NeetCode · <a href="https://www.youtube.com/watch?v=REOH22Xwdkk" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="permutations" data-nav="Permutations">
@@ -209,6 +241,22 @@ class Solution:
     <summary>Stuck? A hint</summary>
     <div><p>Base case: <code>len(path) == len(nums)</code>, save a copy. Otherwise, for each <code>n</code> in <code>nums</code> not in <code>used</code>: append it and add it to <code>used</code>, call <code>backtrack()</code>, then undo both.</p></div>
   </details>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="s7AvT7cGdSo">
+      <button type="button" class="video-play" aria-label="Play video: Backtracking: Permutations - Leetcode 46 - Python, by NeetCode">
+        <img src="https://i.ytimg.com/vi/s7AvT7cGdSo/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">9:43</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">Backtracking: Permutations - Leetcode 46 - Python</span>
+        <span class="video-by">NeetCode · <a href="https://www.youtube.com/watch?v=s7AvT7cGdSo" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="combination" data-nav="Combination Sum">
@@ -276,6 +324,22 @@ class Solution:
       </dl>
     </div>
   </div>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="GBKI9VSKdGg">
+      <button type="button" class="video-play" aria-label="Play video: Combination Sum - Backtracking - Leetcode 39 - Python, by NeetCode">
+        <img src="https://i.ytimg.com/vi/GBKI9VSKdGg/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">15:10</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">Combination Sum - Backtracking - Leetcode 39 - Python</span>
+        <span class="video-by">NeetCode · <a href="https://www.youtube.com/watch?v=GBKI9VSKdGg" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="check" data-nav="Check">
@@ -395,6 +459,7 @@ class Solution:
 </main>
 <script src="../assets/sections.js"></script>
 <script src="../assets/quiz.js"></script>
+<script src="../assets/videos.js"></script>
 <script src="../assets/pyrunner.js"></script>
 <script src="../assets/tutor.js"></script>
 </body>

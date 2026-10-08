@@ -77,6 +77,22 @@ print(fib(80))</pre>
     </div>
     <p>Each <code>fib(k)</code> is now computed once, so the whole thing is O(n) instead of O(2ⁿ). <code>fib(80)</code> without the cache would take longer than a human lifetime.</p>
   </div>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="P8Xa2BitN3I">
+      <button type="button" class="video-play" aria-label="Play video: Algorithms: Memoization and Dynamic Programming, by HackerRank">
+        <img src="https://i.ytimg.com/vi/P8Xa2BitN3I/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">11:17</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">Algorithms: Memoization and Dynamic Programming</span>
+        <span class="video-by">HackerRank · <a href="https://www.youtube.com/watch?v=P8Xa2BitN3I" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="stairs" data-nav="Climbing Stairs">
@@ -136,6 +152,22 @@ class Solution:
     <h3>You often only need the last two</h3>
     <p>Each entry only looks at the two before it, so you don't need the whole list: two variables, rolled forward, give O(1) space. Get it right with a list first, then shrink it.</p>
   </div>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="Y0lT9Fck7qI">
+      <button type="button" class="video-play" aria-label="Play video: Climbing Stairs - Dynamic Programming - Leetcode 70 - Python, by NeetCode">
+        <img src="https://i.ytimg.com/vi/Y0lT9Fck7qI/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">18:08</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">Climbing Stairs - Dynamic Programming - Leetcode 70 - Python</span>
+        <span class="video-by">NeetCode · <a href="https://www.youtube.com/watch?v=Y0lT9Fck7qI" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="costs" data-nav="Min Cost">
@@ -175,6 +207,22 @@ class Solution:
     <summary>Stuck? A hint</summary>
     <div><p>Starting on step 0 or 1 is free, so <code>best[0]</code> and <code>best[1]</code> stay 0. For i from 2 to n: <code>best[i] = min(best[i-1] + cost[i-1], best[i-2] + cost[i-2])</code>. You pay a step's cost when you step <em>off</em> it.</p></div>
   </details>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="ktmzAZWkEZ0">
+      <button type="button" class="video-play" aria-label="Play video: Min Cost Climbing Stairs - Dynamic Programming - Leetcode 746 - Python, by NeetCode">
+        <img src="https://i.ytimg.com/vi/ktmzAZWkEZ0/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">19:27</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">Min Cost Climbing Stairs - Dynamic Programming - Leetcode 746 - Python</span>
+        <span class="video-by">NeetCode · <a href="https://www.youtube.com/watch?v=ktmzAZWkEZ0" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="robber" data-nav="House Robber">
@@ -234,6 +282,22 @@ class Solution:
       </dl>
     </div>
   </div>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="73r3KWiEvyk">
+      <button type="button" class="video-play" aria-label="Play video: House Robber -  Leetcode 198 - Python Dynamic Programming, by NeetCode">
+        <img src="https://i.ytimg.com/vi/73r3KWiEvyk/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">10:35</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">House Robber -  Leetcode 198 - Python Dynamic Programming</span>
+        <span class="video-by">NeetCode · <a href="https://www.youtube.com/watch?v=73r3KWiEvyk" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="check" data-nav="Check">
@@ -352,6 +416,7 @@ class Solution:
 </main>
 <script src="../assets/sections.js"></script>
 <script src="../assets/quiz.js"></script>
+<script src="../assets/videos.js"></script>
 <script src="../assets/pyrunner.js"></script>
 <script src="../assets/tutor.js"></script>
 </body>

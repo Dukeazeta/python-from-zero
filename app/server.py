@@ -97,7 +97,8 @@ CSP = "; ".join([
     "connect-src 'self' https://cdn.jsdelivr.net",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
-    "img-src 'self' data: https://*.googleusercontent.com https://pbs.twimg.com",
+    "img-src 'self' data: https://*.googleusercontent.com https://pbs.twimg.com https://i.ytimg.com",
+    "frame-src https://www.youtube-nocookie.com",          # section videos (assets/videos.js)
     "frame-ancestors 'none'",
     "base-uri 'self'",
     "form-action 'self'",

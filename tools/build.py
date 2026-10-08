@@ -9,6 +9,8 @@ Each lesson lives in content/lessons/NNNN-slug.html as a fragment:
     -->
     <section id="topic" data-nav="Label"> ... </section>
 
+Videos for each section live in content/videos.json, keyed by lesson number and section id.
+
 Inside a fragment:
     {{cite:2}}          a superscript link to source 2 in the meta list
     {{lesson:0005}}     a link to lesson 0005, using its title
@@ -91,6 +93,58 @@ def render_body(lesson, by_id):
     body = re.sub(r'<div class="quiz"(?![^>]*data-qid)',
                   lambda m: f'<div class="quiz" data-qid="{lesson["id"]}-q{next(counter)}"', body)
     body = re.sub(r'<section id="([\w-]+)" data-nav="([^"]+)">', r'<section class="part" id="\1" data-nav="\2">', body)
+    return add_videos(body, lesson)
+
+
+# ---------- Videos (content/videos.json, played by assets/videos.js) ----------
+VIDEOS = json.loads((ROOT / "content" / "videos.json").read_text(encoding="utf-8"))
+ICON_PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>'
+
+
+def clean_title(title):
+    """YouTube's title, minus trailing emoji, and with dashes turned into colons (house style)."""
+    title = re.sub(r"\s*[—–]\s*", ": ", title)
+    return re.sub(r"[\s←-⯿　-〿️\U0001f000-\U0001faff]+$", "", title)
+
+
+def video_card(v):
+    vid, title, channel = v["id"], html.escape(clean_title(v["title"])), html.escape(v["channel"])
+    note = f'<span class="video-note">{html.escape(v["note"])}</span>' if v.get("note") else ""
+    return f'''    <div class="video" data-yt="{vid}">
+      <button type="button" class="video-play" aria-label="Play video: {title}, by {channel}">
+        <img src="https://i.ytimg.com/vi/{vid}/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon">{ICON_PLAY}</span>
+        <span class="video-length">{html.escape(v["length"])}</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">{title}</span>
+        <span class="video-by">{channel} · <a href="https://www.youtube.com/watch?v={vid}" target="_blank" rel="noopener">Open on YouTube</a></span>
+        {note}
+      </div>
+    </div>'''
+
+
+def add_videos(body, lesson):
+    """Put each section's videos at the end of that section."""
+    sections = VIDEOS.get(lesson["id"], {})
+
+    def section(m):
+        vids = sections.get(m.group(2))
+        if not vids:
+            return m.group(0)
+        cards = "\n".join(video_card(v) for v in vids)
+        block = f'''
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+{cards}
+  </aside>
+'''
+        return m.group(1) + block + "</section>"
+
+    body = re.sub(r'(<section class="part" id="([\w-]+)"[^>]*>.*?)</section>', section, body, flags=re.S)
+    unknown = set(sections) - set(re.findall(r'<section class="part" id="([\w-]+)"', body))
+    if unknown:
+        raise SystemExit(f"{lesson['id']}: videos.json names sections that don't exist: {sorted(unknown)}")
     return body
 
 
@@ -199,6 +253,8 @@ def render_lesson(lesson, index, lessons, by_id):
     scripts = ["sections.js", "quiz.js"]
     if "pastecheck" in body:
         scripts.append("pastecheck.js")
+    if 'class="video"' in body:
+        scripts.append("videos.js")
     scripts += ["pyrunner.js", "tutor.js"]
     script_tags = "\n".join(f'<script src="../assets/{s}"></script>' for s in scripts)
     number = int(lesson["id"])
@@ -372,7 +428,7 @@ def main():
             "nav_title": lesson["nav_title"], "track": lesson["track"], "summary": lesson["summary"],
             "concepts": lesson["concepts"], "minutes": lesson["minutes"],
             "exercises": re.findall(r'<div class="canvas exercise" id="([\w-]+)"', body),
-            "text": strip_tags(body)[:14000],
+            "text": strip_tags(re.sub(r'<aside class="col watch".*?</aside>', "", body, flags=re.S))[:14000],
         })
     (ROOT / "index.html").write_text(render_index(lessons), encoding="utf-8")
     (DATA / "curriculum.json").write_text(json.dumps(curriculum, indent=1, ensure_ascii=False), encoding="utf-8")

@@ -232,6 +232,7 @@ self.onmessage = async (e) => {
   }
 
   const lessonId = () => document.body.dataset.lesson || "";
+  const narrow = matchMedia("(max-width: 900px)");  // code wraps at this width (style.css)
 
   // ---------- One exercise ----------
   function setup(ex, index) {
@@ -304,13 +305,24 @@ self.onmessage = async (e) => {
     out.setAttribute("aria-live", "polite");
     win.append(toolbar, out);
 
-    const onEdit = () => { if (!ex.dataset.noSave) store(key, ta.value); };
+    // On phones and tablets long lines wrap instead of scrolling sideways, so the editor grows to fit them.
+    const fit = () => {
+      if (!narrow.matches) { ta.style.height = ""; return; }
+      ta.style.height = "auto";
+      ta.style.height = ta.scrollHeight + 2 + "px";
+    };
+    narrow.addEventListener("change", fit);
+    window.addEventListener("resize", fit);
+    requestAnimationFrame(fit);
+
+    const onEdit = () => { if (!ex.dataset.noSave) store(key, ta.value); fit(); };
     editorKeys(ta, onEdit);
     ta.addEventListener("input", onEdit);
 
     resetBtn.addEventListener("click", () => {
       if (ta.value !== starter && !confirm("Replace your code with the starter code? Your changes will be lost.")) return;
       ta.value = starter;
+      fit();
       store(key, null);
       out.classList.remove("show");
       win.classList.remove("solved");

@@ -25,6 +25,7 @@
     const card = document.createElement("div");
     card.className = "profile-card";
     card.setAttribute("aria-hidden", "true");
+    card.hidden = true;  // takes no space until it opens, so phones never scroll sideways
     card.innerHTML = `
       <a class="profile-card-inner" href="${PROFILE.url}" target="_blank" rel="noopener" tabindex="-1">
         <span class="profile-banner"><img alt="" referrerpolicy="no-referrer" data-src="${PROFILE.banner}"></span>
@@ -49,9 +50,11 @@
       const width = card.offsetWidth || 300;
       const left = Math.min(Math.max(r.left + r.width / 2 - width / 2, 12), window.innerWidth - width - 12);
       card.style.left = `${left - wrap.getBoundingClientRect().left}px`;
+      card.hidden = false;
+      void card.offsetWidth;  // let the browser lay it out before animating in
       card.classList.add("open");
     };
-    const close = () => { cancelClose(); card.classList.remove("open"); };
+    const close = () => { cancelClose(); card.classList.remove("open"); setTimeout(() => { if (!card.classList.contains("open")) card.hidden = true; }, 450); };
     const scheduleClose = () => { cancelClose(); closeTimer = setTimeout(close, 140); };
 
     link.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") open(); });

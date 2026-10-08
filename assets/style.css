@@ -92,13 +92,17 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 88px; }
+html {
+  -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 88px;
+  -webkit-tap-highlight-color: transparent;  /* no blue flash on taps; keyboard focus rings stay */
+}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
 
 body {
+  overflow-x: clip;  /* never scroll sideways on phones */
   margin: 0;
   background: var(--canvas);
   color: var(--graphite);
@@ -248,6 +252,7 @@ html:not([data-os]) [data-os]:not([data-os~="windows"]) { display: none !importa
   transform-origin: 50% 100%;
   transition: opacity 0.4s var(--ease-out), transform 0.45s var(--ease-out), filter 0.4s var(--ease-out);
 }
+.profile-card[hidden] { display: none; }
 .profile-card.open { opacity: 1; pointer-events: auto; transform: none; filter: none; }
 .profile-card-inner {
   display: block; padding: 8px; border-radius: 22px; background: var(--canvas); color: var(--graphite);
@@ -361,6 +366,29 @@ main { padding: 0 16px 128px; }
   box-shadow: var(--pill-shadow), 0 0 0 1px var(--hairline);
   transition: transform 0.35s var(--ease-out);
 }
+/* When the row doesn't fit (phones, small tablets), sections.js adds .compact: one pill names the
+   current part and opens the full list when tapped. */
+.switcher-toggle { display: none; }
+.switcher-wrap.compact .switcher-toggle {
+  pointer-events: auto; display: inline-flex; align-items: center; gap: 8px; max-width: 100%;
+  height: 42px; padding: 0 14px 0 18px; cursor: pointer;
+  background: var(--cloud); border: 1px solid var(--hairline); border-radius: 9999px; box-shadow: var(--pill-shadow);
+  color: var(--graphite); font: 500 16px/1 var(--sans);
+}
+.compact .switcher-toggle .label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.compact .switcher-toggle .count { flex: none; color: var(--quiet); font-size: 14px; font-variant-numeric: tabular-nums; }
+.compact .switcher-toggle svg { flex: none; width: 16px; height: 16px; color: var(--quiet); transition: transform 0.25s var(--ease-out); }
+.compact.open .switcher-toggle svg { transform: rotate(180deg); }
+.compact .switcher {
+  position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+  display: none; flex-direction: column; gap: 2px; width: min(20rem, calc(100vw - 32px));
+  max-height: calc(100vh - 140px); max-height: calc(100dvh - 140px); overflow-y: auto; overflow-x: hidden;
+  padding: 6px; background: var(--canvas); border-radius: var(--r-card); box-shadow: var(--float);
+}
+.compact.open .switcher { display: flex; }
+.compact .switcher a { padding: 12px 14px; font-size: 16px; line-height: 1.3; border-radius: var(--r-control); white-space: normal; }
+.compact .switcher a[aria-current="true"] { background: var(--cloud); }
+.compact .switcher .thumb { display: none; }
 
 /* ---------- Sections and text ---------- */
 section.part { padding-top: var(--section-gap); }
@@ -699,6 +727,11 @@ textarea.code:focus { outline: none; box-shadow: inset 0 0 0 2px rgba(32, 125, 2
   .anatomy .part span { white-space: normal; width: max-content; max-width: 11rem; line-height: 1.3; transform: translateY(calc(100% - 9px)); }
   .anatomy .stage { margin: 24px auto 32px; }
 }
+/* Small phones: start the line at the left so the labels on the right still fit. */
+@media (max-width: 400px) {
+  .anatomy .stage { font-size: 22px; margin-left: 14px; margin-right: 0; }
+  .anatomy .part span { max-width: 9.5rem; }
+}
 
 /* ---------- Operator table ---------- */
 /* Wide tables scroll sideways inside their box instead of widening the page. */
@@ -709,6 +742,15 @@ th, td { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid v
 th { font-size: 13px; font-weight: 500; color: var(--quiet); }
 td code { font-size: 16px; white-space: nowrap; overflow-wrap: normal; }
 td:last-child { font-variant-numeric: tabular-nums; }
+/* Phones: a table marked "stack" turns each row into a small card, each cell labelled by data-label. */
+@media (max-width: 640px) {
+  table.stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  table.stack, table.stack tbody, table.stack tr, table.stack td { display: block; }
+  table.stack tr { padding: 10px 0; border-bottom: 1px solid var(--hairline); }
+  table.stack tr:first-child { border-top: 1px solid var(--hairline); }
+  table.stack td { display: grid; grid-template-columns: 6.5rem 1fr; justify-items: start; gap: 12px; padding: 3px 0; border: 0; }
+  table.stack td::before { content: attr(data-label); font-size: 14px; line-height: 1.6; color: var(--quiet); }
+}
 
 /* ---------- Quiz (assets/quiz.js) ---------- */
 .quiz { margin: 0 0 40px; }
@@ -780,6 +822,49 @@ details.hint > div { padding: 8px 0 0 14px; color: var(--charcoal); }
 .card h3 { margin-top: 0; }
 .card.on-cloud { background: var(--cloud); border-color: transparent; }
 .source-link { font-size: 20px; line-height: 30px; font-weight: 500; }
+
+/* ---------- Section videos (assets/videos.js) ---------- */
+.watch { margin-top: 40px; }
+.watch-title { margin: 0 0 10px; font-size: 15px; font-weight: 600; color: var(--quiet); }
+.video {
+  display: grid; grid-template-columns: 176px 1fr; gap: 14px; align-items: start;
+  padding: 8px; margin-bottom: 10px;
+  background: var(--canvas); border: 1px solid var(--hairline); border-radius: var(--r-card);
+}
+.video-play {
+  position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; padding: 0; overflow: hidden; cursor: pointer;
+  background: var(--whiteboard); border: 0; border-radius: var(--r-feature);
+}
+.video-play[hidden] { display: none; }
+.video-play img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s var(--ease-out); }
+.video-play:hover img { transform: scale(1.04); }
+.video-icon {
+  position: absolute; left: 50%; top: 50%; display: grid; place-items: center; width: 40px; height: 40px; margin: -20px 0 0 -20px;
+  border-radius: 50%; background: rgba(0, 0, 0, 0.62); color: #fff; transition: transform 0.2s var(--ease-out), background-color 0.2s;
+}
+.video-icon svg { width: 18px; height: 18px; margin-left: 2px; }
+.video-play:hover .video-icon { transform: scale(1.08); background: rgba(0, 0, 0, 0.78); }
+.video-length {
+  position: absolute; right: 6px; bottom: 6px; padding: 1px 6px; border-radius: 4px;
+  background: rgba(0, 0, 0, 0.72); color: #fff; font: 500 12px/1.5 var(--sans); font-variant-numeric: tabular-nums;
+}
+.video-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 2px 4px 2px 0; font-size: 16px; line-height: 1.4; }
+.video-title { font-weight: 500; color: var(--graphite); overflow-wrap: anywhere; }
+.video-by { font-size: 15px; color: var(--quiet); }
+.video-by a { color: var(--quiet); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--linen); }
+.video-by a:hover { color: var(--graphite); }
+.video-note { margin-top: 4px; font-size: 15px; color: var(--charcoal); }
+.video.playing { grid-template-columns: 1fr; gap: 10px; }
+.video-frame { aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--r-feature); background: #000; }
+.video-frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+.video.playing .video-meta { padding: 0 4px 4px; }
+@media (max-width: 520px) {
+  .video { grid-template-columns: 128px 1fr; gap: 12px; }
+  .video-meta { font-size: 15px; }
+  .video-by, .video-note { font-size: 14px; }
+  .video-icon { width: 34px; height: 34px; margin: -17px 0 0 -17px; }
+}
+@media print { .watch { display: none; } }
 
 /* ---------- Sources ---------- */
 .sources { margin-top: 48px; font-size: 16px; line-height: 1.5; color: var(--charcoal); }
@@ -936,14 +1021,21 @@ details.hint > div { padding: 8px 0 0 14px; color: var(--charcoal); }
   .intro { font-size: 19px; line-height: 1.55; }
   h2 { font-size: 34px; }
   .canvas { padding: 16px 12px; margin-left: -4px; margin-right: -4px; }
-  .switcher a { padding: 8px 10px; }
   th, td { padding-right: 10px; }
-  .window pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+  table { font-size: 16px; }
+  td code { font-size: 15px; white-space: normal; overflow-wrap: anywhere; }
   ol.steps > li { padding-left: 38px; }
 }
 
+/* Phones and tablets: long code lines wrap instead of scrolling sideways; pyrunner.js grows the
+   editor to fit them. */
+@media (max-width: 900px) {
+  .window pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+  textarea.code { white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: hidden; resize: none; }
+}
+
 /* Very narrow screens: the Google button shrinks to its "G" mark, which Google's guidelines allow. */
-@media (max-width: 360px) {
+@media (max-width: 480px) {
   .gsi-btn { padding: 0 9px; }
   .gsi-btn > span { display: none; }
 }

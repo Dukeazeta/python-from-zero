@@ -59,26 +59,58 @@
     <p>An <strong>algorithm</strong> is a step-by-step method for solving a problem. To compare algorithms, we don't time them with a stopwatch (that depends on the computer). We ask: <em>as the input gets bigger, how fast does the number of steps grow?</em><sup class="cite"><a href="#src-1" aria-label="Source 1">1</a></sup> The size of the input is called <strong>n</strong>: the number of items in the list, the length of the string.</p>
     <p><strong>Big O notation</strong> is the shorthand for that growth. "This is O(n)" (said "oh of n") means "the steps grow in step with n: double the data, double the work".<sup class="cite"><a href="#src-1" aria-label="Source 1">1</a></sup></p>
   </div>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="g2o22C3CRfU">
+      <button type="button" class="video-play" aria-label="Play video: Big-O Notation in 100 Seconds, by Fireship">
+        <img src="https://i.ytimg.com/vi/g2o22C3CRfU/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">1:40</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">Big-O Notation in 100 Seconds</span>
+        <span class="video-by">Fireship · <a href="https://www.youtube.com/watch?v=g2o22C3CRfU" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="shapes" data-nav="The shapes">
   <div class="col">
     <h2>The five shapes you'll meet most</h2>
     <div class="table-wrap">
-      <table>
+      <table class="stack">
         <thead><tr><th>Big O</th><th>Name</th><th>In real life</th><th>Steps for n = 1,000,000</th></tr></thead>
         <tbody>
-          <tr><td><code>O(1)</code></td><td>constant</td><td>Looking up a contact by name: same effort however many contacts you have</td><td>1</td></tr>
-          <tr><td><code>O(log n)</code></td><td>logarithmic</td><td>The dictionary halving trick, or guessing a number with "higher / lower" hints</td><td>about 20</td></tr>
-          <tr><td><code>O(n)</code></td><td>linear</td><td>Reading every page once</td><td>1,000,000</td></tr>
-          <tr><td><code>O(n log n)</code></td><td>"n log n"</td><td>A good sorting method (Lesson 26)</td><td>about 20,000,000</td></tr>
-          <tr><td><code>O(n²)</code></td><td>quadratic</td><td>Everyone at a party shaking hands with everyone else</td><td>1,000,000,000,000</td></tr>
+          <tr><td data-label="Big O"><code>O(1)</code></td><td data-label="Name">constant</td><td data-label="In real life">Looking up a contact by name: same effort however many contacts you have</td><td data-label="Steps for n = 1,000,000">1</td></tr>
+          <tr><td data-label="Big O"><code>O(log n)</code></td><td data-label="Name">logarithmic</td><td data-label="In real life">The dictionary halving trick, or guessing a number with "higher / lower" hints</td><td data-label="Steps for n = 1,000,000">about 20</td></tr>
+          <tr><td data-label="Big O"><code>O(n)</code></td><td data-label="Name">linear</td><td data-label="In real life">Reading every page once</td><td data-label="Steps for n = 1,000,000">1,000,000</td></tr>
+          <tr><td data-label="Big O"><code>O(n log n)</code></td><td data-label="Name">"n log n"</td><td data-label="In real life">A good sorting method (Lesson 26)</td><td data-label="Steps for n = 1,000,000">about 20,000,000</td></tr>
+          <tr><td data-label="Big O"><code>O(n²)</code></td><td data-label="Name">quadratic</td><td data-label="In real life">Everyone at a party shaking hands with everyone else</td><td data-label="Steps for n = 1,000,000">1,000,000,000,000</td></tr>
         </tbody>
       </table>
     </div>
     <p>Look at the last column. At a million steps a second, O(n) finishes in one second. O(n²) would take about eleven days. That's why interviewers care: on big inputs, the shape matters far more than how fast the computer is.<sup class="cite"><a href="#src-1" aria-label="Source 1">1</a></sup></p>
     <p>Why is halving O(log n)? Each step throws away half of what's left. A million items halve to one item in about 20 steps, because 2 multiplied by itself 20 times is just over a million.<sup class="cite"><a href="#src-4" aria-label="Source 4">4</a></sup></p>
   </div>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="XMUe3zFhM5c">
+      <button type="button" class="video-play" aria-label="Play video: Learn Big O notation in 6 minutes, by Bro Code">
+        <img src="https://i.ytimg.com/vi/XMUe3zFhM5c/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">6:25</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">Learn Big O notation in 6 minutes</span>
+        <span class="video-by">Bro Code · <a href="https://www.youtube.com/watch?v=XMUe3zFhM5c" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="reading" data-nav="Reading code">
@@ -152,6 +184,22 @@ for n in [10, 100, 1000]:
     print(n, linear_steps(n), pair_steps(n))
     </script>
   </div>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="Z0bH0cMY0E8">
+      <button type="button" class="video-play" aria-label="Play video: Big O Notation: Calculating Time Complexity, by the roadmap">
+        <img src="https://i.ytimg.com/vi/Z0bH0cMY0E8/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">7:47</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">Big O Notation: Calculating Time Complexity</span>
+        <span class="video-by">the roadmap · <a href="https://www.youtube.com/watch?v=Z0bH0cMY0E8" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="speedup" data-nav="Speed it up">
@@ -210,6 +258,22 @@ def has_duplicate(items):
       </dl>
     </div>
   </div>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="3OamzN90kPg">
+      <button type="button" class="video-play" aria-label="Play video: Contains Duplicate - Leetcode 217 - Python, by NeetCode">
+        <img src="https://i.ytimg.com/vi/3OamzN90kPg/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">6:31</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">Contains Duplicate - Leetcode 217 - Python</span>
+        <span class="video-by">NeetCode · <a href="https://www.youtube.com/watch?v=3OamzN90kPg" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="check" data-nav="Check">
@@ -322,6 +386,7 @@ def has_duplicate(items):
 </main>
 <script src="../assets/sections.js"></script>
 <script src="../assets/quiz.js"></script>
+<script src="../assets/videos.js"></script>
 <script src="../assets/pyrunner.js"></script>
 <script src="../assets/tutor.js"></script>
 </body>

@@ -62,6 +62,22 @@
     <h3>Bytes, not text</h3>
     <p>Hashing and compression work on raw <strong>bytes</strong>, not on Python strings. A bytes value is written with a <code>b</code> before the quote: <code>b"hello"</code>. Convert text to bytes with <code>"hello".encode()</code> and back with <code>.decode()</code>. A byte with value zero, written <code>b"\x00"</code>, is how Git separates the header from the content.</p>
   </div>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="bSA91XTzeuA">
+      <button type="button" class="video-play" aria-label="Play video: Inside the Hidden Git Folder - Computerphile, by Computerphile">
+        <img src="https://i.ytimg.com/vi/bSA91XTzeuA/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">8:33</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">Inside the Hidden Git Folder - Computerphile</span>
+        <span class="video-by">Computerphile · <a href="https://www.youtube.com/watch?v=bSA91XTzeuA" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="blob" data-nav="Hashing a blob">
@@ -105,6 +121,22 @@ def hash_object(data):
     <summary>Stuck? A hint</summary>
     <div><p>The length is a number: turn it into text with <code>str()</code>, then into bytes with <code>.encode()</code>. Bytes join with <code>+</code> just like strings. For the hash: <code>hashlib.sha1(blob_bytes(data)).hexdigest()</code>.</p></div>
   </details>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="MyvyqdQ3OjI">
+      <button type="button" class="video-play" aria-label="Play video: Git Internals - Git Objects, by Brief">
+        <img src="https://i.ytimg.com/vi/MyvyqdQ3OjI/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">7:10</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">Git Internals - Git Objects</span>
+        <span class="video-by">Brief · <a href="https://www.youtube.com/watch?v=MyvyqdQ3OjI" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="store" data-nav="Storing objects">
@@ -157,6 +189,22 @@ def read_object(stored):
     <summary>Splitting only once</summary>
     <div><p><code>raw.split(b"\x00", 1)</code> splits at the <em>first</em> zero byte only, so content that itself contains zero bytes survives. Then <code>header.split(b" ")[0].decode()</code> gives <code>"blob"</code>.</p></div>
   </details>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="P6jD966jzlk">
+      <button type="button" class="video-play" aria-label="Play video: Git Internals -  How Git Works - Fear Not The SHA!, by GitLab">
+        <img src="https://i.ytimg.com/vi/P6jD966jzlk/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">31:23</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">Git Internals -  How Git Works - Fear Not The SHA!</span>
+        <span class="video-by">GitLab · <a href="https://www.youtube.com/watch?v=P6jD966jzlk" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="tool" data-nav="A real tool">
@@ -252,6 +300,22 @@ if __name__ == "__main__":
       </dl>
     </div>
   </div>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="riZK3KgjdCc">
+      <button type="button" class="video-play" aria-label="Play video: Building a Simple Version Control System with Python | Understand Git Fundamentals, by Dave Berry">
+        <img src="https://i.ytimg.com/vi/riZK3KgjdCc/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">20:25</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">Building a Simple Version Control System with Python | Understand Git Fundamentals</span>
+        <span class="video-by">Dave Berry · <a href="https://www.youtube.com/watch?v=riZK3KgjdCc" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="check" data-nav="Check">
@@ -372,6 +436,7 @@ if __name__ == "__main__":
 <script src="../assets/sections.js"></script>
 <script src="../assets/quiz.js"></script>
 <script src="../assets/pastecheck.js"></script>
+<script src="../assets/videos.js"></script>
 <script src="../assets/pyrunner.js"></script>
 <script src="../assets/tutor.js"></script>
 </body>

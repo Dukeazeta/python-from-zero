@@ -70,6 +70,22 @@ B1 B2 B3</div>
     <p>Two small new things: <code>print(..., end=" ")</code> ends with a space instead of a new line, so the seats stay on one line, and an empty <code>print()</code> just starts a new line.</p>
     <p>How many times does the inner block run? Outer count times inner count: 2 rows times 3 seats is 6. Keep that multiplication in mind; it becomes important when we talk about speed in Lesson 19.</p>
   </div>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="APWy6Pc83gE">
+      <button type="button" class="video-play" aria-label="Play video: Nested loops in Python are easy, by Bro Code">
+        <img src="https://i.ytimg.com/vi/APWy6Pc83gE/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">5:35</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">Nested loops in Python are easy</span>
+        <span class="video-by">Bro Code · <a href="https://www.youtube.com/watch?v=APWy6Pc83gE" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="grids" data-nav="Grids">
@@ -174,6 +190,22 @@ def transpose(grid):
     <summary>Stuck? A hint</summary>
     <div><p>The new grid has one row for each <em>column</em> of the old one. So the outer loop goes over column numbers, and the inner loop collects <code>grid[r][c]</code> for every row <code>r</code>.</p></div>
   </details>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="B5GhlXhDfoE">
+      <button type="button" class="video-play" aria-label="Play video: 2D Lists &amp; Nested Loops - Python - Tutorial 24, by Giraffe Academy">
+        <img src="https://i.ytimg.com/vi/B5GhlXhDfoE/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">5:49</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">2D Lists &amp; Nested Loops - Python - Tutorial 24</span>
+        <span class="video-by">Giraffe Academy · <a href="https://www.youtube.com/watch?v=B5GhlXhDfoE" target="_blank" rel="noopener">Open on YouTube</a></span>
+        
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="neighbours" data-nav="Neighbours">
@@ -242,6 +274,22 @@ def live_neighbours(grid, r, c):
     <summary>Stuck? A hint</summary>
     <div><p>Inside the inner loop: skip when both offsets are 0 (<code>continue</code>). Work out <code>nr = r + dr</code> and <code>nc = c + dc</code>. If they're in bounds, add <code>grid[nr][nc]</code> to <code>count</code> (it's 1 or 0).</p></div>
   </details>
+
+  <aside class="col watch" aria-label="Videos for this part">
+    <p class="watch-title">Watch it explained</p>
+    <div class="video" data-yt="fei4bJQdBUQ">
+      <button type="button" class="video-play" aria-label="Play video: Game of Life - Leetcode 289 - Python, by NeetCode">
+        <img src="https://i.ytimg.com/vi/fei4bJQdBUQ/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+        <span class="video-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        <span class="video-length">17:36</span>
+      </button>
+      <div class="video-meta">
+        <span class="video-title">Game of Life - Leetcode 289 - Python</span>
+        <span class="video-by">NeetCode · <a href="https://www.youtube.com/watch?v=fei4bJQdBUQ" target="_blank" rel="noopener">Open on YouTube</a></span>
+        <span class="video-note">A LeetCode version of the Game of Life. Watch how it counts a cell&#x27;s neighbours without stepping off the grid.</span>
+      </div>
+    </div>
+  </aside>
 </section>
 
 <section class="part" id="check" data-nav="Check">
@@ -354,6 +402,7 @@ def live_neighbours(grid, r, c):
 </main>
 <script src="../assets/sections.js"></script>
 <script src="../assets/quiz.js"></script>
+<script src="../assets/videos.js"></script>
 <script src="../assets/pyrunner.js"></script>
 <script src="../assets/tutor.js"></script>
 </body>

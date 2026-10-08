@@ -1,0 +1,1222 @@
+{
+ "_about": "Videos shown at the end of each lesson section, keyed by lesson number and section id. Each was checked on YouTube (it exists and allows embedding). tools/build.py adds them to the pages.",
+ "0001": {
+  "print": [
+   {
+    "id": "VSeADGG7d6U",
+    "title": "print Function | Python Tutorial",
+    "channel": "Portfolio Courses",
+    "length": "12:32"
+   }
+  ],
+  "numbers": [
+   {
+    "id": "r1vsfDMO-WE",
+    "title": "Python Math Operators - Visually Explained",
+    "channel": "Visually Explained",
+    "length": "3:24"
+   }
+  ],
+  "errors": [
+   {
+    "id": "JG1livF44_E",
+    "title": "10 Python Errors Explained In 15 Minutes",
+    "channel": "Indently",
+    "length": "15:00"
+   }
+  ]
+ },
+ "0002": {
+  "terminal": [
+   {
+    "id": "5XgBd6rjuDQ",
+    "title": "How to use the Command Line | Terminal Basics for Beginners",
+    "channel": "Jesse Showalter",
+    "length": "13:51"
+   }
+  ],
+  "shell": [
+   {
+    "id": "CzceLF6fSMM",
+    "title": "How to Run Python Programs Using Python IDLE | Interactive & Script Mode Explained",
+    "channel": "Example Program",
+    "length": "3:51"
+   }
+  ],
+  "files": [
+   {
+    "id": "cAXfFyzi9Bo",
+    "title": "How to Run Python Code From the Command-Line",
+    "channel": "Real Python",
+    "length": "4:37"
+   }
+  ]
+ },
+ "0003": {
+  "variables": [
+   {
+    "id": "cQT33yu9pY8",
+    "title": "Python Variables - Python Tutorial for Beginners with Examples | Mosh",
+    "channel": "Programming with Mosh",
+    "length": "6:36"
+   }
+  ],
+  "changing": [
+   {
+    "id": "X6TcB0DNLE8",
+    "title": "Variables in Python",
+    "channel": "Neso Academy",
+    "length": "13:09"
+   }
+  ],
+  "names": [
+   {
+    "id": "hPPp0kqvPKc",
+    "title": "Variable Naming Conventions in Python",
+    "channel": "Neso Academy",
+    "length": "9:51"
+   }
+  ],
+  "joining": [
+   {
+    "id": "28FUVmWU_fA",
+    "title": "String Concatenation | Python Tutorial",
+    "channel": "Portfolio Courses",
+    "length": "6:53"
+   }
+  ]
+ },
+ "0004": {
+  "input": [
+   {
+    "id": "DB9Cq6TSTuQ",
+    "title": "Python user input ⌨️",
+    "channel": "Bro Code",
+    "length": "7:18"
+   }
+  ],
+  "types": [
+   {
+    "id": "Qtq83lAoogM",
+    "title": "Learn type casting in 7 minutes! 💱",
+    "channel": "Bro Code",
+    "length": "7:37"
+   }
+  ],
+  "f-strings": [
+   {
+    "id": "H_TPIAEJl68",
+    "title": "Python F-strings - Visually Explained",
+    "channel": "Visually Explained",
+    "length": "7:23"
+   }
+  ]
+ },
+ "0005": {
+  "true-false": [
+   {
+    "id": "mrryXQnlYN8",
+    "title": "Python Booleans (Comparison & Logical Operators) #6",
+    "channel": "Programiz",
+    "length": "9:49"
+   }
+  ],
+  "if": [
+   {
+    "id": "FvMPfrgGeKs",
+    "title": "If statements in Python are easy (if, elif, else) 🤔",
+    "channel": "Bro Code",
+    "length": "8:21"
+   }
+  ],
+  "elif": [
+   {
+    "id": "q0bQrGhdPm4",
+    "title": "if-elif-else | Intro to CS - Python | Khan Academy",
+    "channel": "Khan Academy",
+    "length": "4:46"
+   }
+  ]
+ },
+ "0006": {
+  "and-or": [
+   {
+    "id": "W7luvtXeQTA",
+    "title": "Logical operators in Python are easy 🔣",
+    "channel": "Bro Code",
+    "length": "5:04"
+   }
+  ],
+  "not": [
+   {
+    "id": "yFaYylK1yCE",
+    "title": "Python Logical Operators (Visually Explained) | and, or, not, Execution Order | #Python Course 13",
+    "channel": "Data with Baraa",
+    "length": "17:55"
+   }
+  ],
+  "remainder": [
+   {
+    "id": "qv-Qdi212X4",
+    "title": "Modulo Operator In Python",
+    "channel": "StudySession",
+    "length": "3:34"
+   }
+  ]
+ },
+ "0007": {
+  "while": [
+   {
+    "id": "rRTjPnVooxE",
+    "title": "While loops in Python are easy! ♾️",
+    "channel": "Bro Code",
+    "length": "6:58"
+   }
+  ],
+  "until": [
+   {
+    "id": "eF5mObNHeek",
+    "title": "Python: While Loop for Input Validation",
+    "channel": "misterbastean",
+    "length": "4:02"
+   }
+  ],
+  "break": [
+   {
+    "id": "Mho_1WO-ht4",
+    "title": "\"break\" & \"continue\" Statements in Python #10",
+    "channel": "Programiz",
+    "length": "8:01"
+   }
+  ]
+ },
+ "0008": {
+  "for": [
+   {
+    "id": "KWgYha0clzw",
+    "title": "Learn Python for loops in 5 minutes! 🔁",
+    "channel": "Bro Code",
+    "length": "5:06"
+   }
+  ],
+  "adding-up": [
+   {
+    "id": "prNzO_vtPvA",
+    "title": "Chapter 4: Using a loop to keep a running total",
+    "channel": "Professor Craven",
+    "length": "6:57"
+   }
+  ],
+  "strings": [
+   {
+    "id": "lNDgpDHlyRU",
+    "title": "for Loop with Strings in Python",
+    "channel": "Neso Academy",
+    "length": "10:51"
+   }
+  ],
+  "fizzbuzz": [
+   {
+    "id": "z3-XFI_nXNM",
+    "title": "Python Practice - Interview Question - Fizz Buzz | Mosh",
+    "channel": "Programming with Mosh",
+    "length": "6:15"
+   }
+  ]
+ },
+ "0009": {
+  "lists": [
+   {
+    "id": "9OeznAkyQz4",
+    "title": "How to Use Lists in Python",
+    "channel": "Programming with Mosh",
+    "length": "18:49"
+   }
+  ],
+  "looping": [
+   {
+    "id": "9ueMumuFv6g",
+    "title": "How to Loop over Lists in Python",
+    "channel": "Programming with Mosh",
+    "length": "3:21"
+   }
+  ],
+  "slices": [
+   {
+    "id": "ajrtAuDg3yw",
+    "title": "Python Tutorial: Slicing Lists and Strings",
+    "channel": "Corey Schafer",
+    "length": "10:44"
+   }
+  ]
+ },
+ "0010": {
+  "pieces": [
+   {
+    "id": "7pXf1DUuaIo",
+    "title": "String indexing in Python is easy ✂️",
+    "channel": "Bro Code",
+    "length": "7:28"
+   }
+  ],
+  "methods": [
+   {
+    "id": "tb6EYiHtcXU",
+    "title": "String methods in Python are easy! 〰️",
+    "channel": "Bro Code",
+    "length": "12:06"
+   }
+  ],
+  "palindromes": [
+   {
+    "id": "-9degjR16bY",
+    "title": "Check If A String Is A Palindrome | Python Example",
+    "channel": "Portfolio Courses",
+    "length": "9:01"
+   }
+  ]
+ },
+ "0011": {
+  "def": [
+   {
+    "id": "89cGQjB5R4M",
+    "title": "Functions in Python are easy 📞",
+    "channel": "Bro Code",
+    "length": "10:38"
+   }
+  ],
+  "return": [
+   {
+    "id": "LWdsF79H1Pg",
+    "title": "print() vs. return in Python Functions",
+    "channel": "Coding with Estefania",
+    "length": "4:48"
+   }
+  ]
+ },
+ "0012": {
+  "scope": [
+   {
+    "id": "KyCw1uA1-M8",
+    "title": "Python variable scope 🔬",
+    "channel": "Bro Code",
+    "length": "3:52"
+   }
+  ],
+  "defaults": [
+   {
+    "id": "m2uURZxex3c",
+    "title": "Python default arguments are awesome! 👍",
+    "channel": "Bro Code",
+    "length": "6:07"
+   }
+  ],
+  "helpers": [
+   {
+    "id": "rxsYpP2-omg",
+    "title": "Introduction to Decomposition",
+    "channel": "Robotics Academy",
+    "length": "1:46"
+   }
+  ],
+  "leetcode": [
+   {
+    "id": "GfVoxKFpDV0",
+    "title": "FizzBuzz - LeetCode 412 - Python",
+    "channel": "Deepti Talesra",
+    "length": "5:10"
+   }
+  ]
+ },
+ "0013": {
+  "dicts": [
+   {
+    "id": "daefaLgNkw0",
+    "title": "Python Tutorial for Beginners 5: Dictionaries - Working with Key-Value Pairs",
+    "channel": "Corey Schafer",
+    "length": "9:59"
+   }
+  ],
+  "looping": [
+   {
+    "id": "Hgcd86lQc70",
+    "title": "How to Iterate Through a Dictionary in Python",
+    "channel": "Real Python",
+    "length": "6:01"
+   }
+  ],
+  "counting": [
+   {
+    "id": "wnNI3rMdY-o",
+    "title": "Accumulating with Python dictionaries",
+    "channel": "Python and Pandas with Reuven Lerner",
+    "length": "7:01"
+   }
+  ]
+ },
+ "0014": {
+  "tuples": [
+   {
+    "id": "w6hL_dszMxk",
+    "title": "Python tuples 📋",
+    "channel": "Bro Code",
+    "length": "3:09"
+   },
+   {
+    "id": "yT-wF9_88Nw",
+    "title": "Unpacking a Tuple in Python",
+    "channel": "Neso Academy",
+    "length": "9:29"
+   }
+  ],
+  "sets": [
+   {
+    "id": "t9j8lCUGZXo",
+    "title": "What are Sets in Python? Python Tutorial for Absolute Beginners | Mosh",
+    "channel": "Programming with Mosh",
+    "length": "4:31"
+   }
+  ],
+  "seen": [
+   {
+    "id": "3OamzN90kPg",
+    "title": "Contains Duplicate - Leetcode 217 - Python",
+    "channel": "NeetCode",
+    "length": "6:31"
+   }
+  ]
+ },
+ "0015": {
+  "tracebacks": [
+   {
+    "id": "3p3p6kp39to",
+    "title": "How Do You Read a Python Traceback?",
+    "channel": "Real Python",
+    "length": "6:37"
+   }
+  ],
+  "method": [
+   {
+    "id": "b7VbiZBg-dA",
+    "title": "Python Tutorial -  Introduction to DEBUGGING",
+    "channel": "LinkedIn Learning",
+    "length": "8:10"
+   }
+  ],
+  "try": [
+   {
+    "id": "NIWwJbo-9_8",
+    "title": "Python Tutorial: Using Try/Except Blocks for Error Handling",
+    "channel": "Corey Schafer",
+    "length": "10:34"
+   }
+  ],
+  "testing": [
+   {
+    "id": "MYrKrJrDTSM",
+    "title": "Edge Cases - Coding Concepts",
+    "channel": "Coding with Tom",
+    "length": "4:34"
+   }
+  ]
+ },
+ "0016": {
+  "nested": [
+   {
+    "id": "APWy6Pc83gE",
+    "title": "Nested loops in Python are easy ➿",
+    "channel": "Bro Code",
+    "length": "5:35"
+   }
+  ],
+  "grids": [
+   {
+    "id": "B5GhlXhDfoE",
+    "title": "2D Lists & Nested Loops - Python - Tutorial 24",
+    "channel": "Giraffe Academy",
+    "length": "5:49"
+   }
+  ],
+  "neighbours": [
+   {
+    "id": "fei4bJQdBUQ",
+    "title": "Game of Life - Leetcode 289 - Python",
+    "channel": "NeetCode",
+    "length": "17:36",
+    "note": "A LeetCode version of the Game of Life. Watch how it counts a cell's neighbours without stepping off the grid."
+   }
+  ]
+ },
+ "0017": {
+  "classes": [
+   {
+    "id": "f0TrMH9s-VE",
+    "title": "Python Classes and Objects - OOP for Beginners",
+    "channel": "Python Simplified",
+    "length": "8:01"
+   }
+  ],
+  "solution": [
+   {
+    "id": "JH4q65dZPvY",
+    "title": "What exactly is 'self' in Python? [Easy explanation]",
+    "channel": "Indently",
+    "length": "6:27"
+   }
+  ],
+  "nodes": [
+   {
+    "id": "Ast5sKQXxEU",
+    "title": "Python: Linked Lists (fast)",
+    "channel": "Programming and Math Tutorials",
+    "length": "5:58"
+   }
+  ]
+ },
+ "0018": {
+  "import": [
+   {
+    "id": "XcfxkHrHTVE",
+    "title": "What are Python modules? 📨",
+    "channel": "Bro Code",
+    "length": "6:36"
+   }
+  ],
+  "your-modules": [
+   {
+    "id": "GxCXiSkm6no",
+    "title": "Importing Your Own Python Modules Properly",
+    "channel": "NeuralNine",
+    "length": "9:56"
+   }
+  ],
+  "pip": [
+   {
+    "id": "Y21OR1OPC9A",
+    "title": "Python Virtual Environments - Full Tutorial for Beginners",
+    "channel": "Tech With Tim",
+    "length": "9:05"
+   }
+  ]
+ },
+ "0019": {
+  "why": [
+   {
+    "id": "g2o22C3CRfU",
+    "title": "Big-O Notation in 100 Seconds",
+    "channel": "Fireship",
+    "length": "1:40"
+   }
+  ],
+  "shapes": [
+   {
+    "id": "XMUe3zFhM5c",
+    "title": "Learn Big O notation in 6 minutes 📈",
+    "channel": "Bro Code",
+    "length": "6:25"
+   }
+  ],
+  "reading": [
+   {
+    "id": "Z0bH0cMY0E8",
+    "title": "Big O Notation — Calculating Time Complexity",
+    "channel": "the roadmap",
+    "length": "7:47"
+   }
+  ],
+  "speedup": [
+   {
+    "id": "3OamzN90kPg",
+    "title": "Contains Duplicate - Leetcode 217 - Python",
+    "channel": "NeetCode",
+    "length": "6:31"
+   }
+  ]
+ },
+ "0020": {
+  "hashing": [
+   {
+    "id": "knV86FlSXJ8",
+    "title": "Hash tables in 4 minutes",
+    "channel": "Michael Sambol",
+    "length": "3:52"
+   }
+  ],
+  "anagram": [
+   {
+    "id": "9UtInBqnCgA",
+    "title": "Valid Anagram - Leetcode 242 - Python",
+    "channel": "NeetCode",
+    "length": "12:01"
+   }
+  ],
+  "two-sum": [
+   {
+    "id": "KLlXCFG5TnA",
+    "title": "Two Sum - Leetcode 1 - HashMap - Python",
+    "channel": "NeetCode",
+    "length": "8:26"
+   }
+  ],
+  "group": [
+   {
+    "id": "vzdNOK2oB2E",
+    "title": "Group Anagrams - Categorize Strings by Count - Leetcode 49",
+    "channel": "NeetCode",
+    "length": "8:12"
+   }
+  ]
+ },
+ "0021": {
+  "pattern": [
+   {
+    "id": "QzZ7nmouLTI",
+    "title": "Two Pointers in 7 minutes | LeetCode Pattern",
+    "channel": "AlgoMasterIO",
+    "length": "7:21"
+   }
+  ],
+  "palindrome": [
+   {
+    "id": "jJXJ16kPFWg",
+    "title": "Valid Palindrome - Leetcode 125 - Python",
+    "channel": "NeetCode",
+    "length": "14:58"
+   }
+  ],
+  "sorted": [
+   {
+    "id": "cQ1Oz4ckceM",
+    "title": "TWO SUM II - Amazon Coding Interview Question - Leetcode 167 - Python",
+    "channel": "NeetCode",
+    "length": "8:18"
+   }
+  ],
+  "water": [
+   {
+    "id": "UuiTKBwPgAo",
+    "title": "Container with Most Water - Leetcode 11 - Python",
+    "channel": "NeetCode",
+    "length": "12:37"
+   }
+  ]
+ },
+ "0022": {
+  "stock": [
+   {
+    "id": "1pkOgXD63yU",
+    "title": "Sliding Window: Best Time to Buy and Sell Stock - Leetcode 121 - Python",
+    "channel": "NeetCode",
+    "length": "8:46"
+   }
+  ],
+  "fixed": [
+   {
+    "id": "y2d0VHdvfdc",
+    "title": "Sliding Window in 7 minutes | LeetCode Pattern",
+    "channel": "AlgoMasterIO",
+    "length": "7:38"
+   },
+   {
+    "id": "UdUUnoiLkPg",
+    "title": "Maximum Average Subarray I - Leetcode 643 - Fixed Sliding Window (Python)",
+    "channel": "Greg Hogg",
+    "length": "7:48"
+   }
+  ],
+  "variable": [
+   {
+    "id": "wiGpQwVHdE0",
+    "title": "Longest Substring Without Repeating Characters - Leetcode 3 - Python",
+    "channel": "NeetCode",
+    "length": "6:46"
+   }
+  ]
+ },
+ "0023": {
+  "stack": [
+   {
+    "id": "I37kGX-nZEI",
+    "title": "Introduction to Stacks",
+    "channel": "Neso Academy",
+    "length": "8:34"
+   }
+  ],
+  "brackets": [
+   {
+    "id": "WTzjTskDFMg",
+    "title": "Valid Parentheses - Stack - Leetcode 20 - Python",
+    "channel": "NeetCode",
+    "length": "10:43"
+   }
+  ],
+  "min-stack": [
+   {
+    "id": "qkLl7nAwDPo",
+    "title": "Design Min Stack - Amazon Interview Question - Leetcode 155 - Python",
+    "channel": "NeetCode",
+    "length": "8:53"
+   }
+  ],
+  "rpn": [
+   {
+    "id": "iu0082c4HDE",
+    "title": "Evaluate Reverse Polish Notation - Leetcode 150 - Python",
+    "channel": "NeetCode",
+    "length": "9:20"
+   }
+  ]
+ },
+ "0024": {
+  "idea": [
+   {
+    "id": "fDKIpRe8GW4",
+    "title": "Binary search in 4 minutes",
+    "channel": "Michael Sambol",
+    "length": "4:00"
+   },
+   {
+    "id": "s4DPM8ct1pI",
+    "title": "Binary Search - Leetcode 704 - Python",
+    "channel": "NeetCode",
+    "length": "9:40"
+   }
+  ],
+  "insert": [
+   {
+    "id": "K-RYzDZkzCI",
+    "title": "Search Insert Position - Binary Search - Leetcode 35 - Python",
+    "channel": "NeetCode",
+    "length": "13:42"
+   }
+  ],
+  "answer": [
+   {
+    "id": "zdMhGxRWutQ",
+    "title": "Sqrt(x) - Leetcode 69 - Python",
+    "channel": "NeetCodeIO",
+    "length": "8:34"
+   }
+  ]
+ },
+ "0025": {
+  "idea": [
+   {
+    "id": "m1Fjdnj_Mds",
+    "title": "Recursion Simply Explained with Code Examples - Python for Beginners",
+    "channel": "Python Simplified",
+    "length": "9:07"
+   }
+  ],
+  "stack": [
+   {
+    "id": "aCPkszeKRa4",
+    "title": "Call Stacks - CS50 Shorts",
+    "channel": "CS50",
+    "length": "7:40"
+   }
+  ],
+  "fib": [
+   {
+    "id": "Qk0zUZW-U_M",
+    "title": "Recursion, the Fibonacci Sequence and Memoization  ||  Python Tutorial  ||  Learn Python Programming",
+    "channel": "Socratica",
+    "length": "8:01"
+   }
+  ]
+ },
+ "0026": {
+  "simple": [
+   {
+    "id": "JU767SDMDvA",
+    "title": "Insertion sort in 2 minutes",
+    "channel": "Michael Sambol",
+    "length": "2:19"
+   }
+  ],
+  "merge-sort": [
+   {
+    "id": "4VqmGXwpLqc",
+    "title": "Merge sort in 3 minutes",
+    "channel": "Michael Sambol",
+    "length": "3:03"
+   }
+  ],
+  "builtin": [
+   {
+    "id": "EvjBFPydY7w",
+    "title": "Python tutorials: Sorting (reverse, key, multiple attributes / value)",
+    "channel": "PyMoondra",
+    "length": "5:42"
+   }
+  ],
+  "lc88": [
+   {
+    "id": "P1Ic85RarKY",
+    "title": "Merge Sorted Array - Leetcode 88 - Python",
+    "channel": "NeetCode",
+    "length": "10:18"
+   }
+  ]
+ },
+ "0027": {
+  "chains": [
+   {
+    "id": "F8AbOfQwl1c",
+    "title": "Linked lists in 4 minutes",
+    "channel": "Michael Sambol",
+    "length": "4:22"
+   }
+  ],
+  "reverse": [
+   {
+    "id": "G0_I-ZF0S38",
+    "title": "Reverse Linked List - Iterative AND Recursive - Leetcode 206 - Python",
+    "channel": "NeetCode",
+    "length": "11:07"
+   }
+  ],
+  "merge": [
+   {
+    "id": "XIdigk956u0",
+    "title": "Merge Two Sorted Lists - Leetcode 21 - Python",
+    "channel": "NeetCode",
+    "length": "6:16"
+   }
+  ],
+  "fast-slow": [
+   {
+    "id": "gBTe7lFR3vc",
+    "title": "Linked List Cycle - Floyd's Tortoise and Hare - Leetcode 141 - Python",
+    "channel": "NeetCode",
+    "length": "10:44"
+   }
+  ]
+ },
+ "0028": {
+  "trees": [
+   {
+    "id": "GzJoqJO1zdI",
+    "title": "Binary Trees - Data Structures Explained",
+    "channel": "Aaron Jack",
+    "length": "10:18"
+   }
+  ],
+  "recursion": [
+   {
+    "id": "hTM3phVI6YQ",
+    "title": "Maximum Depth of Binary Tree - 3 Solutions - Leetcode 104 - Python",
+    "channel": "NeetCode",
+    "length": "16:43"
+   },
+   {
+    "id": "OnSn2XEQ4MY",
+    "title": "Invert Binary Tree - Depth First Search - Leetcode 226",
+    "channel": "NeetCode",
+    "length": "3:55"
+   }
+  ],
+  "traversals": [
+   {
+    "id": "b_NjndniOqY",
+    "title": "Learn Tree traversal in 3 minutes 🧗",
+    "channel": "Bro Code",
+    "length": "3:56"
+   }
+  ]
+ },
+ "0029": {
+  "queues": [
+   {
+    "id": "D6gu-_tmEpQ",
+    "title": "Queues in 3 minutes",
+    "channel": "Michael Sambol",
+    "length": "3:10"
+   }
+  ],
+  "bfs": [
+   {
+    "id": "HZ5YTanv5QE",
+    "title": "Breadth-first search in 4 minutes",
+    "channel": "Michael Sambol",
+    "length": "3:59"
+   }
+  ],
+  "nearest": [
+   {
+    "id": "oDqjPvD54Ss",
+    "title": "Breadth First Search Algorithm | Shortest Path | Graph Theory",
+    "channel": "WilliamFiset",
+    "length": "7:23"
+   },
+   {
+    "id": "6ZnyEApgFYg",
+    "title": "Binary Tree Level Order Traversal - BFS - Leetcode 102",
+    "channel": "NeetCode",
+    "length": "9:36"
+   }
+  ]
+ },
+ "0030": {
+  "heaps": [
+   {
+    "id": "0wPlzMU-k00",
+    "title": "Heaps in 3 minutes — Intro",
+    "channel": "Michael Sambol",
+    "length": "3:29"
+   }
+  ],
+  "top-k": [
+   {
+    "id": "ZmGk7h8KZLs",
+    "title": "Kth Largest Element in an Array - Leetcode 215 - Heaps (Python)",
+    "channel": "Greg Hogg",
+    "length": "11:52"
+   }
+  ],
+  "tuples": [
+   {
+    "id": "rI2EBUEMfTk",
+    "title": "K Closest Points to Origin - Heap / Priority Queue - Leetcode 973 - Python",
+    "channel": "NeetCode",
+    "length": "9:29"
+   }
+  ]
+ },
+ "0031": {
+  "graphs": [
+   {
+    "id": "-VgHk7UMPP4",
+    "title": "Learn Graphs in 5 minutes 🌐",
+    "channel": "Bro Code",
+    "length": "5:17"
+   }
+  ],
+  "explore": [
+   {
+    "id": "7fujbpJ0LB4",
+    "title": "Depth First Search Algorithm | Graph Theory",
+    "channel": "WilliamFiset",
+    "length": "10:20"
+   }
+  ],
+  "grids": [
+   {
+    "id": "pV2kpPD66nE",
+    "title": "NUMBER OF ISLANDS - Leetcode 200 - Python",
+    "channel": "NeetCode",
+    "length": "11:41"
+   }
+  ]
+ },
+ "0032": {
+  "idea": [
+   {
+    "id": "Zq4upTEaQyM",
+    "title": "The Backtracking Blueprint: The Legendary 3 Keys To Backtracking Algorithms",
+    "channel": "Back To Back SWE",
+    "length": "13:44"
+   }
+  ],
+  "subsets": [
+   {
+    "id": "REOH22Xwdkk",
+    "title": "Subsets - Backtracking - Leetcode 78",
+    "channel": "NeetCode",
+    "length": "8:47"
+   }
+  ],
+  "permutations": [
+   {
+    "id": "s7AvT7cGdSo",
+    "title": "Backtracking: Permutations - Leetcode 46 - Python",
+    "channel": "NeetCode",
+    "length": "9:43"
+   }
+  ],
+  "combination": [
+   {
+    "id": "GBKI9VSKdGg",
+    "title": "Combination Sum - Backtracking - Leetcode 39 - Python",
+    "channel": "NeetCode",
+    "length": "15:10"
+   }
+  ]
+ },
+ "0033": {
+  "memo": [
+   {
+    "id": "P8Xa2BitN3I",
+    "title": "Algorithms: Memoization and Dynamic Programming",
+    "channel": "HackerRank",
+    "length": "11:17"
+   }
+  ],
+  "stairs": [
+   {
+    "id": "Y0lT9Fck7qI",
+    "title": "Climbing Stairs - Dynamic Programming - Leetcode 70 - Python",
+    "channel": "NeetCode",
+    "length": "18:08"
+   }
+  ],
+  "costs": [
+   {
+    "id": "ktmzAZWkEZ0",
+    "title": "Min Cost Climbing Stairs - Dynamic Programming - Leetcode 746 - Python",
+    "channel": "NeetCode",
+    "length": "19:27"
+   }
+  ],
+  "robber": [
+   {
+    "id": "73r3KWiEvyk",
+    "title": "House Robber -  Leetcode 198 - Python Dynamic Programming",
+    "channel": "NeetCode",
+    "length": "10:35"
+   }
+  ]
+ },
+ "0034": {
+  "paths": [
+   {
+    "id": "IlEsdxuD4lY",
+    "title": "Unique Paths - Dynamic Programming - Leetcode 62",
+    "channel": "NeetCode",
+    "length": "10:48"
+   }
+  ],
+  "coins": [
+   {
+    "id": "H9bfqozjoqs",
+    "title": "Coin Change - Dynamic Programming Bottom Up - Leetcode 322",
+    "channel": "NeetCode",
+    "length": "19:23"
+   }
+  ],
+  "lcs": [
+   {
+    "id": "Ua0GhsJSlWM",
+    "title": "Longest Common Subsequence - Dynamic Programming - Leetcode 1143",
+    "channel": "NeetCode",
+    "length": "18:25"
+   }
+  ],
+  "recipe": [
+   {
+    "id": "aPQY__2H3tE",
+    "title": "5 Simple Steps for Solving Dynamic Programming Problems",
+    "channel": "Reducible",
+    "length": "21:27"
+   }
+  ]
+ },
+ "0035": {
+  "git": [
+   {
+    "id": "hwP7WQkmECE",
+    "title": "Git Explained in 100 Seconds",
+    "channel": "Fireship",
+    "length": "1:57"
+   }
+  ],
+  "commits": [
+   {
+    "id": "eL_0Ok_Gkas",
+    "title": "Git Tutorial 4: Basic Commands: add, commit, push",
+    "channel": "codebasics",
+    "length": "16:35"
+   }
+  ],
+  "github": [
+   {
+    "id": "a9u2yZvsqHA",
+    "title": "How To Use GitHub For Beginners",
+    "channel": "corbin",
+    "length": "10:29"
+   }
+  ]
+ },
+ "0036": {
+  "brief": [
+   {
+    "id": "ouipbDkwHWA",
+    "title": "An Introduction to Conway's The Game of Life",
+    "channel": "Eric Steinhart",
+    "length": "5:46"
+   },
+   {
+    "id": "R9Plq-D1gEk",
+    "title": "Inventing Game of Life (John Conway) - Numberphile",
+    "channel": "Numberphile",
+    "length": "11:05"
+   }
+  ],
+  "pieces": [
+   {
+    "id": "cRWg2SWuXtM",
+    "title": "Conway's Game of Life in Python",
+    "channel": "NeuralNine",
+    "length": "19:39",
+    "note": "Draws the board with pygame. The rules and the neighbour counting are the same as ours."
+   }
+  ],
+  "assemble": [
+   {
+    "id": "YDKuknw9WGs",
+    "title": "Python Simulation Tutorial - Conway's Game of Life",
+    "channel": "Tech With Tim",
+    "length": "41:13",
+    "note": "Our version runs in the terminal. If the video draws a window instead, the game logic is still the same."
+   }
+  ],
+  "publish": [
+   {
+    "id": "vpRkAoCqX3o",
+    "title": "Push Code to your GitHub Account - Under 3 Minutes",
+    "channel": "Charming Data",
+    "length": "2:32"
+   }
+  ]
+ },
+ "0037": {
+  "board": [
+   {
+    "id": "Q6CCdCBVypg",
+    "title": "Beginner Python Project From Scratch: Tic Tac Toe",
+    "channel": "CDcodes",
+    "length": "16:54"
+   }
+  ],
+  "minimax": [
+   {
+    "id": "5y2a0Zhgq0U",
+    "title": "Simple Explanation of the Minimax Algorithm with Tic-Tac-Toe",
+    "channel": "Science Buddies",
+    "length": "4:18"
+   },
+   {
+    "id": "SLgZhpDsrfc",
+    "title": "Minimax: How Computers Play Games",
+    "channel": "Spanning Tree",
+    "length": "14:37"
+   }
+  ],
+  "play": [
+   {
+    "id": "fT3YWCKvuQE",
+    "title": "Coding an UNBEATABLE Tic Tac Toe AI (Game Theory Minimax Algorithm EXPLAINED)",
+    "channel": "Kylie Ying",
+    "length": "15:00"
+   }
+  ]
+ },
+ "0038": {
+  "model": [
+   {
+    "id": "bfRwxS5d0SI",
+    "title": "Let's code a SNAKE GAME in python! 🐍",
+    "channel": "Bro Code",
+    "length": "33:06",
+    "note": "Our version runs in the terminal. If the video draws a window instead, the game logic is still the same."
+   }
+  ],
+  "rules": [
+   {
+    "id": "M_npdRYD4K0",
+    "title": "Snake Game In Python - Python Beginner Tutorial",
+    "channel": "Patrick Loeber",
+    "length": "23:25",
+    "note": "Our version runs in the terminal. If the video draws a window instead, the game logic is still the same."
+   }
+  ],
+  "play": [
+   {
+    "id": "Db4oc8qc9RU",
+    "title": "Python Curses Tutorial #1 - Make GOOD Looking Terminal Apps!",
+    "channel": "Tech With Tim",
+    "length": "15:37"
+   },
+   {
+    "id": "BvbqI6eDh0c",
+    "title": "Creating Snake Game for Terminal | Intro to curses in Python (Part-3)",
+    "channel": "Indian Pythonista",
+    "length": "30:49"
+   }
+  ]
+ },
+ "0039": {
+  "idea": [
+   {
+    "id": "d7Qs-zHzQhc",
+    "title": "What is an Interpreter?",
+    "channel": "Neso Academy",
+    "length": "8:55"
+   }
+  ],
+  "lexer": [
+   {
+    "id": "BI3K-ME3L74",
+    "title": "What is a Lexer (No BS explanation)",
+    "channel": "Tsoding Daily",
+    "length": "3:12"
+   },
+   {
+    "id": "88lmIMHhYNs",
+    "title": "Simple Math Interpreter in Python (1/4) - Lexer",
+    "channel": "CodePulse",
+    "length": "13:01"
+   }
+  ],
+  "grammar": [
+   {
+    "id": "TwKWUj033vY",
+    "title": "Simple Math Interpreter in Python (2/4) - Parser",
+    "channel": "CodePulse",
+    "length": "14:46"
+   }
+  ],
+  "repl": [
+   {
+    "id": "45epnUwFALo",
+    "title": "Simple Math Interpreter in Python (3/4) - Interpreter",
+    "channel": "CodePulse",
+    "length": "6:58"
+   }
+  ]
+ },
+ "0040": {
+  "idea": [
+   {
+    "id": "bSA91XTzeuA",
+    "title": "Inside the Hidden Git Folder - Computerphile",
+    "channel": "Computerphile",
+    "length": "8:33"
+   }
+  ],
+  "blob": [
+   {
+    "id": "MyvyqdQ3OjI",
+    "title": "Git Internals - Git Objects",
+    "channel": "Brief",
+    "length": "7:10"
+   }
+  ],
+  "store": [
+   {
+    "id": "P6jD966jzlk",
+    "title": "Git Internals -  How Git Works - Fear Not The SHA!",
+    "channel": "GitLab",
+    "length": "31:23"
+   }
+  ],
+  "tool": [
+   {
+    "id": "riZK3KgjdCc",
+    "title": "Building a Simple Version Control System with Python | Understand Git Fundamentals",
+    "channel": "Dave Berry",
+    "length": "20:25"
+   }
+  ]
+ }
+}
