@@ -1,5 +1,6 @@
 """What the AI tutor is told, and how its answers are checked before you see them."""
 
+import ast
 import json
 import re
 
@@ -44,7 +45,7 @@ PRACTICE_SCHEMA = {
                     "title": {"type": "string", "description": "Short title, under 6 words."},
                     "task": {"type": "string", "description": "What to do, in 1 to 4 plain sentences. Say exactly what should be printed or returned."},
                     "file": {"type": "string", "description": "A short snake_case file name ending in .py"},
-                    "starter": {"type": "string", "description": "Starter code: a comment and any scaffolding. It must NOT already pass the tests."},
+                    "starter": {"type": "string", "description": "A near-empty starting point: one comment saying what to build, plus the def line with pass when the task asks for a function, plus any data the task hands over. No input(), if, loop or print lines from the solution. Only a find-the-bug exercise starts with full (buggy) code."},
                     "inputs": {"type": "array", "items": {"type": "string"}, "description": "Default lines for input() calls, or empty."},
                     "tests": {"type": "array", "items": {"type": "string"}, "description": "One Python line each, every line a call to check(label, got, expected)."},
                     "solution": {"type": "string", "description": "A correct beginner-style solution that passes every test."},
@@ -65,6 +66,7 @@ PRACTICE_RULES = """Write practice exercises that run in a test harness. Rules f
 - No imports except math, and only if the lesson taught it. Never use files, the network or the operating system.
 - The starter code must not pass the tests. The solution must pass all of them.
 - Only use Python features from the lessons the learner has completed or is on now.
+- The learner writes the code. The starter is a comment, plus def lines with pass for function tasks, plus data the task gives them. Never put the solution's input(), if, elif, else, loops, return or print lines in the starter. If an exercise is about finding a bug, say "find the bug" in the task; only then may the starter hold full, wrong code.
 - Difficulty: the first exercise is a gentle repeat of the lesson's core idea, the last is a small stretch. Aim each one at the learner's recent mistakes when there are any."""
 
 
@@ -141,7 +143,52 @@ Lesson text, so your exercises match its style and ideas:
 
 Write 3 exercises for this lesson."""
     data = ai.generate(STYLE, prompt, schema=PRACTICE_SCHEMA, thinking="medium")
-    return [ex for ex in data.get("exercises", []) if well_formed(ex)][:3]
+    exercises = [ex for ex in data.get("exercises", []) if well_formed(ex)][:3]
+    for ex in exercises:
+        ex["starter"] = bare_starter(ex)
+    return exercises
+
+
+KEEP_LINE = re.compile(r"(def |class |import |from \S+ import |pass$|#)")
+
+
+def is_data(code):
+    """name = a plain value, like a list the task hands over."""
+    name, eq, value = code.partition("=")
+    if not eq or not name.strip().isidentifier():
+        return False
+    try:
+        ast.literal_eval(value.strip())
+        return True
+    except (ValueError, SyntaxError):
+        return False
+
+
+def bare_starter(ex):
+    """A safety net for "the learner writes the code": a starter keeps only comments, def and
+    class lines, imports and plain data the task hands over. Find-the-bug starters stay whole."""
+    starter = ex.get("starter", "")
+    if re.search(r"\b(bug|fix|mistake|wrong)\b", ex.get("task", ""), re.I):
+        return starter
+    kept = [line for line in starter.splitlines()
+            if not line.strip() or KEEP_LINE.match(line.strip()) or is_data(line.strip())]
+    depth = lambda l: len(l) - len(l.lstrip())
+    out = []
+    for i, line in enumerate(kept):
+        if not line.strip() and (not out or not out[-1].strip()):
+            continue
+        out.append(line)
+        # A def or class whose body was removed still needs one, after any comments inside it.
+        opener = next((l for l in reversed(out) if l.strip() and not l.strip().startswith("#")), "")
+        if line.strip() and opener.lstrip().startswith(("def ", "class ")) and opener.rstrip().endswith(":"):
+            nxt = next((l for l in kept[i + 1:] if l.strip()), None)
+            if nxt is None or depth(nxt) <= depth(opener):
+                out.append(" " * (depth(opener) + 4) + "pass")
+    while out and not out[-1].strip():
+        out.pop()
+    if not any(l.strip().startswith("#") for l in out):
+        out.insert(0, "# " + ex.get("title", "Your code"))
+    return "\n".join(out) + "\n"
 
 
 def well_formed(ex):
