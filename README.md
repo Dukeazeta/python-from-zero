@@ -4,6 +4,8 @@ A free, 40-lesson course that takes someone who has never programmed to solving 
 
 Every idea opens with an everyday comparison before the technical word, and the writing is kept short and plain.
 
+**Start learning now at [35-202-224-205.sslip.io](https://35-202-224-205.sslip.io).** Nothing to install; sign in with Google if you want your progress saved across devices.
+
 ## What's inside
 
 - **Python basics (Lessons 1 to 18):** values and maths, the terminal, variables, input, decisions, loops, lists, strings, functions, dictionaries, sets, debugging, grids, classes, and modules with virtual environments.
@@ -21,9 +23,9 @@ Every idea opens with an everyday comparison before the technical word, and the 
 - **Light and dim themes**, readable on phones, and no tracking.
 - **Small and dependency free:** the app is about 1,500 lines of Python using only the standard library, with SQLite for storage.
 
-## Quick start
+## Run it on your own computer
 
-You need Python 3.12 or newer.
+You don't need to do this to take the course; the [live site](https://35-202-224-205.sslip.io) has everything. Run it locally to change the lessons, host your own copy or contribute. You need Python 3.12 or newer.
 
 ```bash
 git clone https://github.com/Dukeazeta/python-from-zero.git
