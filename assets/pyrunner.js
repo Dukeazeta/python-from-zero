@@ -19,7 +19,9 @@ check("label shown to the learner", printed(), ["Hello"])
   Test helpers available inside .tests (one test per line):
     check(label, got, expected)   passes when got == expected, forgiving small text
                                   differences: extra spaces, curly quotes and a
-                                  full stop, ! or ? at the end of a line
+                                  full stop, ! or ? at the end of a line. On lines
+                                  printed by input(), only the typed answer must
+                                  match; the question's wording is the learner's.
     printed()                     list of lines the learner's code printed
     source()                      the learner's code as one string
     run(["a", "b"])               run the learner's code again with these input lines;
@@ -37,18 +39,28 @@ check("label shown to the learner", printed(), ["Hello"])
 
   /*HARNESS-START*/
   const HARNESS = String.raw`
-import io, json, traceback, contextlib, linecache, builtins
+import io, sys, json, traceback, contextlib, linecache, builtins
 
 class _Inputs:
     def __init__(self, items):
         self.items = list(items)
+        self.typed = {}   # printed line number -> what was typed on it
     def __call__(self, prompt=""):
         print(prompt, end="")
         if not self.items:
             raise EOFError("input() asked for a line, but the Input box has no more lines.")
         value = str(self.items.pop(0))
+        out = sys.stdout
+        if hasattr(out, "getvalue"):
+            self.typed[out.getvalue().count(chr(10))] = value
         print(value)
         return value
+
+class _Lines(list):
+    # Printed lines that remember which ones came from input().
+    def __init__(self, lines, typed):
+        super().__init__(lines)
+        self.typed = typed
 
 def _format_error(e):
     tb = e.__traceback__
@@ -62,7 +74,8 @@ def _exec(src, inputs, setup=None):
     err = None
     linecache.cache["solution.py"] = (len(src), None, src.splitlines(True), "solution.py")
     real_input = builtins.input
-    builtins.input = _Inputs(inputs)
+    feeder = _Inputs(inputs)
+    builtins.input = feeder
     try:
         with contextlib.redirect_stdout(buf):
             try:
@@ -73,9 +86,9 @@ def _exec(src, inputs, setup=None):
                 err = _format_error(e) or f"{type(e).__name__}: {e}"
     finally:
         builtins.input = real_input
-    return ns, buf.getvalue(), err
+    return ns, buf.getvalue(), err, feeder.typed
 
-_QUOTES = str.maketrans({"‘": "'", "’": "'", "“": '"', "”": '"'})
+_QUOTES = str.maketrans({chr(0x2018): "'", chr(0x2019): "'", chr(0x201c): '"', chr(0x201d): '"'})
 
 def _loose(value):
     # Beginners shouldn't fail a test over a missing full stop or a double space.
@@ -85,26 +98,41 @@ def _loose(value):
         return [_loose(v) for v in value]
     return value
 
+def _same(got, expected):
+    if got == expected or _loose(got) == _loose(expected):
+        return True
+    typed = getattr(got, "typed", None)
+    if not typed or not isinstance(expected, (list, tuple)) or len(got) != len(expected):
+        return False
+    for i, (g, e) in enumerate(zip(got, expected)):
+        if _loose(g) == _loose(e):
+            continue
+        # An input() line: the question is the learner's own words, the answer must match.
+        if i in typed and isinstance(e, str) and _loose(e).endswith(_loose(typed[i])):
+            continue
+        return False
+    return True
+
 def _session(src, inputs_json, tests, setup=None):
     # Pyodide passes JavaScript null as a JsNull object, not None.
     tests = tests if isinstance(tests, str) else None
     setup = setup if isinstance(setup, str) else None
     inputs = json.loads(inputs_json if isinstance(inputs_json, str) else "[]")
-    ns, out, err = _exec(src, inputs, setup)
+    ns, out, err, typed = _exec(src, inputs, setup)
     res = {"out": out, "err": err, "results": None}
     if tests is not None and err is None:
         results = []
         def check(label, got, expected):
-            ok = got == expected or _loose(got) == _loose(expected)
+            ok = _same(got, expected)
             results.append({"label": label, "ok": ok,
                             "got": repr(got), "expected": repr(expected)})
         def run(lines=()):
-            _, o, e = _exec(src, list(lines), setup)
-            printed_lines = o.splitlines()
+            _, o, e, t = _exec(src, list(lines), setup)
+            printed_lines = _Lines(o.splitlines(), t)
             if e:
                 printed_lines.append("ERROR: " + e.strip().splitlines()[-1])
             return printed_lines
-        helpers = {"check": check, "printed": lambda: out.splitlines(),
+        helpers = {"check": check, "printed": lambda: _Lines(out.splitlines(), typed),
                    "source": lambda: src, "run": run}
         for line in tests.splitlines():
             if not line.strip():
