@@ -346,15 +346,28 @@ self.onmessage = async (e) => {
     out.setAttribute("aria-live", "polite");
     win.append(toolbar, out);
 
-    // On phones and tablets long lines wrap instead of scrolling sideways, so the editor grows to fit them.
-    const fit = () => {
-      if (!narrow.matches) { ta.style.height = ""; return; }
+    // The editor grows (and shrinks) with the code, so all of it stays in view without an inner
+    // scroll. Measure at natural height, then put the old height back and let CSS ease to the new one.
+    const fit = (animate = true) => {
+      if (!ta.clientWidth) return;  // hidden for now; fitted again on focus
+      const from = ta.offsetHeight;
+      const pageY = window.scrollY;
+      ta.style.transition = "none";
       ta.style.height = "auto";
-      ta.style.height = ta.scrollHeight + 2 + "px";
+      const to = ta.scrollHeight + (ta.offsetHeight - ta.clientHeight);
+      ta.style.height = from + "px";
+      void ta.offsetHeight;
+      if (animate) ta.style.transition = "";
+      ta.style.height = to + "px";
+      if (!animate) { void ta.offsetHeight; ta.style.transition = ""; }
+      if (window.scrollY !== pageY) window.scrollTo({ top: pageY, behavior: "instant" });
+      ta.scrollTop = 0;
     };
-    narrow.addEventListener("change", fit);
-    window.addEventListener("resize", fit);
-    requestAnimationFrame(fit);
+    ta.addEventListener("transitionend", () => { ta.scrollTop = 0; });
+    ta.addEventListener("focus", () => fit(false));
+    narrow.addEventListener("change", () => fit(false));
+    window.addEventListener("resize", () => fit(false));
+    requestAnimationFrame(() => fit(false));
 
     const onEdit = () => { if (!ex.dataset.noSave) store(key, ta.value); fit(); };
     editorKeys(ta, onEdit);

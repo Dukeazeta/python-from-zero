@@ -611,10 +611,12 @@ textarea.code {
   font-size: 16px;
   line-height: 1.6;
   padding: 16px;
-  resize: vertical;
+  resize: none;            /* pyrunner.js sizes it to the code */
   tab-size: 4;
   white-space: pre;
   overflow-x: auto;
+  overflow-y: hidden;
+  transition: height 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 textarea.code:focus { outline: none; box-shadow: inset 0 0 0 2px rgba(32, 125, 255, 0.35); }
 .toolbar {
@@ -1027,11 +1029,10 @@ details.hint > div { padding: 8px 0 0 14px; color: var(--charcoal); }
   ol.steps > li { padding-left: 38px; }
 }
 
-/* Phones and tablets: long code lines wrap instead of scrolling sideways; pyrunner.js grows the
-   editor to fit them. */
+/* Phones and tablets: long code lines wrap instead of scrolling sideways. */
 @media (max-width: 900px) {
   .window pre { white-space: pre-wrap; overflow-wrap: anywhere; }
-  textarea.code { white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: hidden; resize: none; }
+  textarea.code { white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: hidden; }
 }
 
 /* Very narrow screens: the Google button shrinks to its "G" mark, which Google's guidelines allow. */
