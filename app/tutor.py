@@ -58,7 +58,8 @@ PRACTICE_SCHEMA = {
 }
 
 PRACTICE_RULES = """Write practice exercises that run in a test harness. Rules for tests:
-- Each test is ONE line of Python calling check(label, got, expected). check passes when got == expected.
+- Each test is ONE line of Python calling check(label, got, expected). check passes when got == expected, ignoring extra spaces, quote style and a full stop, ! or ? at the end of a line. Wording, capitals and numbers must still match.
+- The task must show every line the tests expect, word for word, in quotes (for example: print "Ada's lucky number is 8"). Never test for wording the task doesn't show.
 - Available helpers: printed() returns the list of lines the code printed; source() returns the code as a string; run(["line1", "line2"]) runs the code again with those input() lines and returns the printed lines (input prompts and the typed value appear on the same line, e.g. "Name? Ada"). Functions and variables the learner defines can be called or read directly.
 - Tests must be deterministic. No random numbers, dates or times. Compare floats with round().
 - No imports except math, and only if the lesson taught it. Never use files, the network or the operating system.

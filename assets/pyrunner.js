@@ -17,7 +17,9 @@ check("label shown to the learner", printed(), ["Hello"])
   data-inputs (optional) adds an "Input" box: one line per input() call.
 
   Test helpers available inside .tests (one test per line):
-    check(label, got, expected)   passes when got == expected
+    check(label, got, expected)   passes when got == expected, forgiving small text
+                                  differences: extra spaces, curly quotes and a
+                                  full stop, ! or ? at the end of a line
     printed()                     list of lines the learner's code printed
     source()                      the learner's code as one string
     run(["a", "b"])               run the learner's code again with these input lines;
@@ -73,6 +75,16 @@ def _exec(src, inputs, setup=None):
         builtins.input = real_input
     return ns, buf.getvalue(), err
 
+_QUOTES = str.maketrans({"‘": "'", "’": "'", "“": '"', "”": '"'})
+
+def _loose(value):
+    # Beginners shouldn't fail a test over a missing full stop or a double space.
+    if isinstance(value, str):
+        return " ".join(value.translate(_QUOTES).split()).rstrip(".!?").rstrip()
+    if isinstance(value, (list, tuple)):
+        return [_loose(v) for v in value]
+    return value
+
 def _session(src, inputs_json, tests, setup=None):
     # Pyodide passes JavaScript null as a JsNull object, not None.
     tests = tests if isinstance(tests, str) else None
@@ -83,7 +95,8 @@ def _session(src, inputs_json, tests, setup=None):
     if tests is not None and err is None:
         results = []
         def check(label, got, expected):
-            results.append({"label": label, "ok": got == expected,
+            ok = got == expected or _loose(got) == _loose(expected)
+            results.append({"label": label, "ok": ok,
                             "got": repr(got), "expected": repr(expected)})
         def run(lines=()):
             _, o, e = _exec(src, list(lines), setup)
